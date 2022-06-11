@@ -1,4 +1,4 @@
-export default interface APIInterface {
+export default interface APICoreInterface {
     serverInit,
     fetchComments_server,
     fetchCounts_server,

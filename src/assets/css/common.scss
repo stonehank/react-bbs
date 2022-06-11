@@ -1,0 +1,129 @@
+$background-color:#fff;
+$primary: #199ed9;
+$secondary: #d2791b;
+
+$text-primary:rgba(0,0,0,.87);
+$text-secondary:rgba(0, 0, 0, 0.6);
+$text-muted:rgba(0, 0, 0, 0.18);
+
+$separator-color: #c1c1c1;
+$separator-background: #f1f1f1;
+$success-color:#4caf50;
+$error-color: #b71c1c;
+$info-color:#2196f3;
+$warning-color:#FFC107;
+
+.serverless-bbs{
+  --bbs-background-color: #{$background-color};
+  --bbs-primary: #{$primary};
+  --bbs-secondary: #{$secondary};
+  --bbs-text-primary: #{$text-primary};
+  --bbs-text-secondary: #{$text-secondary};
+  --bbs-text-muted: #{$text-muted};
+  --bbs-separator-color: #{$separator-color};
+  --bbs-separator-background: #{$separator-background};
+  --bbs-success-color: #{$success-color};
+  --bbs-error-color: #{$error-color};
+  --bbs-info-color: #{$info-color};
+  --bbs-warning-color: #{$warning-color};
+}
+*{
+  margin:0;
+  padding:0;
+  box-sizing: border-box;
+}
+.serverless-bbs{
+  background-color:var(--bbs-background-color);
+  color:var(--bbs-text-primary);
+  a{
+    position: relative;
+    text-decoration: none;
+    color:var(--bbs-info-color);
+    &:hover{
+      color:var(--bbs-primary)
+    }
+  }
+
+  //a:hover::before {
+  //  content:'';
+  //  width: 100%;
+  //  left: 0;
+  //  right: auto;
+  //}
+  //
+  //a::before {
+  //  content: '';
+  //  position: absolute;
+  //  width: 0;
+  //  right: 0;
+  //  bottom: 0;
+  //  height: 1px;
+  //  background: var(--bbs-primary);
+  //  transition: width .3s ease;
+  //}
+
+  .position-relative{
+    position:relative;
+  }
+
+  .position-absolute{
+    position:absolute;
+  }
+
+  .text-md{
+    font-size: 1rem;
+  }
+  .text-sm{
+    font-size:0.8rem;
+  }
+  .text-left{
+    text-align:left;
+  }
+  .text-center{
+    text-align:center;
+  }
+  .text-right{
+    text-align:right;
+  }
+
+  .text-secondary{
+    color:var(--bbs-text-secondary)
+  }
+
+  .text-muted{
+    color:var(--bbs-text-muted)
+  }
+
+  //.bbs-cus-fieldset-focus{
+  //  border-color:inherit !important;
+  //}
+
+  .pl-1{
+    padding-left:4px;
+  }
+  .pl-2{
+    padding-left:8px;
+  }
+
+  .mt-2{
+    margin-top:8px;
+  }
+  .mr-2{
+    margin-right:8px;
+  }
+
+  .mr-4{
+    margin-right:16px;
+  }
+
+  .highlight-ele{
+    background-color: var(--bbs-primary) !important;
+    color:#fff;
+    *{
+      background-color: var(--bbs-primary) !important;
+      color:#fff;
+    }
+  }
+
+}
+

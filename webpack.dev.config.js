@@ -12,17 +12,23 @@ module.exports = {
     filename:'react-bbs.js'
   },
   resolve: {
-    extensions: [ '.js', '.json', '.jsx','.css','.scss'],
+    extensions: [ '.js','.ts', '.json', '.jsx','.css','.scss'],
   },
   devtool: 'cheap-module-source-map',
   module: {
     rules: [
+      // {
+      //   enforce:'pre',
+      //   test: /\.js$/,
+      //   exclude: /node_modules/,
+      //   include: /src/,
+      //   loader: "eslint-loader"
+      // },
       {
-        enforce:'pre',
-        test: /\.js$/,
+        test: /\.tsx?$/,
+        use: 'ts-loader',
         exclude: /node_modules/,
-        include: /src/,
-        loader: "eslint-loader"
+        include:path.resolve(__dirname, 'src'),
       },
       {
         test: /\.(js|jsx)$/,
