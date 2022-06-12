@@ -1,3 +1,4 @@
+const webpack=require('webpack')
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const path = require('path');
 const WebpackBar = require('webpackbar')
@@ -91,7 +92,10 @@ module.exports = {
     new HtmlWebPackPlugin({
       template: "./index.html",
       filename: "./index.html"
-    })
+    }),
+    new webpack.ProvidePlugin({
+      process: 'process/browser',
+    }),
   ],
   devServer: {
     quiet:true,
