@@ -1,9 +1,9 @@
 import React from 'react';
-import './loading.scss'
+import loadingStyle from './loading.module.scss'
 function Loading(props) {
     return (
         <div
-            className="lds-ring serverless-bbs"
+            className={'serverless-bbs '+loadingStyle['lds-ring']}
             style={{
                 width:props.size,
                 height:props.size,

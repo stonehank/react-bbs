@@ -5,6 +5,7 @@ import '../assets/css/github-markdown.scss'
 import '../assets/css/textfield/common.scss'
 import Button from "./UI/Button";
 import PopupButton from "./UI/PopupButton";
+import TextField from "./UI/TextField";
 
 function ServerlessBbs(props) {
     return (
@@ -22,6 +23,12 @@ function ServerlessBbs(props) {
             >
                 PopupButton
             </PopupButton>
+            <TextField label={"input"} placeholder={"placeholder"} outlined={false} />
+            <TextField label={"textarea"} placeholder={"placeholder"} rows={5}
+                       rules={[
+                           (v)=>!!v || 'Required',
+                           (v)=>v.length > 20 || 'At least 20',
+                       ]} />
         </section>
     );
 }

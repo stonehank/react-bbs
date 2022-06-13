@@ -1,6 +1,6 @@
 import React from 'react';
 import cls from 'classnames'
-import './button.scss'
+import buttonStyle from './button.module.scss'
 import Loading from "../Loading";
 
 const Button = React.forwardRef((props,ref)=>{
@@ -9,12 +9,12 @@ const Button = React.forwardRef((props,ref)=>{
             ref={ref}
             onClick={props.onClick}
             className={cls({
-                'bbs-btn':true,
-                [props.color+'-color']:!!props.color,
-                'bbs-btn-text':props.text,
-                'no-gap':props.dense,
-                'bbs-disabled':props.disabled,
-                'bbs-btn-loading':props.loading
+                [buttonStyle['bbs-btn']]:true,
+                [buttonStyle[props.color+'-color']]:!!props.color,
+                [buttonStyle['bbs-btn-text']]:props.text,
+                [buttonStyle['no-gap']]:props.dense,
+                [buttonStyle['bbs-disabled']]:props.disabled,
+                [buttonStyle['bbs-btn-loading']]:props.loading
             })}
             style={props.style}
         >
