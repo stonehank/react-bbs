@@ -1,7 +1,9 @@
 import React,{useState,useEffect} from 'react';
+import ReactDOM from 'react-dom'
 import Button from "./Button";
 import styled from 'styled-components'
 import {useSpring, animated} from 'react-spring'
+import PropTypes from 'prop-types'
 
 const StyledPopup=styled(animated.div)`
         position:fixed;
@@ -15,9 +17,9 @@ const StyledPopup=styled(animated.div)`
 `
 
 function PopupButton(props) {
+    const {show,setShow,beforeOpen,popupContent,children,...otherProps}=props
     const popupBoxRef=React.createRef(null)
     const buttonRef=React.createRef(null)
-    const [showPopup, setShowPopup]=useState(false)
     const [boxTop,setBoxTop]=useState(0)
     const [boxLeft,setBoxLeft]=useState(0)
     const [origin,setOrigin]=useState('top left')
@@ -35,26 +37,26 @@ function PopupButton(props) {
     },[])
     useEffect(()=>{
         api.start({
-            scale: showPopup? 1 : 0,
-            opacity: showPopup ? 1 : 0,
-            dspl: showPopup ? 1 : 0
+            scale: show? 1 : 0,
+            opacity: show ? 1 : 0,
+            dspl: show ? 1 : 0
         })
 
-    },[showPopup])
+    },[show])
 
     function stopPropagation(ev){
         ev.stopPropagation();
     }
     function hide(){
-        setShowPopup(false)
+        setShow(false)
     }
     function togglePopup(ev){
         ev.stopPropagation();
-        if(!showPopup){
-            if(props.beforeOpen)props.beforeOpen()
+        if(!show){
+            if(beforeOpen)beforeOpen()
             calcPopupPos()
         }
-        setShowPopup(!showPopup)
+        setShow(!show)
     }
 
     function calcPopupPos(){
@@ -93,27 +95,40 @@ function PopupButton(props) {
         <Button
             ref={buttonRef}
             onClick={togglePopup}
-            style={props.style}
+            {...otherProps}
         >
-            {props.children}
-            <StyledPopup
-                onClick={stopPropagation}
-                style={{
-                    top:boxTop,
-                    left:boxLeft,
-                    transformOrigin:origin,
-                    ...styles,
-                    display: styles.dspl.interpolate((display) =>
-                        display === 0 ? 'none' : 'block'
-                    ),
-                }}
-                ref={popupBoxRef}
-            >
-                {props.popupContent()}
-            </StyledPopup>
-
+            {children}
+            {ReactDOM.createPortal(
+                <div className={"serverless-bbs"}>
+                    <StyledPopup
+                        onClick={stopPropagation}
+                        style={{
+                            top:boxTop,
+                            left:boxLeft,
+                            transformOrigin:origin,
+                            ...styles,
+                            display: styles.dspl.interpolate((display) =>
+                                display === 0 ? 'none' : 'block'
+                            ),
+                        }}
+                        ref={popupBoxRef}
+                    >
+                        {popupContent()}
+                    </StyledPopup>
+                </div>,
+                document.body
+            )}
         </Button>
     );
 }
+
+PopupButton.propTypes={
+    style:PropTypes.object,
+    popupContent:PropTypes.func,
+    show:PropTypes.bool,
+    setShow:PropTypes.func,
+    beforeOpen:PropTypes.func,
+}
+
 
 export default PopupButton;

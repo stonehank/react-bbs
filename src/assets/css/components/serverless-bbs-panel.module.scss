@@ -1,0 +1,27 @@
+.bbs-input-box {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  flex-flow: wrap;
+}
+
+.bbs-name-avatar {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  flex-flow: nowrap;
+}
+
+.bbs-input {
+  position: relative;
+  margin: 0;
+  width: 100%;
+  @media (min-width: 768px) {
+    flex: 1;
+    min-width: 200px;
+    margin: 0 24px 0 0;
+    &:last-child {
+      margin: 0;
+    }
+  }
+}

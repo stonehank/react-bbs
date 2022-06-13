@@ -1,13 +1,15 @@
-import React from 'react';
+import React,{useState} from 'react';
 import '../assets/css/common.scss'
 import '../assets/css/highlight.scss'
 import '../assets/css/github-markdown.scss'
-import '../assets/css/textfield/common.scss'
 import Button from "./UI/Button";
 import PopupButton from "./UI/PopupButton";
 import TextField from "./UI/TextField";
+import Avatar from "./inputs/Avatar";
 
 function ServerlessBbs(props) {
+    const [popupShow,setPopupShow]=useState(false)
+    const [avatar,setAvatar]=useState(null)
     return (
         <section className="serverless-bbs">
             <Button>123</Button>
@@ -18,8 +20,11 @@ function ServerlessBbs(props) {
             <Button disabled>disabled</Button>
             <Button dense text color="info">dense</Button>
             <PopupButton
+                color={"error"}
+                show={popupShow}
+                setShow={setPopupShow}
                 style={{marginLeft:100}}
-                popupContent={()=><div style={{maxWidth:'100vw',width:320}}>1234</div>}
+                popupContent={()=><div style={{textAlign:'center',maxWidth:'100vw',width:320}}>1234</div>}
             >
                 PopupButton
             </PopupButton>
@@ -29,6 +34,12 @@ function ServerlessBbs(props) {
                            (v)=>!!v || 'Required',
                            (v)=>v.length > 20 || 'At least 20',
                        ]} />
+                       <Avatar
+                           avatar={avatar}
+                           setAvatar={setAvatar}
+                           email={'stonehank310@gmail.com'}
+                           name={'stonehank'}
+                       />
         </section>
     );
 }

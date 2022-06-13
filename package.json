@@ -41,7 +41,7 @@
     "leancloud-storage": "^4.5.0",
     "marked": "^0.8.1",
     "node-fetch": "^2.6.0",
-    "prop-types": "^15.7.2",
+    "prop-types": "^15.8.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-spring": "^9.4.5",

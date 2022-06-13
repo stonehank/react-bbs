@@ -1,0 +1,29 @@
+.bbs-avatar{
+  border-radius: 6px;
+  width:48px;
+  height:48px;
+}
+.avatar-panel-box{
+  text-align:justify;
+  overflow: auto;
+  width: 290px;
+  display:flex;
+  align-items: flex-start;
+  flex-flow:wrap;
+  /*box-shadow:0 0 1px var(--bbs-separator-color);*/
+  user-select: none;
+  .avatar-panel-item{
+    font-style: normal;
+    margin: 4px;
+    width: 64px;
+    height: 64px;
+    background-position: center;
+    background-size:cover;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    text-align: center;
+    display: inline-block;
+    vertical-align: middle;
+    transition:background .5s linear;
+  }
+}
