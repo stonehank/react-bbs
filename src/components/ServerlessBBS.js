@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState,useEffect} from 'react';
 import '../assets/css/common.scss'
 import '../assets/css/highlight.scss'
 import '../assets/css/github-markdown.scss'
@@ -6,10 +6,17 @@ import Button from "./UI/Button";
 import PopupButton from "./UI/PopupButton";
 import TextField from "./UI/TextField";
 import Avatar from "./inputs/Avatar";
+import Nickname from "./inputs/Nickname";
+import Emoji from "./inputs/Emoji";
 
 function ServerlessBbs(props) {
     const [popupShow,setPopupShow]=useState(false)
     const [avatar,setAvatar]=useState(null)
+    const [nickname,setNickname]=useState('')
+    const nicknameRef=React.createRef(null)
+    useEffect(()=>{
+        console.log(nicknameRef.current.validate())
+    },[])
     return (
         <section className="serverless-bbs">
             <Button>123</Button>
@@ -34,12 +41,20 @@ function ServerlessBbs(props) {
                            (v)=>!!v || 'Required',
                            (v)=>v.length > 20 || 'At least 20',
                        ]} />
-                       <Avatar
-                           avatar={avatar}
-                           setAvatar={setAvatar}
-                           email={'stonehank310@gmail.com'}
-                           name={'stonehank'}
-                       />
+               <Avatar
+                   avatar={avatar}
+                   setAvatar={setAvatar}
+                   email={'stonehank310@gmail.com'}
+                   name={'stonehank'}
+               />
+               <Nickname
+                   ref={nicknameRef}
+                   nickname={nickname}
+                   setNickname={setNickname}
+               />
+               <Emoji
+                   insertEmoji={(emoji)=>{console.log(emoji)}}
+               />
         </section>
     );
 }

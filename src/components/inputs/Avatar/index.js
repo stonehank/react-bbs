@@ -11,7 +11,7 @@ const StyledPopupButton=styled(PopupButton)`
 `
 
 function Avatar(props) {
-    const {avatar,setAvatar,email,name,size}=props
+    const {avatar,setAvatar,email,nickname,size}=props
     const [popupShow, setPopupShow]=useState(false)
     const [avatarsList, setAvatarsList]=useState([])
     // todo constant
@@ -35,8 +35,8 @@ function Avatar(props) {
     }
 
     function createNameSrc(){
-        return name
-            ? `https://ui-avatars.com/api/?background=199ed9&color=fff&name=${name}&size=${size}`
+        return nickname
+            ? `https://ui-avatars.com/api/?background=199ed9&color=fff&name=${nickname}&size=${size}`
             : `https://ui-avatars.com/api/?background=199ed9&color=fff&name=&size=${size}`
     }
 
@@ -45,7 +45,7 @@ function Avatar(props) {
         if(email){
             setAvatarsList([createEmailSrc(),...avatarsList.slice(1)])
         }
-        if(name){
+        if(nickname){
             setAvatarsList([avatarsList[0],createNameSrc(),...avatarsList.slice(2)])
         }
     }
@@ -95,14 +95,14 @@ function Avatar(props) {
 Avatar.propTypes={
     avatar:PropTypes.string,
     email:PropTypes.string,
-    name:PropTypes.string,
+    nickname:PropTypes.string,
     size:PropTypes.number,
     setAvatar:PropTypes.func
 }
 Avatar.defaultProps={
     size:48,
     email:'',
-    name:'',
+    nickname:'',
     avatar:null,
 }
 

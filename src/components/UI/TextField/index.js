@@ -4,23 +4,18 @@ import clx from 'classnames'
 
 
 const TextField = React.forwardRef((props,forwardRef)=>{
+    const {value, setValue, label, rows, placeholder, rules, outlined, autoHeight} = props
     const labelRef = React.createRef(null)
     const inputRef = React.createRef(null)
     const legendRef = React.createRef(null)
     const fieldRef = React.createRef(null)
-    const [value, setValue] = useState(props.value)
     const [dirty, setDirty] = useState(false)
     const [labelTextW, setLabelTextW] = useState(0)
     const [errorState, errorDispatch] = useReducer(errorReducer, {error: false, errorMsg: null});
 
-    useImperativeHandle(forwardRef, () => ({
-        getElement,
-        reset
-    }));
-
     useEffect(()=>{
         let labelEle=labelRef.current
-        if(props.label===''){
+        if(label===''){
             setLabelTextW(0)
         }else{
             setLabelTextW(labelEle.offsetWidth)
@@ -28,7 +23,7 @@ const TextField = React.forwardRef((props,forwardRef)=>{
         if (value) {
             setDirty(true)
         }
-        if (props.autoHeight) {
+        if (autoHeight) {
             calcHeight()
         }
         handleFocus()
@@ -45,7 +40,7 @@ const TextField = React.forwardRef((props,forwardRef)=>{
         let legendEle=legendRef.current
         let labelEle=labelRef.current
         let fieldEle=fieldRef.current
-        if (!value && !props.placeholder) {
+        if (!value && !placeholder) {
             legendEle.style.width = 0
             labelEle.style.top = '16px'
             labelEle.style.fontSize = '16px'
@@ -87,11 +82,11 @@ const TextField = React.forwardRef((props,forwardRef)=>{
     }
     function validate() {
         setDirty(true)
-        if(props.rules.length===0){
+        if(rules.length===0){
             errorDispatch(null)
             return true
         }
-        for(let ruleFunc of props.rules){
+        for(let ruleFunc of rules){
             let res=ruleFunc(value)
             if(res!==true){
                 errorDispatch(res)
@@ -110,14 +105,23 @@ const TextField = React.forwardRef((props,forwardRef)=>{
     function getElement(){
         return inputRef.current
     }
+
+    useImperativeHandle(forwardRef, () => {
+        return {
+            getElement,
+            reset,
+            validate
+        }
+    },[inputRef]);
+
     return (
         <div className={textFieldStyle['bbs-cus-filedset-wrapper']}>
             <div className={textFieldStyle['bbs-cus-fieldset-container']}>
                 <fieldset ref={fieldRef}
                           className={clx({
                               [textFieldStyle['bbs-cus-fieldset-valid-form']]: true,
-                              [textFieldStyle['bbs-cus-material-ui']]: !props.outlined,
-                              [textFieldStyle['bbs-cus-bootstrap-ui']]: props.outlined,
+                              [textFieldStyle['bbs-cus-material-ui']]: !outlined,
+                              [textFieldStyle['bbs-cus-bootstrap-ui']]: outlined,
                               [textFieldStyle['bbs-cus-error']]: errorState.error
                           })}
                 >
@@ -128,20 +132,20 @@ const TextField = React.forwardRef((props,forwardRef)=>{
                               [textFieldStyle['bbs-cus-text-error']]: errorState.error
                           })}
                     >
-                {props.label}
+                {label}
             </span>
                 </fieldset>
                 {
-                    props.rows
+                    rows
                         ?
                         <textarea
                             ref={inputRef}
                             className={clx({
                                 [textFieldStyle['bbs-cus-valid-field']]: true,
-                                [textFieldStyle['auto-height-textarea-root']]: props.autoHeight
+                                [textFieldStyle['auto-height-textarea-root']]: autoHeight
                             })}
-                            rows={props.rows}
-                            placeholder={props.placeholder}
+                            rows={rows}
+                            placeholder={placeholder}
                             value={value}
                             onFocus={handleFocus}
                             onBlur={handleBlur}
@@ -153,7 +157,7 @@ const TextField = React.forwardRef((props,forwardRef)=>{
                             className={clx({
                                 [textFieldStyle['bbs-cus-valid-field']]: true,
                             })}
-                            placeholder={props.placeholder}
+                            placeholder={placeholder}
                             value={value}
                             onFocus={handleFocus}
                             onBlur={handleBlur}

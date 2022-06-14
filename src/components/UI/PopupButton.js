@@ -18,6 +18,8 @@ const StyledPopup=styled(animated.div)`
 
 function PopupButton(props) {
     const {show,setShow,beforeOpen,popupContent,children,...otherProps}=props
+
+    const [newShow, setNewShow]=useState(!!show)
     const popupBoxRef=React.createRef(null)
     const buttonRef=React.createRef(null)
     const [boxTop,setBoxTop]=useState(0)
@@ -26,6 +28,12 @@ function PopupButton(props) {
     const [styles, api] = useSpring(() => ({
         from: { scale: 0, opacity: 0, dspl: 0 },
     }))
+    // compatible control inside and outside
+    let finalShow=show, finalSetShow=setShow
+    if(typeof setShow !== 'function'){
+        finalSetShow=setNewShow
+        finalShow = newShow
+    }
 
     useEffect(()=>{
         window.addEventListener('click',hide)
@@ -37,26 +45,26 @@ function PopupButton(props) {
     },[])
     useEffect(()=>{
         api.start({
-            scale: show? 1 : 0,
-            opacity: show ? 1 : 0,
-            dspl: show ? 1 : 0
+            scale: finalShow? 1 : 0,
+            opacity: finalShow ? 1 : 0,
+            dspl: finalShow ? 1 : 0
         })
 
-    },[show])
+    },[finalShow])
 
     function stopPropagation(ev){
         ev.stopPropagation();
     }
     function hide(){
-        setShow(false)
+        finalSetShow(false)
     }
     function togglePopup(ev){
         ev.stopPropagation();
-        if(!show){
+        if(!finalShow){
             if(beforeOpen)beforeOpen()
             calcPopupPos()
         }
-        setShow(!show)
+        finalSetShow(!finalShow)
     }
 
     function calcPopupPos(){

@@ -4,9 +4,19 @@ import '../assets/css/highlight.scss'
 import '../assets/css/github-markdown.scss'
 import panelStyle from '../assets/css/components/serverless-bbs-panel.module.scss'
 import Avatar from "./inputs/Avatar";
+import useUserInfo from "../hooks/useUserInfo";
+import Nickname from "./inputs/Nickname";
+import Email from "./inputs/Email";
 
 function ServerlessBBSPanel(props) {
-    const [avatar,setAvatar]=useState(null)
+    const {
+        avatar,
+        email,
+        nickname,
+        setAvatar,
+        setEmail,
+        setNickname
+    } = useUserInfo()
 
     return (
         <section className="serverless-bbs">
@@ -15,12 +25,18 @@ function ServerlessBBSPanel(props) {
                     <Avatar
                         avatar={avatar}
                         setAvatar={setAvatar}
-                        email={'stonehank310@gmail.com'}
-                        name={'stonehank'}
+                        email={email}
+                        nickname={nickname}
                     />
-                    <NickName />
+                    <Nickname
+                        nickname={nickname}
+                        setNickname={setNickname}
+                    />
                 </div>
-                <Email />
+                <Email
+                    email={email}
+                    setEmail={setEmail}
+                />
             </div>
             <MessageInput />
             <ActionsController />
