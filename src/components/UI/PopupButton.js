@@ -1,11 +1,11 @@
-import React,{useState,useEffect} from 'react';
+import React,{useRef, useState,useEffect} from 'react';
 import ReactDOM from 'react-dom'
 import Button from "./Button";
 import styled from 'styled-components'
 import {useSpring, animated} from 'react-spring'
 import PropTypes from 'prop-types'
 
-const StyledPopup=styled(animated.div)`
+const StyledAnimatedPopup=styled(animated.div)`
         position:fixed;
         /*border:1px solid var(--bbs-separator-color);*/
         background: var(--bbs-separator-background);
@@ -20,8 +20,8 @@ function PopupButton(props) {
     const {show,setShow,beforeOpen,popupContent,children,...otherProps}=props
 
     const [newShow, setNewShow]=useState(!!show)
-    const popupBoxRef=React.createRef(null)
-    const buttonRef=React.createRef(null)
+    const popupBoxRef=useRef(null)
+    const buttonRef=useRef(null)
     const [boxTop,setBoxTop]=useState(0)
     const [boxLeft,setBoxLeft]=useState(0)
     const [origin,setOrigin]=useState('top left')
@@ -108,7 +108,7 @@ function PopupButton(props) {
             {children}
             {ReactDOM.createPortal(
                 <div className={"serverless-bbs"}>
-                    <StyledPopup
+                    <StyledAnimatedPopup
                         onClick={stopPropagation}
                         style={{
                             top:boxTop,
@@ -122,7 +122,7 @@ function PopupButton(props) {
                         ref={popupBoxRef}
                     >
                         {popupContent()}
-                    </StyledPopup>
+                    </StyledAnimatedPopup>
                 </div>,
                 document.body
             )}

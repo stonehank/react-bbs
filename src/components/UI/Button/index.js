@@ -4,22 +4,23 @@ import buttonStyle from './button.module.scss'
 import Loading from "../Loading";
 
 const Button = React.forwardRef((props,ref)=>{
+    const {onClick, color,text,dense,disabled,loading,children,className,...otherProps} = props
     return (
         <button
             ref={ref}
-            onClick={props.onClick}
-            className={cls({
+            onClick={onClick}
+            className={cls(className,{
                 [buttonStyle['bbs-btn']]:true,
-                [buttonStyle[props.color+'-color']]:!!props.color,
-                [buttonStyle['bbs-btn-text']]:props.text,
-                [buttonStyle['no-gap']]:props.dense,
-                [buttonStyle['bbs-disabled']]:props.disabled,
-                [buttonStyle['bbs-btn-loading']]:props.loading
+                [buttonStyle[color+'-color']]:!!color,
+                [buttonStyle['bbs-btn-text']]:text,
+                [buttonStyle['no-gap']]:dense,
+                [buttonStyle['bbs-disabled']]:disabled,
+                [buttonStyle['bbs-btn-loading']]:loading,
             })}
-            style={props.style}
+            {...otherProps}
         >
             {
-                props.loading ? <Loading size={22} /> : props.children
+                loading ? <Loading size={22} /> : children
             }
         </button>
     );

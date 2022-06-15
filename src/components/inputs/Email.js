@@ -1,23 +1,27 @@
-import React, {useEffect,useImperativeHandle} from 'react';
+import React, {useRef, useImperativeHandle} from 'react';
 import PropTypes from "prop-types";
 import {emailVerify} from "../../utils/Verify";
 import TextField from "../UI/TextField";
 
 const Email=React.forwardRef((props,forwardRef)=>{
-    const emailRef=React.createRef(null)
+    const {email,setEmail, ...otherProps}=props
+    const emailRef=useRef(null)
 
     useImperativeHandle(forwardRef,()=>({
         validate:emailRef.current.validate,
-        reset:emailRef.current.reset
+        reset:emailRef.current.reset,
+        getElement:emailRef.current.getElement
     }),[emailRef])
 
     return (
         <TextField
             ref={emailRef}
             outlined={false}
-            label={"昵称"}
+            label={"邮箱"}
             rules={[v=>(!v || emailVerify(v)) || '提供一个有效的email']}
-            value={props.email}
+            value={email}
+            setValue={setEmail}
+            {...otherProps}
         />
     )
 })

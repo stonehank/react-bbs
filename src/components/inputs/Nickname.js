@@ -1,13 +1,15 @@
-import React, {useImperativeHandle} from 'react';
+import React, {useRef, useImperativeHandle} from 'react';
 import TextField from "../UI/TextField";
 import PropTypes from "prop-types";
 
 const Nickname=React.forwardRef((props,forwardRef)=>{
-    const nicknameRef=React.createRef(null)
+    const {nickname,setNickname,...otherProps} = props
+    const nicknameRef=useRef(null)
 
     useImperativeHandle(forwardRef,()=>({
         validate:nicknameRef.current.validate,
-        reset:nicknameRef.current.reset
+        reset:nicknameRef.current.reset,
+        getElement:nicknameRef.current.getElement
     }),[nicknameRef])
 
     return (
@@ -16,7 +18,9 @@ const Nickname=React.forwardRef((props,forwardRef)=>{
             outlined={false}
             label={"昵称"}
             rules={[v=>!!v || '昵称必须填写']}
-            value={props.nickname}
+            value={nickname}
+            setValue={setNickname}
+            {...otherProps}
         />
     )
 })

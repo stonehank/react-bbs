@@ -37,20 +37,21 @@ const EmojiItem=styled.span`
 
 function Emoji(props) {
 
-    function insertEmoji(emoji){
+    function onSelect(emoji){
         return function(){
-            props.insertEmoji(emoji)
+            props.onSelect(emoji)
         }
     }
     return (
         <StyledPopupButton
             color="error"
             text
+            dense
             popupContent={()=>(
                 <EmojiBox>
                     {
                         Object.entries(emojiList).map(([name,emoji])=>(
-                            <EmojiItem title={name} key={name} onClick={insertEmoji(emoji)}>
+                            <EmojiItem title={name} key={name} onClick={onSelect(emoji)}>
                                 {emoji}
                             </EmojiItem>
                         ))
@@ -64,7 +65,7 @@ function Emoji(props) {
 }
 
 Emoji.propTypes={
-    insertEmoji:PropTypes.func
+    onSelect:PropTypes.func
 }
 
 export default Emoji;

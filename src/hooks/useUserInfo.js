@@ -10,7 +10,7 @@ export default function useUserInfo(){
         nickname: cacheData.nickname,
         email: cacheData.email,
     }
-    const {userInfo,userInfoDispatch} = useReducer(userInfoReducer,userInfoInitial)
+    const [userInfo,userInfoDispatch] = useReducer(userInfoReducer,userInfoInitial)
 
     function userInfoReducer(state,action){
         switch(action.type){
@@ -35,7 +35,7 @@ export default function useUserInfo(){
     }
 
     useEffect(()=>{
-        setCacheData('avatar',userInfo)
+        setCache(CACHE_KEY, userInfo)
     },[userInfo])
 
     function setAvatar(avatar){
@@ -58,11 +58,6 @@ export default function useUserInfo(){
             }
         }
         return cacheData
-    }
-    function setCacheData(prop, val) {
-        let cacheData = getCacheData(CACHE_KEY)
-        cacheData[prop] = val
-        setCache(CACHE_KEY, cacheData)
     }
 
     return {

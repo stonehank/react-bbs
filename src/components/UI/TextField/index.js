@@ -1,14 +1,15 @@
-import React, {useState, useReducer, useEffect, useImperativeHandle} from 'react';
+import React, {useRef,useState, useReducer, useEffect, useImperativeHandle} from 'react';
 import textFieldStyle from './textfield.module.scss'
 import clx from 'classnames'
+import {calcValueAndPos} from "../../../utils/DOM";
 
 
 const TextField = React.forwardRef((props,forwardRef)=>{
-    const {value, setValue, label, rows, placeholder, rules, outlined, autoHeight} = props
-    const labelRef = React.createRef(null)
-    const inputRef = React.createRef(null)
-    const legendRef = React.createRef(null)
-    const fieldRef = React.createRef(null)
+    const {value, setValue, label, rows, placeholder, rules, outlined, autoHeight, ...otherProps} = props
+    const labelRef = useRef(null)
+    const inputRef = useRef(null)
+    const legendRef = useRef(null)
+    const fieldRef = useRef(null)
     const [dirty, setDirty] = useState(false)
     const [labelTextW, setLabelTextW] = useState(0)
     const [errorState, errorDispatch] = useReducer(errorReducer, {error: false, errorMsg: null});
@@ -30,6 +31,15 @@ const TextField = React.forwardRef((props,forwardRef)=>{
         setDirty(false)
         handleBlur()
     },[])
+
+    useImperativeHandle(forwardRef, () => {
+        return {
+            getElement,
+            reset,
+            validate,
+            insertToValue
+        }
+    },[inputRef]);
 
     function handleValueChange(ev) {
         setValue(ev.target.value)
@@ -102,20 +112,26 @@ const TextField = React.forwardRef((props,forwardRef)=>{
         setDirty(false)
         calcHeight()
     }
+    function insertToValue(str){
+        let ele = inputRef.current
+        let [newV, scrollTop, startPos] = calcValueAndPos(ele, str)
+        setValue(newV)
+        // todo maybe sync below
+        setTimeout(()=>{
+            ele.selectionStart = startPos + str.length;
+            ele.selectionEnd = startPos + str.length;
+            ele.scrollTop = scrollTop;
+            ele.focus();
+        })
+    }
+
     function getElement(){
         return inputRef.current
     }
 
-    useImperativeHandle(forwardRef, () => {
-        return {
-            getElement,
-            reset,
-            validate
-        }
-    },[inputRef]);
-
+    console.log('render')
     return (
-        <div className={textFieldStyle['bbs-cus-filedset-wrapper']}>
+        <div className={textFieldStyle['bbs-cus-filedset-wrapper']} {...otherProps}>
             <div className={textFieldStyle['bbs-cus-fieldset-container']}>
                 <fieldset ref={fieldRef}
                           className={clx({

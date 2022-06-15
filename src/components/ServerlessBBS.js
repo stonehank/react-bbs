@@ -8,6 +8,7 @@ import TextField from "./UI/TextField";
 import Avatar from "./inputs/Avatar";
 import Nickname from "./inputs/Nickname";
 import Emoji from "./inputs/Emoji";
+import ActionsBar from "./actions/ActionsBar";
 
 function ServerlessBbs(props) {
     const [popupShow,setPopupShow]=useState(false)
@@ -53,6 +54,11 @@ function ServerlessBbs(props) {
                    setNickname={setNickname}
                />
                <Emoji
+                   insertEmoji={(emoji)=>{console.log(emoji)}}
+               />
+               <ActionsBar
+                   message={nickname}
+                   replyId={null}
                    insertEmoji={(emoji)=>{console.log(emoji)}}
                />
         </section>
