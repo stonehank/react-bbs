@@ -1,4 +1,5 @@
 import {highLightEle} from "./index";
+import bodyStyle from '../../components/comments/MessageCard/message-body.module.scss'
 
 export default function bindATagSmoothScroll(ev){
   let target=ev.target
@@ -11,5 +12,5 @@ export default function bindATagSmoothScroll(ev){
   ele.scrollIntoView({
     behavior: 'smooth'
   });
-  highLightEle(ele.getElementsByClassName('bbs-msg-body')[0])
+  highLightEle(ele.getElementsByClassName(bodyStyle['bbs-msg-body'])[0])
 }

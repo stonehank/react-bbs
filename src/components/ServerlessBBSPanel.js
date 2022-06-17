@@ -1,5 +1,4 @@
 import React, {useRef,useState} from 'react';
-import cloneDeep from "clone-deep";
 import PropTypes from "prop-types";
 import '../assets/css/common.scss'
 import '../assets/css/highlight.scss'
@@ -16,11 +15,15 @@ import ActionsBar from "./actions/ActionsBar";
 import Button from "./UI/Button";
 import {convertToPureMessage} from "../utils/handlerAtTag";
 import useConvertLayer from "../server-layer/leancloud/ConvertLayer";
+import CommentContext from "./context/comments/CommentContext";
+import CommentProvider from "./context/comments/CommentProvider";
+import CommentsList from "./comments/CommentsList";
+import Loading from "./UI/Loading";
 
 function ServerlessBBSPanel(props) {
     const {
+        initialLoading,
         uploadComment,
-
     } = useConvertLayer()
     const {
         avatar,
@@ -41,7 +44,7 @@ function ServerlessBBSPanel(props) {
         rootId,
         replyId,
     } = useHandleReply()
-    const {uniqStr,nest,pageSize,offset} = props
+    const {uniqStr,nest,pageSize,offset,editable } = props
     const [submitLoading,setSubmitLoading]=useState(false)
     const nicknameRef=useRef(null)
     const emailRef=useRef(null)
@@ -70,8 +73,6 @@ function ServerlessBBSPanel(props) {
         }
         if (!validate()) return
         setSubmitLoading(true)
-        console.log(params)
-        return
         uploadComment(params)
         .then((data) => {
             if (!data) {
@@ -81,7 +82,7 @@ function ServerlessBBSPanel(props) {
             if (!data.replyId) {
                 /* 更新List */
                 // updateList()
-                // setCommontList([data,...commentList])
+                // setCommentList([data,...commentList])
                 // setCommentTotal(commentTotal + 1)
             } else {
                 /* 更新reply */
@@ -100,58 +101,65 @@ function ServerlessBBSPanel(props) {
 
     function insertEmoji(emoji) {
         messageEleRef.current.insertToValue(emoji)
-        // let ele = messageEleRef.current.getElement()
-        // console.log(messageEleRef.current.getElement())
-        // let [newV, scrollTop, startPos] = calcValueAndPos(ele, emoji)
-        // setMessage(newV)
-        // // todo maybe sync below
-        // ele.selectionStart = startPos + emoji.length;
-        // ele.selectionEnd = startPos + emoji.length;
-        // ele.scrollTop = scrollTop;
-        // ele.focus();
     }
 
     return (
-        <section className="serverless-bbs">
-            <div className={panelStyle["bbs-input-box"]} >
-                <div className={panelStyle["bbs-name-avatar"] +' ' +panelStyle["bbs-input"]} ref={bbsInputBoxRef}>
-                    <Avatar
-                        avatar={avatar}
-                        setAvatar={setAvatar}
-                        email={email}
-                        nickname={nickname}
-                    />
-                    <Nickname
-                        style={{flex:1}}
-                        ref={nicknameRef}
-                        nickname={nickname}
-                        setNickname={setNickname}
-                    />
+        initialLoading
+            ?
+            <section className={"serverless-bbs"}>
+                <div className={"text-center"}>
+                    <Loading size={64} />
                 </div>
-                <div className={panelStyle["bbs-input"]}>
-                    <Email
-                        ref={emailRef}
-                        email={email}
-                        setEmail={setEmail}
-                    />
+            </section>
+            :
+            <section className="serverless-bbs">
+                <div className={panelStyle["bbs-input-box"]} >
+                    <div className={panelStyle["bbs-name-avatar"] +' ' +panelStyle["bbs-input"]} ref={bbsInputBoxRef}>
+                        <Avatar
+                            avatar={avatar}
+                            setAvatar={setAvatar}
+                            email={email}
+                            nickname={nickname}
+                        />
+                        <Nickname
+                            style={{flex:1}}
+                            ref={nicknameRef}
+                            nickname={nickname}
+                            setNickname={setNickname}
+                        />
+                    </div>
+                    <div className={panelStyle["bbs-input"]}>
+                        <Email
+                            ref={emailRef}
+                            email={email}
+                            setEmail={setEmail}
+                        />
+                    </div>
                 </div>
-            </div>
-            <MessageInput
-                ref={messageEleRef}
-                message={message}
-                setMessage={setMessage}
-            />
-            <ActionsBar
-                message={message}
-                replyId={replyId}
-                at={at}
-                insertEmoji={insertEmoji}
-            />
-            <div className="text-right mt-2">
-                <Button onClick={submit}>提交</Button>
-            </div>
-            {/*<CommentList />*/}
-        </section>
+                <MessageInput
+                    ref={messageEleRef}
+                    message={message}
+                    setMessage={setMessage}
+                />
+                <ActionsBar
+                    message={message}
+                    replyId={replyId}
+                    at={at}
+                    insertEmoji={insertEmoji}
+                />
+                <div className="text-right mt-2">
+                    <Button onClick={submit}>提交</Button>
+                </div>
+                <CommentProvider
+                    uniqStr={uniqStr}
+                    maxNest={nest}
+                    editable={editable}
+                    pageSize={pageSize}
+                    startReply={startReply}
+                >
+                    <CommentsList />
+                </CommentProvider>
+            </section>
     );
 }
 
@@ -172,6 +180,7 @@ ServerlessBBSPanel.propTypes={
 }
 
 ServerlessBBSPanel.defaultProps={
+    editable:true,
     pageSize:5,
     nest:1,
     offset:0,

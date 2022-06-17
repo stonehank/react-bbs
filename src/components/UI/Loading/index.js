@@ -14,8 +14,7 @@ function Loading(props) {
             <div></div>
             <div></div>
         </div>
-)
-    ;
+    )
 }
 Loading.defaultProps={
     size: 64

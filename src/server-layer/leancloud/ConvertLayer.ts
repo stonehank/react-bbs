@@ -1,10 +1,11 @@
-import {useEffect, useState} from 'react'
-import cloneDeep from 'clone-deep'
+import {useEffect, useState,useRef} from 'react'
+// import cloneDeep from 'clone-deep'
 import ConvertLayerIInterface from "../../interface/ConvertLayerIInterface";
 import configMethods from '../../config'
 import useAPICore from "./APICore";
 const {readConfig, setLoggedUser} = configMethods
 const {pageviewMap, countMap} = readConfig()
+const cloneDeep=require('clone-deep')
 
 /**
  * STEP1: 一次性获取1000个数据
@@ -15,10 +16,12 @@ const {pageviewMap, countMap} = readConfig()
 export default function useConvertLayer() : ConvertLayerIInterface{
     const [initialLoading, setInitialLoading] = useState(true)
     const [noMoreRemoteData, setNoMoreRemoteData] = useState(false)
-    const [allCommentData, setAllCommentData] = useState([])
-    const [objectIdToData, setObjectIdToData] = useState({})
     const [waitNextInserted, setWaitNextInserted] = useState([])
     const [checkOnNextInsert, setCheckOnNextInsert] = useState(false)
+    let allCommentData=useRef([])
+    let objectIdToData=useRef({})
+
+
     const {serverInit,signIn_server,fetchCounts_server,fetchPageViews_server,updateComment_server,uploadComment_server,fetchComments_server} = useAPICore()
     useEffect(()=>{
         serverInit().then(()=>setInitialLoading(false))
@@ -66,7 +69,7 @@ export default function useConvertLayer() : ConvertLayerIInterface{
                     let count=countMap.get(data.uniqStr)
                     countMap.set(data.uniqStr,count+1)
                 }
-                __insertInToList__(allCommentData,data)
+                __insertInToList__(allCommentData.current,data)
                 return data
             })
             .catch(_=>{
@@ -112,18 +115,20 @@ export default function useConvertLayer() : ConvertLayerIInterface{
         if (!replyId && !noMoreRemoteData) {
             data = __getMoreData__(uniqStr)
         } else {
-            data = Promise.resolve(allCommentData)
+            data = Promise.resolve(allCommentData.current)
         }
+        console.log('filter data',data)
         return data.then((nestedData) => {
             let filterData = nestedData
+            console.log(filterData,objectIdToData.current,replyId)
             if (replyId) {
-                filterData = objectIdToData[replyId].replys
+                filterData = objectIdToData.current[replyId].replys
                 if (deepReply) {
                     filterData = __deepSearchReply__(filterData)
                 }
             }else{
                 if (deepReply) {
-                    filterData = Object.values(objectIdToData)
+                    filterData = Object.values(objectIdToData.current)
                 }
             }
             // 这里获取从0到当前page的所有评论
@@ -140,7 +145,7 @@ export default function useConvertLayer() : ConvertLayerIInterface{
                 setTimeout(() => {
                     res({
                         data:result,
-                        total:Math.max(allCommentData.length,result.length,filterData.length)
+                        total:Math.max(allCommentData.current.length,result.length,filterData.length)
                     })
                 }, 200)
             })
@@ -148,14 +153,14 @@ export default function useConvertLayer() : ConvertLayerIInterface{
     }
 
     function __updateCommentAfterEdit__(objectId,editData){
-        let comment=objectIdToData[objectId]
+        let comment=objectIdToData.current[objectId]
         comment.message=editData.message
         comment.updatedAt=editData.updatedAt
     }
     function __insertInToList__(list,data){
         // 插入到对应的嵌套层，同时也要更新replyCounts数字
         if(data.replyId){
-            let replyData=objectIdToData[data.replyId]
+            let replyData=objectIdToData.current[data.replyId]
             if(replyData.replys==null){
                 replyData.replys=[]
                 replyData.replyCounts=0
@@ -165,12 +170,13 @@ export default function useConvertLayer() : ConvertLayerIInterface{
         }else{
             list.unshift(data)
         }
-        objectIdToData[data.objectId]=data
+        objectIdToData.current[data.objectId]=data
     }
     function __getMoreData__(uniqStr) {
         console.log('mock network')
         return fetchComments_server(uniqStr)
             .then(flatList=>{
+                console.log('flatList',flatList)
                 setNoMoreRemoteData(flatList.length < 1000)
                 return flatList
             })
@@ -201,32 +207,36 @@ export default function useConvertLayer() : ConvertLayerIInterface{
         return allCounts
     }
     function __mergeToNest__(newFetchList) {
+        console.log('mergetonest',newFetchList)
         if (checkOnNextInsert) {
             newFetchList = newFetchList.concat(waitNextInserted)
             setWaitNextInserted([])
             setCheckOnNextInsert(false)
         }
         let replyCandid = []
+        let newAllCommentData=allCommentData.current.slice()
         for (let item of newFetchList) {
             if (item.replyId) {
                 replyCandid.push(item)
                 continue
             }
-            setAllCommentData([...allCommentData,item])
+            newAllCommentData.push(item)
         }
         replyCandid.sort((a, b) => a.createdAt < b.createdAt ? -1 : 1)
         // DFS遍历arr
         for (let replyItem of replyCandid) {
-            let res = __insertReplyItem__(allCommentData, replyItem)
+            let res = __insertReplyItem__(newAllCommentData, replyItem)
             if (res.inserted) {
-                setAllCommentData(res.list)
+                newAllCommentData=res.list
             } else {
                 setWaitNextInserted([...waitNextInserted,replyItem])
             }
         }
-        return allCommentData
+        allCommentData.current=newAllCommentData
+        return newAllCommentData
     }
     function __generateReplyCounts__(list) {
+        console.log('__generateReplyCounts__',list)
         for (let item of list) {
             if (item.replys && item.replys.length > 0) {
                 item.replyCounts = item.replys.length
@@ -239,10 +249,14 @@ export default function useConvertLayer() : ConvertLayerIInterface{
     }
     function __generateIndexSearch__(list) {
         for (let item of list) {
-            setObjectIdToData({
-                ...objectIdToData,
+            objectIdToData.current={
+                ...objectIdToData.current,
                 [item.objectId]:item
-            })
+            }
+            // setObjectIdToData({
+            //     ...objectIdToData.current,
+            //     [item.objectId]:item
+            // })
         }
         return list
     }

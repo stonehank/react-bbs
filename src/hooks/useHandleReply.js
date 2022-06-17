@@ -32,7 +32,7 @@ export default function useHandleReply(offset=0){
     }
     useEffect(()=>{
         if (replyInfo.at && replyInfo.replyId) {
-            if (!replyInfo.message.startsWith(`@${replyInfo.at} `)) {
+            if (!message.startsWith(`@${replyInfo.at} `)) {
                 cancelReply()
             }
         }
@@ -40,14 +40,15 @@ export default function useHandleReply(offset=0){
 
     function startReply({rootId, replyId, replyName}) {
         replyInfoDispatch({type:'reply',data:{rootId,replyId,replyName}})
-        setMessage(convertToAtMessage(message,replyName))
+        let newMessage=convertToAtMessage(message,replyName)
+        setMessage(newMessage)
         scrollToEle(bbsInputBoxRef.current, {
             highlight: false,
             smooth: true,
             offset: offset
         }).then(() => {
-            messageEleRef.current.getElement().selectionStart = message.length
-            messageEleRef.current.getElement().selectionEnd = message.length
+            messageEleRef.current.getElement().selectionStart = newMessage.length
+            messageEleRef.current.getElement().selectionEnd = newMessage.length
             messageEleRef.current.getElement().focus()
         })
     }

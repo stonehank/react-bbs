@@ -1,0 +1,50 @@
+.bbs-msg-header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+
+  .bbs-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 6px;
+    margin-right: 6px;
+  }
+
+  .bbs-msg-head-info {
+    line-height: 1.25;
+
+    .bbs-nickname {
+      font-size: 14px;
+      color: var(--bbs-text-primary);
+      letter-spacing: 0.75px;
+      margin-bottom: 4px;
+      display: block;
+
+      a {
+        font-weight: bold;
+        color: inherit;
+      }
+    }
+
+    .bbs-msg-date {
+      font-size: 12px;
+      color: var(--bbs-text-secondary);
+      font-weight: normal;
+    }
+  }
+
+  &.header-sm {
+    .bbs-avatar {
+      width: 30px;
+      height: 30px;
+    }
+
+    .bbs-msg-head-info {
+      .bbs-nickname {
+        font-size: 13px;
+        letter-spacing: 0.25px;
+        margin-bottom: 0;
+      }
+    }
+  }
+}

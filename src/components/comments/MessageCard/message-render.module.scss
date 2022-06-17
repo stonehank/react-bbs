@@ -1,0 +1,30 @@
+.expand {
+  cursor: pointer;
+  max-height: 220px;
+  overflow: hidden;
+  &:before {
+    display: block;
+    content: "";
+    position: absolute;
+    width: 100%;
+    left: 0;
+    top: 0;
+    bottom: 3.15rem;
+    pointer-events: none;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0), var(--bbs-background-color));
+  }
+  &:after {
+    display: block;
+    content: "--- Expand ---";
+    text-align: center;
+    color: var(--bbs-text-secondary);
+    position: absolute;
+    width: 100%;
+    height: 52px;
+    line-height: 52px;
+    left: 0;
+    bottom: 0;
+    pointer-events: none;
+    background: var(--bbs-background-color);
+  }
+}

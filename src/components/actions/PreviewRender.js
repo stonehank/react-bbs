@@ -1,4 +1,4 @@
-import React,{useEffect,useState} from 'react';
+import React,{useMemo} from 'react';
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import { xssMarkdown} from "../../utils/String";
@@ -14,11 +14,10 @@ const StyledPreviewRender=styled.div`
 
 function PreviewRender(props) {
     const {message,at,replyId,preview} = props
-    const [previewMessage, setPreviewMessage] = useState('')
 
-    useEffect(()=>{
-        setPreviewMessage(preview ? addAtHTMLTag(xssMarkdown(convertToPureMessage(message,at)),replyId,at) : '')
-    },[message,at,replyId])
+    const previewMessage = useMemo(()=>(
+        preview ? addAtHTMLTag(xssMarkdown(convertToPureMessage(message,at)),replyId,at) : ''
+    ),[message,at,replyId])
 
     return (
         <StyledPreviewRender
