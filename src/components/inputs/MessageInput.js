@@ -10,7 +10,7 @@ const MessageInput=React.forwardRef((props,forwardRef)=>{
         reset:messageRef.current.reset,
         getElement:messageRef.current.getElement,
         insertToValue:messageRef.current.insertToValue
-    }),[messageRef])
+    }))
 
     return (
         <TextField

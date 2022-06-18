@@ -15,7 +15,6 @@ import ActionsBar from "./actions/ActionsBar";
 import Button from "./UI/Button";
 import {convertToPureMessage} from "../utils/handlerAtTag";
 import useConvertLayer from "../server-layer/leancloud/ConvertLayer";
-import CommentContext from "./context/comments/CommentContext";
 import CommentProvider from "./context/comments/CommentProvider";
 import CommentsList from "./comments/CommentsList";
 import Loading from "./UI/Loading";
@@ -24,6 +23,9 @@ function ServerlessBBSPanel(props) {
     const {
         initialLoading,
         uploadComment,
+        updateComment,
+        fetchComments,
+        fetchCurrentUser
     } = useConvertLayer()
     const {
         avatar,
@@ -46,6 +48,7 @@ function ServerlessBBSPanel(props) {
     } = useHandleReply()
     const {uniqStr,nest,pageSize,offset,editable } = props
     const [submitLoading,setSubmitLoading]=useState(false)
+    const commentListRef=useRef(null)
     const nicknameRef=useRef(null)
     const emailRef=useRef(null)
     function reset() {
@@ -73,8 +76,10 @@ function ServerlessBBSPanel(props) {
         }
         if (!validate()) return
         setSubmitLoading(true)
+        console.log('start reply')
         uploadComment(params)
         .then((data) => {
+            console.log(data,'after reply!!')
             if (!data) {
                 return
             }
@@ -82,16 +87,12 @@ function ServerlessBBSPanel(props) {
             if (!data.replyId) {
                 /* 更新List */
                 // updateList()
-                // setCommentList([data,...commentList])
-                // setCommentTotal(commentTotal + 1)
+                commentListRef.current.updateList(data)
             } else {
                 /* 更新reply */
                 // updateReply()
-                // setNeedUpdateData({
-                //     replyId: data.replyId,
-                //     rootId: data.rootId
-                // })
-                // loadCommentData()
+                console.log('update reply in BBS!!')
+                commentListRef.current.updateReply({replyId:data.replyId,rootId:data.rootId})
             }
         })
         .finally(() => {
@@ -156,8 +157,11 @@ function ServerlessBBSPanel(props) {
                     editable={editable}
                     pageSize={pageSize}
                     startReply={startReply}
+                    updateComment={updateComment}
+                    fetchComments={fetchComments}
+                    fetchCurrentUser={fetchCurrentUser}
                 >
-                    <CommentsList />
+                    <CommentsList ref={commentListRef} />
                 </CommentProvider>
             </section>
     );

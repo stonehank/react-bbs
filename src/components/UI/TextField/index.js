@@ -39,7 +39,7 @@ const TextField = React.forwardRef((props,forwardRef)=>{
             validate,
             insertToValue
         }
-    },[inputRef]);
+    });
 
     function handleValueChange(ev) {
         setValue(ev.target.value)
@@ -91,6 +91,7 @@ const TextField = React.forwardRef((props,forwardRef)=>{
         }
     }
     function validate() {
+        console.log(value,label,rows)
         setDirty(true)
         if(rules.length===0){
             errorDispatch(null)
@@ -129,7 +130,7 @@ const TextField = React.forwardRef((props,forwardRef)=>{
         return inputRef.current
     }
 
-    console.log('render')
+    console.log('render',value)
     return (
         <div className={textFieldStyle['bbs-cus-filedset-wrapper']} {...otherProps}>
             <div className={textFieldStyle['bbs-cus-fieldset-container']}>

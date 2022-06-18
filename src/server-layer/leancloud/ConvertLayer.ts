@@ -64,15 +64,18 @@ export default function useConvertLayer() : ConvertLayerIInterface{
     function uploadComment(uploadField){
         return uploadComment_server(uploadField)
             .then(data=>{
+                console.log('data111',data)
                 if(!data)return null
                 if(!data.replyId){
                     let count=countMap.get(data.uniqStr)
                     countMap.set(data.uniqStr,count+1)
                 }
                 __insertInToList__(allCommentData.current,data)
+                console.log('data222',data)
                 return data
             })
-            .catch(_=>{
+            .catch(err=>{
+                console.error(err)
                 return null
             })
     }
@@ -153,12 +156,13 @@ export default function useConvertLayer() : ConvertLayerIInterface{
     }
 
     function __updateCommentAfterEdit__(objectId,editData){
-        let comment=objectIdToData.current[objectId]
-        comment.message=editData.message
-        comment.updatedAt=editData.updatedAt
+        // let comment=objectIdToData.current[objectId]
+        objectIdToData.current[objectId].message=editData.message
+        objectIdToData.current[objectId].updatedAt=editData.updatedAt
     }
     function __insertInToList__(list,data){
         // 插入到对应的嵌套层，同时也要更新replyCounts数字
+        console.log(list,data,objectIdToData.current)
         if(data.replyId){
             let replyData=objectIdToData.current[data.replyId]
             if(replyData.replys==null){
@@ -249,10 +253,11 @@ export default function useConvertLayer() : ConvertLayerIInterface{
     }
     function __generateIndexSearch__(list) {
         for (let item of list) {
-            objectIdToData.current={
-                ...objectIdToData.current,
-                [item.objectId]:item
-            }
+            // objectIdToData.current={
+            //     ...objectIdToData.current,
+            //     [item.objectId]:item
+            // }
+            objectIdToData.current[item.objectId]=item
             // setObjectIdToData({
             //     ...objectIdToData.current,
             //     [item.objectId]:item

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import CommentContext from "./CommentContext";
 import useConvertLayer from "../../../server-layer/leancloud/ConvertLayer";
 import bindATagSmoothScroll from "../../../utils/DOM/bindATagSmoothScroll";
@@ -8,14 +8,15 @@ const {readConfig} = configMethods
 const { countMap} = readConfig()
 
 function CommentProvider(props) {
-    const {maxNest, uniqStr, pageSize, editable, startReply} = props
-    const {fetchComments, fetchCurrentUser} = useConvertLayer()
+    const {maxNest, uniqStr, pageSize, editable, startReply,updateComment,fetchComments, fetchCurrentUser} = props
     const [loading, setLoading] = useState(true)
     const [userLoading, setUserLoading] = useState(true)
     const [page, setPage] = useState(1)
     const [list, setList] = useState([])
     const [total, setTotal] = useState(null)
     const [noMoreData, setNoMoreData] = useState(true)
+    const needUpdateReply=useRef(null)
+    // const [needUpdateReply, setNeedUpdateReply]=useState(null)
 
 
     useEffect(()=>{
@@ -36,7 +37,7 @@ function CommentProvider(props) {
     },[])
 
     // 更新list
-    function updateList(){
+    function updateList(data){
         let newList = cloneDeep(list)
         newList.unshift(data)
         setList(newList)
@@ -45,7 +46,9 @@ function CommentProvider(props) {
 
     // 更新reply
     function updateReply({replyId,rootId}){
-        loadData()
+        console.log('updateReply',replyId,rootId)
+        needUpdateReply.current={replyId,rootId}
+        // setNeedUpdateReply({replyId,rootId})
     }
 
     function init(){
@@ -117,12 +120,14 @@ function CommentProvider(props) {
             list,
             page,
             noMoreData,
+            needUpdateReply:needUpdateReply.current,
             loadMore,
             loadList,
             updateCommentAsync,
             updateList,
             updateReply,
-            startReply
+            startReply,
+            updateComment
         }}>
             {props.children}
         </CommentContext.Provider>
