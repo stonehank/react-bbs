@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useMemo, useRef} from 'react';
 import clx from 'classnames'
-import messageRenderStyle from './message-render.module.scss'
+import messageRenderStyle from './scss/message-render.module.scss'
 import {xssMarkdown} from "../../../utils/String";
 import {addAtHTMLTag} from "../../../utils/handlerAtTag";
 

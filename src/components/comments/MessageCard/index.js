@@ -2,7 +2,7 @@ import React from 'react';
 import styled from "styled-components";
 import MessageHead from "./MessageHead";
 import MessageBody from "./MessageBody";
-import ReplyProvider from "../../context/comments/ReplyProvider";
+import ReplyProvider from "../../../context/replys/ReplyProvider.ts";
 
 const BBSCommentCard = styled.div`
     margin:16px 0;

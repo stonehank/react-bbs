@@ -1,9 +1,11 @@
 import React, {useState, useEffect, useRef} from 'react';
 import CommentContext from "./CommentContext";
-import useConvertLayer from "../../../server-layer/leancloud/ConvertLayer";
-import bindATagSmoothScroll from "../../../utils/DOM/bindATagSmoothScroll";
+import bindATagSmoothScroll from "../../utils/DOM/bindATagSmoothScroll";
 import cloneDeep from "clone-deep";
-import configMethods from '../../../config'
+import configMethods from '../../config'
+import useSyncState from "../../hooks/useSyncState";
+import useDidUpdate from "../../hooks/useDidUpdate";
+import {CommentObject} from "../../types";
 const {readConfig} = configMethods
 const { countMap} = readConfig()
 
@@ -11,15 +13,14 @@ function CommentProvider(props) {
     const {maxNest, uniqStr, pageSize, editable, startReply,updateComment,fetchComments, fetchCurrentUser} = props
     const [loading, setLoading] = useState(true)
     const [userLoading, setUserLoading] = useState(true)
-    const [page, setPage] = useState(1)
-    const [list, setList] = useState([])
+    const [page, syncPage,setPage] = useSyncState(1)
+    const [list, setList] = useState<CommentObject[]>([])
     const [total, setTotal] = useState(null)
     const [noMoreData, setNoMoreData] = useState(true)
-    const needUpdateReply=useRef(null)
-    // const [needUpdateReply, setNeedUpdateReply]=useState(null)
+    const updateReplyDetails=useRef<{rootId:string,replyId:string} | null>(null)
 
 
-    useEffect(()=>{
+    useDidUpdate(()=>{
         reload()
     },[maxNest, pageSize])
 
@@ -47,7 +48,7 @@ function CommentProvider(props) {
     // 更新reply
     function updateReply({replyId,rootId}){
         console.log('updateReply',replyId,rootId)
-        needUpdateReply.current={replyId,rootId}
+        updateReplyDetails.current={replyId,rootId}
         // setNeedUpdateReply({replyId,rootId})
     }
 
@@ -61,12 +62,11 @@ function CommentProvider(props) {
 
     function loadData(){
         return loadList({
-            page:page,
+            page:syncPage.current,
             deepReply:maxNest <=0,
             deepReplyCounts:maxNest <= 1,
         })
         .then(({data,total})=>{
-            console.log(data,total)
             setList(cloneDeep(data))
             let newTotal=countMap.has(uniqStr)
                 ? countMap.get(uniqStr)
@@ -99,11 +99,11 @@ function CommentProvider(props) {
         return loadData()
     }
 
-    function updateCommentAsync(id,editData){
+    function updateCommentAsync(id,updatedData){
         let data=list.find(obj=>obj.objectId===id)
         if(data){
-            data.message=editData.message
-            data.updatedAt=editData.updatedAt
+            data.message=updatedData.message
+            data.updatedAt=updatedData.updatedAt
         }
     }
 
@@ -120,7 +120,7 @@ function CommentProvider(props) {
             list,
             page,
             noMoreData,
-            needUpdateReply:needUpdateReply.current,
+            updateReplyDetails:updateReplyDetails.current,
             loadMore,
             loadList,
             updateCommentAsync,
@@ -134,4 +134,27 @@ function CommentProvider(props) {
     );
 }
 
-export default CommentProvider;
+
+// CommentProvider.propTypes={
+//     uniqStr: PropTypes.string,
+//     pageSize: PropTypes.oneOfType([
+//         PropTypes.string,
+//         PropTypes.number,
+//     ]),
+//     editable: PropTypes.bool,
+//     maxNest: PropTypes.oneOfType([
+//         PropTypes.string,
+//         PropTypes.number,
+//     ]),
+// }
+
+function propsAreEqual(prevProps, nextProps) {
+    // maxNest, uniqStr, pageSize, editable
+    return prevProps.maxNest === nextProps.maxNest
+        && prevProps.uniqStr === nextProps.uniqStr
+        && prevProps.pageSize === nextProps.pageSize
+        && prevProps.editable === nextProps.editable
+}
+const MemoizedCommentProvider = React.memo(CommentProvider, propsAreEqual);
+
+export default MemoizedCommentProvider;

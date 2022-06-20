@@ -1,8 +1,8 @@
 import AV from './CustomAV'
 import initAVObject from "./initAVObject";
-import APICoreInterface from "../../interface/APICoreInterface";
 import {getFromCache, randUniqueString, setCache} from "../../utils";
 import configMethods from '../../config'
+import {APICoreInterface} from "../../types";
 const {readConfig, readLoggedUser} = configMethods
 
 

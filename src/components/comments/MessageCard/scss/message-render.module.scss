@@ -15,7 +15,7 @@
   }
   &:after {
     display: block;
-    content: "--- Expand ---";
+    content: "--- Expand ---" !important;
     text-align: center;
     color: var(--bbs-text-secondary);
     position: absolute;

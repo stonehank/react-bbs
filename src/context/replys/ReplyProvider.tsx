@@ -1,12 +1,17 @@
-import React, {useContext, useMemo, useRef, useState, useEffect} from 'react';
-import CommentContext from "./CommentContext";
+import React, {useContext, useMemo, useRef, useState} from 'react';
+import CommentContext from "../comments/CommentContext";
 import cloneDeep from "clone-deep";
-import scrollToEle from "../../../utils/DOM/scrollToEle";
-import messageBodyStyle from "../../comments/MessageCard/message-body.module.scss";
-import highLightEle from "../../../utils/DOM/highLightEle";
+import scrollToEle from "../../utils/DOM/scrollToEle";
+import messageBodyStyle from "../../components/comments/MessageCard/scss/message-body.module.scss";
+import highLightEle from "../../utils/DOM/highLightEle";
 import ReplyContext from "./ReplyContext";
-import configMethods from '../../../config'
+import configMethods from '../../config'
+import useSyncState from "../../hooks/useSyncState";
+import useDidUpdate from "../../hooks/useDidUpdate";
+import {CommentObject} from "../../types";
 const {readLoggedUser} = configMethods
+
+
 
 function ReplyProvider(props) {
     const {
@@ -16,30 +21,46 @@ function ReplyProvider(props) {
         updateCommentAsync,
         curNest,
         maxNest,
+    }:{
+        small:boolean,
+        details:CommentObject,
+        loadList:(parameters:any)=>Promise<{data:CommentObject[],total:number}>,
+        updateCommentAsync:(id:string,updatedData:CommentObject)=>void,
+        curNest:number,
+        maxNest:number
     } = props
-    const {startReply, needUpdateReply, updateComment}=useContext(CommentContext)
+    const {startReply, updateReplyDetails, updateComment}=useContext(CommentContext)
     const editMessageRef=useRef(null)
-    const [replyCounts, setReplyCounts]=useState(details.replyCounts || 0)
+    const [replyCounts, setReplyCounts]=useState<number>(details.replyCounts || 0)
     const [replyLoading, setReplyLoading]=useState(false)
     const [showReply, setShowReply]=useState(false)
-    const syncReplyList=useRef([])
-    const [replyList, setReplyList]=useState([])
+    const [replyList, syncReplyList,setReplyList]=useSyncState<CommentObject[]>([])
     const [replyPage, setReplyPage]=useState(1)
     const [nodata, setNodata]=useState(false)
     const [edit, setEdit]=useState(false)
     const [editMessage, setEditMessage]=useState(details.message)
+    function showEdit(){
+        setEdit(true)
+        setEditMessage(details.message)
+    }
+
+    function closeEdit(){
+        setEdit(false)
+        setEditMessage(details.message)
+    }
+
 
     const loggedUser = readLoggedUser()
     const canRenderReplyBtn=useMemo(()=>curNest<maxNest,[curNest,maxNest])
     const isOwnerComment=useMemo(()=>loggedUser && loggedUser.id!=null && loggedUser.id===details.user_id,[loggedUser,details.user_id])
     // useCallback(()=>{
     //
-    // },[needUpdateReply])
+    // },[updateReplyDetails])
 
-    useEffect(()=>{
-        console.log(needUpdateReply,'update Reply')
-        if(!needUpdateReply)return
-        let {replyId,rootId}=needUpdateReply
+    useDidUpdate(()=>{
+        console.log(updateReplyDetails,'update Reply')
+        if(!updateReplyDetails)return
+        let {replyId,rootId}=updateReplyDetails
         // 不同祖先，彻底没关系
         if(rootId!==(details.rootId || details.objectId))return
         // 已经过了最大嵌套层，不必更新
@@ -53,13 +74,12 @@ function ReplyProvider(props) {
             // console.log(2)
             updateDataAfterReply()
         }
-    },[needUpdateReply])
+    },[updateReplyDetails])
 
     function toggleReplyList(){
         if(showReply){
             setShowReply(false)
             setReplyList([])
-            syncReplyList.current=[]
             return Promise.resolve()
         }else{
             setReplyLoading(true)
@@ -80,9 +100,7 @@ function ReplyProvider(props) {
             if(data.length===0){
                 setNodata(true)
             }else{
-                let deepCloneData=cloneDeep(data)
-                syncReplyList.current=deepCloneData
-                setReplyList(deepCloneData)
+                setReplyList(cloneDeep(data))
             }
         })
     }
@@ -140,19 +158,10 @@ function ReplyProvider(props) {
         editMessageRef.current.insertToValue(emoji)
     }
 
-    function showEdit(){
-        setEdit(true)
-        setEditMessage(details.message)
-    }
-
-    function closeEdit(){
-        setEdit(false)
-        setEditMessage(details.message)
-    }
-
     function validate() {
         return editMessageRef.current.validate()
     }
+
     return (
         <ReplyContext.Provider value={{
             small,

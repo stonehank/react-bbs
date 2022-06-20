@@ -1,5 +1,5 @@
 import React,{useContext} from 'react';
-import messageBodyStyle from './message-body.module.scss'
+import messageBodyStyle from './scss/message-body.module.scss'
 import clx from 'classnames'
 import PropTypes from 'prop-types'
 import MessageInput from "../../inputs/MessageInput";
@@ -9,7 +9,7 @@ import MessageRender from "./MessageRender";
 import ListRender from "../ListRender";
 import Loading from "../../UI/Loading";
 import MoreButton from "../MoreButton";
-import ReplyContext from "../../context/comments/ReplyContext";
+import ReplyContext from "../../../context/replys/ReplyContext";
 
 
 

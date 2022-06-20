@@ -1,5 +1,5 @@
 import {highLightEle} from "./index";
-import bodyStyle from '../../components/comments/MessageCard/message-body.module.scss'
+import bodyStyle from '../../components/comments/MessageCard/scss/message-body.module.scss'
 
 export default function bindATagSmoothScroll(ev){
   let target=ev.target

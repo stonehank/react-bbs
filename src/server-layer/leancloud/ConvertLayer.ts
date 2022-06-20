@@ -1,11 +1,11 @@
 import {useEffect, useState,useRef} from 'react'
-// import cloneDeep from 'clone-deep'
-import ConvertLayerIInterface from "../../interface/ConvertLayerIInterface";
 import configMethods from '../../config'
 import useAPICore from "./APICore";
+import {CommentObject, ConvertLayerIInterface} from "../../types";
 const {readConfig, setLoggedUser} = configMethods
 const {pageviewMap, countMap} = readConfig()
 const cloneDeep=require('clone-deep')
+
 
 /**
  * STEP1: 一次性获取1000个数据
@@ -18,8 +18,8 @@ export default function useConvertLayer() : ConvertLayerIInterface{
     const [noMoreRemoteData, setNoMoreRemoteData] = useState(false)
     const [waitNextInserted, setWaitNextInserted] = useState([])
     const [checkOnNextInsert, setCheckOnNextInsert] = useState(false)
-    let allCommentData=useRef([])
-    let objectIdToData=useRef({})
+    let allCommentData=useRef<CommentObject[]>([])
+    let objectIdToData=useRef<{[key:string]:CommentObject}>({})
 
 
     const {serverInit,signIn_server,fetchCounts_server,fetchPageViews_server,updateComment_server,uploadComment_server,fetchComments_server} = useAPICore()
@@ -102,7 +102,18 @@ export default function useConvertLayer() : ConvertLayerIInterface{
      * @param params
      * @returns {Promise<Object>} {data, total}
      */
-    function fetchComments(params) {
+    function fetchComments(params:{
+        uniqStr:string,
+        rootId:string,
+        replyId:string,
+        page:number,
+        pageSize:number,
+        deepReply:boolean,
+        deepReplyCounts:number,
+    }):Promise<{
+        data:CommentObject[],
+        total:number
+    }> {
         /*
             uniqStr         // 页面唯一值
             rootId          // rootId， 用于插入数据
@@ -113,7 +124,7 @@ export default function useConvertLayer() : ConvertLayerIInterface{
             deepReplyCounts // 存在则深度搜索回复数量
          */
         let {uniqStr, replyId, pageSize, page, deepReply, deepReplyCounts} = params
-        let data
+        let data:Promise<CommentObject[]>
         setCheckOnNextInsert(true)
         if (!replyId && !noMoreRemoteData) {
             data = __getMoreData__(uniqStr)
@@ -135,7 +146,7 @@ export default function useConvertLayer() : ConvertLayerIInterface{
                 }
             }
             // 这里获取从0到当前page的所有评论
-            let result = cloneDeep(filterData.slice(0, pageSize * page))
+            let result:CommentObject[] = cloneDeep(filterData.slice(0, pageSize * page))
             if (deepReplyCounts) {
                 __deepSearchReplyCount__(result)
             }
@@ -176,7 +187,7 @@ export default function useConvertLayer() : ConvertLayerIInterface{
         }
         objectIdToData.current[data.objectId]=data
     }
-    function __getMoreData__(uniqStr) {
+    function __getMoreData__(uniqStr:string):Promise<CommentObject[]> {
         console.log('mock network')
         return fetchComments_server(uniqStr)
             .then(flatList=>{
@@ -188,8 +199,8 @@ export default function useConvertLayer() : ConvertLayerIInterface{
             .then(__mergeToNest__)
             .then(__generateReplyCounts__)
     }
-    function __deepSearchReply__(allReplyList) {
-        let res = []
+    function __deepSearchReply__(allReplyList):CommentObject[] {
+        let res:CommentObject[] = []
         for (let i = 0; i < allReplyList.length; i++) {
             res.push(allReplyList[i])
             if (allReplyList[i].replys) {
@@ -210,14 +221,14 @@ export default function useConvertLayer() : ConvertLayerIInterface{
         }
         return allCounts
     }
-    function __mergeToNest__(newFetchList) {
-        console.log('mergetonest',newFetchList)
+    function __mergeToNest__(newFetchList):CommentObject[] {
+        console.log('merge to nest',newFetchList)
         if (checkOnNextInsert) {
             newFetchList = newFetchList.concat(waitNextInserted)
             setWaitNextInserted([])
             setCheckOnNextInsert(false)
         }
-        let replyCandid = []
+        let replyCandid:CommentObject[] = []
         let newAllCommentData=allCommentData.current.slice()
         for (let item of newFetchList) {
             if (item.replyId) {
@@ -253,19 +264,14 @@ export default function useConvertLayer() : ConvertLayerIInterface{
     }
     function __generateIndexSearch__(list) {
         for (let item of list) {
-            // objectIdToData.current={
-            //     ...objectIdToData.current,
-            //     [item.objectId]:item
-            // }
             objectIdToData.current[item.objectId]=item
-            // setObjectIdToData({
-            //     ...objectIdToData.current,
-            //     [item.objectId]:item
-            // })
         }
         return list
     }
-    function __insertReplyItem__(allList, item) {
+    function __insertReplyItem__(allList:CommentObject[], item:CommentObject):{
+        list:CommentObject[],
+        inserted:boolean,
+    } {
         if (!allList || allList.length === 0) return {list: allList, inserted: false}
         allList.sort((a,b)=>a.createdAt < b.createdAt ? 1 : -1)
         let {replyId, rootId} = item

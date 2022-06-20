@@ -33,4 +33,12 @@ Nickname.propTypes={
 Nickname.defaultProps={
     nickname:'',
 }
-export default Nickname;
+
+function propsAreEqual(prevProps, nextProps) {
+    return prevProps.nickname === nextProps.nickname
+}
+const MemoizedNickname = React.memo(Nickname, propsAreEqual);
+
+export default MemoizedNickname;
+
+

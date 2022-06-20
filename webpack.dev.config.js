@@ -13,7 +13,7 @@ module.exports = {
     filename:'react-bbs.js'
   },
   resolve: {
-    extensions: [ '.js','.ts', '.json', '.jsx','.css','.scss'],
+    extensions: [ '.js','.ts', '.json', '.jsx','.tsx','.css','.scss'],
   },
   devtool: 'cheap-module-source-map',
   module: {

@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components'
-import PopupButton from "../UI/PopupButton";
+import PopupButton from "../UI/PopupButton.tsx";
 import emojiList from '../../assets/emoji.json'
 import PropTypes from "prop-types";
 
@@ -68,4 +68,6 @@ Emoji.propTypes={
     onSelect:PropTypes.func
 }
 
-export default Emoji;
+const MemoizedEmoji = React.memo(Emoji,()=>true);
+
+export default MemoizedEmoji;

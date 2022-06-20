@@ -4,6 +4,7 @@ import Button from "./Button";
 import styled from 'styled-components'
 import {useSpring, animated} from 'react-spring'
 import PropTypes from 'prop-types'
+import useDidUpdate from "../../hooks/useDidUpdate";
 
 const StyledAnimatedPopup=styled(animated.div)`
         position:fixed;
@@ -43,7 +44,7 @@ function PopupButton(props) {
             window.removeEventListener('resize',hide)
         }
     },[])
-    useEffect(()=>{
+    useDidUpdate(()=>{
         api.start({
             scale: finalShow? 1 : 0,
             opacity: finalShow ? 1 : 0,
@@ -131,7 +132,7 @@ function PopupButton(props) {
 }
 
 PopupButton.propTypes={
-    style:PropTypes.object,
+    style:PropTypes.any,
     popupContent:PropTypes.func,
     show:PropTypes.bool,
     setShow:PropTypes.func,

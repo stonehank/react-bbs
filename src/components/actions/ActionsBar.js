@@ -77,4 +77,14 @@ ActionsBar.protoTypes={
     at:PropTypes.string,
     insertEmoji:PropTypes.func
 }
-export default ActionsBar;
+
+function propsAreEqual(prevProps, nextProps) {
+    // {insertEmoji, message,at,replyId }
+    return prevProps.message === nextProps.message
+        && prevProps.at === nextProps.at
+        && prevProps.replyId === nextProps.replyId
+}
+const MemoizedActionsBar = React.memo(ActionsBar, propsAreEqual);
+
+
+export default MemoizedActionsBar;

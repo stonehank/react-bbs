@@ -12,4 +12,6 @@ function MarkdownIcon() {
     );
 }
 
-export default MarkdownIcon;
+const MemoizedMarkdownIcon = React.memo(MarkdownIcon);
+
+export default MemoizedMarkdownIcon;

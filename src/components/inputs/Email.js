@@ -34,4 +34,11 @@ Email.propTypes={
 Email.defaultProps={
     email:'',
 }
-export default Email;
+
+function propsAreEqual(prevProps, nextProps) {
+    return prevProps.email === nextProps.email
+}
+const MemoizedEmail = React.memo(Email, propsAreEqual);
+
+export default MemoizedEmail;
+

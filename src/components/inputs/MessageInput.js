@@ -40,5 +40,14 @@ MessageInput.defaultProps={
     label:'说点什么吧',
     rows:3,
 }
-export default MessageInput;
+
+function propsAreEqual(prevProps, nextProps) {
+    return prevProps.message === nextProps.message
+        && prevProps.label === nextProps.label
+        && prevProps.rows === nextProps.rows
+}
+const MemoizedMessageInput = React.memo(MessageInput, propsAreEqual);
+
+export default MemoizedMessageInput;
+
 

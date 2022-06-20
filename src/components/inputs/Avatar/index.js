@@ -1,7 +1,7 @@
 import React,{useState,useEffect} from 'react';
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
-import PopupButton from "../../UI/PopupButton";
+import PopupButton from "../../UI/PopupButton.tsx";
 import avatarStyle from "./avatar.module.scss";
 import crypto from 'blueimp-md5'
 
@@ -106,4 +106,13 @@ Avatar.defaultProps={
     avatar:null,
 }
 
-export default Avatar;
+function propsAreEqual(prevProps, nextProps) {
+    // avatar,email,nickname,size
+    return prevProps.avatar === nextProps.avatar
+        && prevProps.email === nextProps.email
+        && prevProps.nickname === nextProps.nickname
+        && prevProps.size === nextProps.size
+}
+const MemoizedAvatar = React.memo(Avatar, propsAreEqual);
+
+export default MemoizedAvatar;

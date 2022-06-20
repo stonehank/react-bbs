@@ -1,5 +1,5 @@
 import React,{useMemo} from 'react';
-import messageHeadStyle from './message-head.module.scss'
+import messageHeadStyle from './scss/message-head.module.scss'
 import clx from 'classnames'
 import timeAgo from "../../../utils/timeAgo";
 

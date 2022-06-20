@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
 import PropTypes from 'prop-types'
-import CommentContext from "../context/comments/CommentContext";
+import CommentContext from "../../context/comments/CommentContext";
 import ListRender from "./ListRender";
 import MoreButton from "./MoreButton";
 import Loading from "../UI/Loading";
@@ -65,17 +65,4 @@ const CommentsList=React.forwardRef((props,forwardRef)=>{
     );
 })
 
-
-CommentsList.propTypes = {
-    uniqStr: PropTypes.string,
-    pageSize: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.number,
-    ]),
-    editable: PropTypes.bool,
-    maxNest: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.number,
-    ]),
-}
 export default CommentsList;
