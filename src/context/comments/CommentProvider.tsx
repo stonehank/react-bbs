@@ -14,7 +14,7 @@ function CommentProvider(props) {
     const [loading, setLoading] = useState(true)
     const [userLoading, setUserLoading] = useState(true)
     const [page, syncPage,setPage] = useSyncState(1)
-    const [list, setList] = useState<CommentObject[]>([])
+    const [list, syncList,setList] = useSyncState<CommentObject[]>([])
     const [total, setTotal] = useState(null)
     const [noMoreData, setNoMoreData] = useState(true)
     const updateReplyDetails=useRef<{rootId:string,replyId:string} | null>(null)
@@ -100,11 +100,12 @@ function CommentProvider(props) {
     }
 
     function updateCommentAsync(id,updatedData){
-        let data=list.find(obj=>obj.objectId===id)
+        let data=syncList.current.find(obj=>obj.objectId===id)
         if(data){
             data.message=updatedData.message
             data.updatedAt=updatedData.updatedAt
         }
+        setList(syncList.current)
     }
 
 

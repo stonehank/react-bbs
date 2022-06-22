@@ -130,7 +130,6 @@ const TextField = React.forwardRef((props,forwardRef)=>{
         return inputRef.current
     }
 
-    console.log('render',value)
     return (
         <div className={textFieldStyle['bbs-cus-filedset-wrapper']} {...otherProps}>
             <div className={textFieldStyle['bbs-cus-fieldset-container']}>

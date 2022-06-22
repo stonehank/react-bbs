@@ -21,12 +21,15 @@ var __rest = (this && this.__rest) || function (s, e) {
         }
     return t;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 exports.__esModule = true;
 var app_1 = require("firebase/app");
 var lite_1 = require("firebase/firestore/lite");
 var auth_1 = require("firebase/auth");
 var utils_1 = require("../../utils");
-var config_1 = require("../../config");
+var config_1 = __importDefault(require("../../config"));
 var readConfig = config_1["default"].readConfig, readLoggedUser = config_1["default"].readLoggedUser;
 var _a = readConfig(), apiKey = _a.apiKey, projectId = _a.projectId, CommentClass = _a.CommentClass, CounterClass = _a.CounterClass, pageviewMap = _a.pageviewMap, editMode = _a.editMode;
 var ownerCodeKey = 'serverless_react_bbs_ownerCode';

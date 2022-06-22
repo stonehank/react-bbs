@@ -26,7 +26,16 @@ const MessageInput=React.forwardRef((props,forwardRef)=>{
 })
 
 
-MessageInput.propTypes={
+
+
+function propsAreEqual(prevProps, nextProps) {
+    return prevProps.message === nextProps.message
+        && prevProps.label === nextProps.label
+        && prevProps.rows === nextProps.rows
+}
+const MemoizedMessageInput = React.memo(MessageInput, propsAreEqual);
+
+MemoizedMessageInput.propTypes={
     message:PropTypes.string,
     setMessage:PropTypes.func,
     label:PropTypes.string,
@@ -35,18 +44,11 @@ MessageInput.propTypes={
         PropTypes.number
     ]),
 }
-MessageInput.defaultProps={
+MemoizedMessageInput.defaultProps={
     message:'',
     label:'说点什么吧',
     rows:3,
 }
-
-function propsAreEqual(prevProps, nextProps) {
-    return prevProps.message === nextProps.message
-        && prevProps.label === nextProps.label
-        && prevProps.rows === nextProps.rows
-}
-const MemoizedMessageInput = React.memo(MessageInput, propsAreEqual);
 
 export default MemoizedMessageInput;
 

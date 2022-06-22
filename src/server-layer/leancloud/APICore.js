@@ -1,9 +1,12 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 exports.__esModule = true;
-var CustomAV_1 = require("./CustomAV");
-var initAVObject_1 = require("./initAVObject");
+var CustomAV_1 = __importDefault(require("./CustomAV"));
+var initAVObject_1 = __importDefault(require("./initAVObject"));
 var utils_1 = require("../../utils");
-var config_1 = require("../../config");
+var config_1 = __importDefault(require("../../config"));
 var readConfig = config_1["default"].readConfig, readLoggedUser = config_1["default"].readLoggedUser;
 function useAPICore() {
     var _a = readConfig(), appId = _a.appId, appKey = _a.appKey, serverURLs = _a.serverURLs, CommentClass = _a.CommentClass, CounterClass = _a.CounterClass, UserClass = _a.UserClass, editMode = _a.editMode, pageviewMap = _a.pageviewMap;

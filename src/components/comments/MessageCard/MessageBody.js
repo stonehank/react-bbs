@@ -31,6 +31,7 @@ function MessageBody() {
         nodata,
         edit,
         editMessage,
+        setEditMessage,
         canRenderReplyBtn,
         isOwnerComment,
         editMessageRef,
@@ -60,6 +61,8 @@ function MessageBody() {
                     :
                     <div>
                         <MessageInput
+                            message={editMessage}
+                            setMessage={setEditMessage}
                             ref={editMessageRef}
                             label={"编辑内容"}
                             rows={3}

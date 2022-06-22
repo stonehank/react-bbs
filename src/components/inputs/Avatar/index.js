@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import PopupButton from "../../UI/PopupButton.tsx";
 import avatarStyle from "./avatar.module.scss";
 import crypto from 'blueimp-md5'
+import useDidUpdate from "../../../hooks/useDidUpdate";
 
 const StyledPopupButton=styled(PopupButton)`
     margin:0 0 16px 0;
@@ -28,6 +29,11 @@ function Avatar(props) {
         setAvatar(rdAvatar)
     },[])
 
+    useDidUpdate(()=>{
+        console.log('update')
+        updateAvatarList()
+    },[email,nickname,size])
+
     function createEmailSrc(){
         return email
             ? `https://www.gravatar.com/avatar/${crypto(email.toLowerCase().trim())}?s=${size}`
@@ -42,16 +48,22 @@ function Avatar(props) {
 
 
     function updateAvatarList(){
-        if(email){
-            setAvatarsList([createEmailSrc(),...avatarsList.slice(1)])
-        }
-        if(nickname){
-            setAvatarsList([avatarsList[0],createNameSrc(),...avatarsList.slice(2)])
+        let emailSrc=createEmailSrc()
+        let nameSrc=createNameSrc()
+        if(email && nickname){
+            setAvatarsList([emailSrc,nameSrc,...avatarsList.slice(2)])
+        }else if(email){
+            setAvatarsList([emailSrc,...avatarsList.slice(1)])
+        }else if(nickname){
+            setAvatarsList([avatarsList[0],nameSrc,...avatarsList.slice(2)])
         }
     }
+
     function chooseAvatar(src){
-        setAvatar(src)
-        setPopupShow(false)
+        return ()=>{
+            setAvatar(src)
+            setPopupShow(false)
+        }
     }
 
     function generatePopupContent(){
@@ -62,14 +74,14 @@ function Avatar(props) {
                         <div
                             className={avatarStyle['avatar-panel-item']}
                             key={index}
-                            onClick={()=>chooseAvatar(src)}
+                            onClick={chooseAvatar(src)}
                             style={{
                                 backgroundImage:'url('+src+')'
                             }}
                         />
                     ))
                 }
-    </div>
+            </div>
         )
     }
 

@@ -13,7 +13,15 @@ const {readLoggedUser} = configMethods
 
 
 
-function ReplyProvider(props) {
+function ReplyProvider(props: {
+    children?: any,
+    small:boolean,
+    details:CommentObject,
+    loadList:(parameters:any)=>Promise<{data:CommentObject[],total:number}>,
+    updateCommentAsync:(id:string,updatedData:CommentObject)=>void,
+    curNest:number,
+    maxNest:number
+}) {
     const {
         small,
         details,
@@ -21,13 +29,6 @@ function ReplyProvider(props) {
         updateCommentAsync,
         curNest,
         maxNest,
-    }:{
-        small:boolean,
-        details:CommentObject,
-        loadList:(parameters:any)=>Promise<{data:CommentObject[],total:number}>,
-        updateCommentAsync:(id:string,updatedData:CommentObject)=>void,
-        curNest:number,
-        maxNest:number
     } = props
     const {startReply, updateReplyDetails, updateComment}=useContext(CommentContext)
     const editMessageRef=useRef(null)
@@ -53,9 +54,6 @@ function ReplyProvider(props) {
     const loggedUser = readLoggedUser()
     const canRenderReplyBtn=useMemo(()=>curNest<maxNest,[curNest,maxNest])
     const isOwnerComment=useMemo(()=>loggedUser && loggedUser.id!=null && loggedUser.id===details.user_id,[loggedUser,details.user_id])
-    // useCallback(()=>{
-    //
-    // },[updateReplyDetails])
 
     useDidUpdate(()=>{
         console.log(updateReplyDetails,'update Reply')
@@ -75,6 +73,7 @@ function ReplyProvider(props) {
             updateDataAfterReply()
         }
     },[updateReplyDetails])
+
 
     function toggleReplyList(){
         if(showReply){
@@ -104,6 +103,7 @@ function ReplyProvider(props) {
             }
         })
     }
+
     function saveEdit(){
         if(!validate())return
         let id=details.objectId
@@ -119,6 +119,7 @@ function ReplyProvider(props) {
         if(replyData){
             replyData.message=data.message
             replyData.updatedAt=data.updatedAt
+            setReplyList(syncReplyList.current)
         }else{
             updateCommentAsync(id,data)
         }
@@ -179,6 +180,7 @@ function ReplyProvider(props) {
             nodata,
             edit,
             editMessage,
+            setEditMessage,
             canRenderReplyBtn,
             isOwnerComment,
             editMessageRef,

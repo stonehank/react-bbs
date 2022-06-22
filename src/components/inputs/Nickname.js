@@ -10,7 +10,7 @@ const Nickname=React.forwardRef((props,forwardRef)=>{
         validate:nicknameRef.current.validate,
         reset:nicknameRef.current.reset,
         getElement:nicknameRef.current.getElement
-    }),[nicknameRef])
+    }))
 
     return (
         <TextField

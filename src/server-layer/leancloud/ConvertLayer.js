@@ -8,10 +8,13 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     }
     return to.concat(ar || Array.prototype.slice.call(from));
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 exports.__esModule = true;
 var react_1 = require("react");
-var config_1 = require("../../config");
-var APICore_1 = require("./APICore");
+var config_1 = __importDefault(require("../../config"));
+var APICore_1 = __importDefault(require("./APICore"));
 var readConfig = config_1["default"].readConfig, setLoggedUser = config_1["default"].setLoggedUser;
 var _a = readConfig(), pageviewMap = _a.pageviewMap, countMap = _a.countMap;
 var cloneDeep = require('clone-deep');
@@ -70,7 +73,6 @@ function useConvertLayer() {
     function uploadComment(uploadField) {
         return uploadComment_server(uploadField)
             .then(function (data) {
-            console.log('data111', data);
             if (!data)
                 return null;
             if (!data.replyId) {
@@ -78,7 +80,6 @@ function useConvertLayer() {
                 countMap.set(data.uniqStr, count + 1);
             }
             __insertInToList__(allCommentData.current, data);
-            console.log('data222', data);
             return data;
         })["catch"](function (err) {
             console.error(err);
@@ -127,10 +128,8 @@ function useConvertLayer() {
         else {
             data = Promise.resolve(allCommentData.current);
         }
-        console.log('filter data', data);
         return data.then(function (nestedData) {
             var filterData = nestedData;
-            console.log(filterData, objectIdToData.current, replyId);
             if (replyId) {
                 filterData = objectIdToData.current[replyId].replys;
                 if (deepReply) {
@@ -168,7 +167,6 @@ function useConvertLayer() {
     }
     function __insertInToList__(list, data) {
         // 插入到对应的嵌套层，同时也要更新replyCounts数字
-        console.log(list, data, objectIdToData.current);
         if (data.replyId) {
             var replyData = objectIdToData.current[data.replyId];
             if (replyData.replys == null) {
@@ -187,7 +185,6 @@ function useConvertLayer() {
         console.log('mock network');
         return fetchComments_server(uniqStr)
             .then(function (flatList) {
-            console.log('flatList', flatList);
             setNoMoreRemoteData(flatList.length < 1000);
             return flatList;
         })
@@ -219,7 +216,6 @@ function useConvertLayer() {
         return allCounts;
     }
     function __mergeToNest__(newFetchList) {
-        console.log('mergetonest', newFetchList);
         if (checkOnNextInsert) {
             newFetchList = newFetchList.concat(waitNextInserted);
             setWaitNextInserted([]);
@@ -251,7 +247,6 @@ function useConvertLayer() {
         return newAllCommentData;
     }
     function __generateReplyCounts__(list) {
-        console.log('__generateReplyCounts__', list);
         for (var _i = 0, list_1 = list; _i < list_1.length; _i++) {
             var item = list_1[_i];
             if (item.replys && item.replys.length > 0) {
@@ -267,15 +262,7 @@ function useConvertLayer() {
     function __generateIndexSearch__(list) {
         for (var _i = 0, list_2 = list; _i < list_2.length; _i++) {
             var item = list_2[_i];
-            // objectIdToData.current={
-            //     ...objectIdToData.current,
-            //     [item.objectId]:item
-            // }
             objectIdToData.current[item.objectId] = item;
-            // setObjectIdToData({
-            //     ...objectIdToData.current,
-            //     [item.objectId]:item
-            // })
         }
         return list;
     }

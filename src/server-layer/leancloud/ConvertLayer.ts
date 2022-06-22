@@ -64,14 +64,12 @@ export default function useConvertLayer() : ConvertLayerIInterface{
     function uploadComment(uploadField){
         return uploadComment_server(uploadField)
             .then(data=>{
-                console.log('data111',data)
                 if(!data)return null
                 if(!data.replyId){
                     let count=countMap.get(data.uniqStr)
                     countMap.set(data.uniqStr,count+1)
                 }
                 __insertInToList__(allCommentData.current,data)
-                console.log('data222',data)
                 return data
             })
             .catch(err=>{
@@ -131,10 +129,8 @@ export default function useConvertLayer() : ConvertLayerIInterface{
         } else {
             data = Promise.resolve(allCommentData.current)
         }
-        console.log('filter data',data)
         return data.then((nestedData) => {
             let filterData = nestedData
-            console.log(filterData,objectIdToData.current,replyId)
             if (replyId) {
                 filterData = objectIdToData.current[replyId].replys
                 if (deepReply) {
@@ -173,7 +169,6 @@ export default function useConvertLayer() : ConvertLayerIInterface{
     }
     function __insertInToList__(list,data){
         // 插入到对应的嵌套层，同时也要更新replyCounts数字
-        console.log(list,data,objectIdToData.current)
         if(data.replyId){
             let replyData=objectIdToData.current[data.replyId]
             if(replyData.replys==null){
@@ -191,7 +186,6 @@ export default function useConvertLayer() : ConvertLayerIInterface{
         console.log('mock network')
         return fetchComments_server(uniqStr)
             .then(flatList=>{
-                console.log('flatList',flatList)
                 setNoMoreRemoteData(flatList.length < 1000)
                 return flatList
             })
@@ -222,7 +216,6 @@ export default function useConvertLayer() : ConvertLayerIInterface{
         return allCounts
     }
     function __mergeToNest__(newFetchList):CommentObject[] {
-        console.log('merge to nest',newFetchList)
         if (checkOnNextInsert) {
             newFetchList = newFetchList.concat(waitNextInserted)
             setWaitNextInserted([])
@@ -251,7 +244,6 @@ export default function useConvertLayer() : ConvertLayerIInterface{
         return newAllCommentData
     }
     function __generateReplyCounts__(list) {
-        console.log('__generateReplyCounts__',list)
         for (let item of list) {
             if (item.replys && item.replys.length > 0) {
                 item.replyCounts = item.replys.length

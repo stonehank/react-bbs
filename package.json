@@ -10,7 +10,7 @@
     "build:main": "cross-env NODE_ENV=production webpack",
     "build:lib": "babel src --out-dir lib --copy-files",
     "build:demo": "webpack --config webpack.demo.config.js",
-    "start": "webpack-dev-server --open --config webpack.dev.config.js --mode development"
+    "start": "webpack-dev-server --open --config webpack.dev.config.js --mode development && tsc --watch"
   },
   "keywords": [
     "react",

@@ -15,13 +15,12 @@ import {
     writeBatch
 } from 'firebase/firestore/lite';
 import {getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword} from "firebase/auth";
-import APIInterface from "../../interface/APICoreInterface";
 import {getFromCache, randUniqueString, setCache} from "../../utils";
 import configMethods from '../../config'
+import {APICoreInterface} from "../../types";
 
 const {readConfig, readLoggedUser} = configMethods
 const {apiKey, projectId, CommentClass, CounterClass, pageviewMap, editMode} = readConfig()
-
 let ownerCodeKey = 'serverless_react_bbs_ownerCode'
 let oldRandOwnerCode = getFromCache(ownerCodeKey)
 let newRandOwnerCode = oldRandOwnerCode || randUniqueString()
@@ -244,4 +243,4 @@ export default {
     updateComment_server,
     signIn_server,
     signUp_server
-} as APIInterface
+} as APICoreInterface
