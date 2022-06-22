@@ -10,14 +10,13 @@ const {readConfig} = configMethods
 const { countMap} = readConfig()
 
 function CommentProvider(props) {
-    const {maxNest, uniqStr, pageSize, editable, startReply,updateComment,fetchComments, fetchCurrentUser} = props
+    const {maxNest, uniqStr, pageSize, editable, fetchComments, fetchCurrentUser} = props
     const [loading, setLoading] = useState(true)
     const [userLoading, setUserLoading] = useState(true)
     const [page, syncPage,setPage] = useSyncState(1)
     const [list, syncList,setList] = useSyncState<CommentObject[]>([])
     const [total, setTotal] = useState(null)
     const [noMoreData, setNoMoreData] = useState(true)
-    const updateReplyDetails=useRef<{rootId:string,replyId:string} | null>(null)
 
 
     useDidUpdate(()=>{
@@ -43,13 +42,6 @@ function CommentProvider(props) {
         newList.unshift(data)
         setList(newList)
         setTotal(total + 1)
-    }
-
-    // 更新reply
-    function updateReply({replyId,rootId}){
-        console.log('updateReply',replyId,rootId)
-        updateReplyDetails.current={replyId,rootId}
-        // setNeedUpdateReply({replyId,rootId})
     }
 
     function init(){
@@ -100,15 +92,20 @@ function CommentProvider(props) {
     }
 
     function updateCommentAsync(id,updatedData){
-        let data=syncList.current.find(obj=>obj.objectId===id)
-        if(data){
-            data.message=updatedData.message
-            data.updatedAt=updatedData.updatedAt
+        console.log(syncList,'updateCommentAsync')
+        let idx=list.findIndex(obj=>obj.objectId===id)
+        let newList=list.slice()
+        if(idx!==-1){
+            newList[idx]={
+                ...newList[idx],
+                message:updatedData.message,
+                updatedAt:updatedData.updatedAt
+            }
+            setList(newList)
         }
-        setList(syncList.current)
+
+
     }
-
-
     return (
         <CommentContext.Provider value={{
             maxNest,
@@ -121,14 +118,10 @@ function CommentProvider(props) {
             list,
             page,
             noMoreData,
-            updateReplyDetails:updateReplyDetails.current,
             loadMore,
             loadList,
             updateCommentAsync,
             updateList,
-            updateReply,
-            startReply,
-            updateComment
         }}>
             {props.children}
         </CommentContext.Provider>
@@ -149,13 +142,4 @@ function CommentProvider(props) {
 //     ]),
 // }
 
-function propsAreEqual(prevProps, nextProps) {
-    // maxNest, uniqStr, pageSize, editable
-    return prevProps.maxNest === nextProps.maxNest
-        && prevProps.uniqStr === nextProps.uniqStr
-        && prevProps.pageSize === nextProps.pageSize
-        && prevProps.editable === nextProps.editable
-}
-const MemoizedCommentProvider = React.memo(CommentProvider, propsAreEqual);
-
-export default MemoizedCommentProvider;
+export default CommentProvider;

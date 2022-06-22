@@ -51,3 +51,4 @@ var methods = {
     }
 };
 exports["default"] = methods;
+//# sourceMappingURL=config.js.map

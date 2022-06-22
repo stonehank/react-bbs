@@ -31,8 +31,10 @@ var CommentContext_1 = __importDefault(require("../../context/comments/CommentCo
 var ListRender_1 = __importDefault(require("./ListRender"));
 var MoreButton_1 = __importDefault(require("./MoreButton"));
 var Loading_1 = __importDefault(require("../UI/Loading"));
+var ReplyContext_1 = __importDefault(require("../../context/replys/ReplyContext"));
 var CommentsList = react_1["default"].forwardRef(function (props, forwardRef) {
-    var _a = (0, react_1.useContext)(CommentContext_1["default"]), maxNest = _a.maxNest, uniqStr = _a.uniqStr, pageSize = _a.pageSize, editable = _a.editable, loading = _a.loading, userLoading = _a.userLoading, list = _a.list, page = _a.page, total = _a.total, noMoreData = _a.noMoreData, loadMore = _a.loadMore, loadList = _a.loadList, updateCommentAsync = _a.updateCommentAsync, updateList = _a.updateList, updateReply = _a.updateReply;
+    var _a = (0, react_1.useContext)(CommentContext_1["default"]), maxNest = _a.maxNest, uniqStr = _a.uniqStr, pageSize = _a.pageSize, editable = _a.editable, loading = _a.loading, userLoading = _a.userLoading, list = _a.list, page = _a.page, total = _a.total, noMoreData = _a.noMoreData, loadMore = _a.loadMore, loadList = _a.loadList, updateCommentAsync = _a.updateCommentAsync, updateList = _a.updateList;
+    var updateReply = (0, react_1.useContext)(ReplyContext_1["default"]).updateReply;
     react_1["default"].useImperativeHandle(forwardRef, function () { return ({
         updateList: updateList,
         updateReply: updateReply
@@ -58,3 +60,4 @@ var CommentsList = react_1["default"].forwardRef(function (props, forwardRef) {
                         react_1["default"].createElement(MoreButton_1["default"], { noMoreData: noMoreData, loadMore: loadMore })));
 });
 exports["default"] = CommentsList;
+//# sourceMappingURL=CommentsList.js.map

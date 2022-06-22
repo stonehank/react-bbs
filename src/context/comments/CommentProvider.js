@@ -47,14 +47,13 @@ var useDidUpdate_1 = __importDefault(require("../../hooks/useDidUpdate"));
 var readConfig = config_1["default"].readConfig;
 var countMap = readConfig().countMap;
 function CommentProvider(props) {
-    var maxNest = props.maxNest, uniqStr = props.uniqStr, pageSize = props.pageSize, editable = props.editable, startReply = props.startReply, updateComment = props.updateComment, fetchComments = props.fetchComments, fetchCurrentUser = props.fetchCurrentUser;
+    var maxNest = props.maxNest, uniqStr = props.uniqStr, pageSize = props.pageSize, editable = props.editable, fetchComments = props.fetchComments, fetchCurrentUser = props.fetchCurrentUser;
     var _a = (0, react_1.useState)(true), loading = _a[0], setLoading = _a[1];
     var _b = (0, react_1.useState)(true), userLoading = _b[0], setUserLoading = _b[1];
     var _c = (0, useSyncState_1["default"])(1), page = _c[0], syncPage = _c[1], setPage = _c[2];
-    var _d = (0, react_1.useState)([]), list = _d[0], setList = _d[1];
+    var _d = (0, useSyncState_1["default"])([]), list = _d[0], syncList = _d[1], setList = _d[2];
     var _e = (0, react_1.useState)(null), total = _e[0], setTotal = _e[1];
     var _f = (0, react_1.useState)(true), noMoreData = _f[0], setNoMoreData = _f[1];
-    var updateReplyDetails = (0, react_1.useRef)(null);
     (0, useDidUpdate_1["default"])(function () {
         reload();
     }, [maxNest, pageSize]);
@@ -76,13 +75,6 @@ function CommentProvider(props) {
         newList.unshift(data);
         setList(newList);
         setTotal(total + 1);
-    }
-    // 更新reply
-    function updateReply(_a) {
-        var replyId = _a.replyId, rootId = _a.rootId;
-        console.log('updateReply', replyId, rootId);
-        updateReplyDetails.current = { replyId: replyId, rootId: rootId };
-        // setNeedUpdateReply({replyId,rootId})
     }
     function init() {
         setLoading(true);
@@ -123,10 +115,12 @@ function CommentProvider(props) {
         return loadData();
     }
     function updateCommentAsync(id, updatedData) {
-        var data = list.find(function (obj) { return obj.objectId === id; });
-        if (data) {
-            data.message = updatedData.message;
-            data.updatedAt = updatedData.updatedAt;
+        console.log(syncList, 'updateCommentAsync');
+        var idx = list.findIndex(function (obj) { return obj.objectId === id; });
+        var newList = list.slice();
+        if (idx !== -1) {
+            newList[idx] = __assign(__assign({}, newList[idx]), { message: updatedData.message, updatedAt: updatedData.updatedAt });
+            setList(newList);
         }
     }
     return (react_1["default"].createElement(CommentContext_1["default"].Provider, { value: {
@@ -140,14 +134,10 @@ function CommentProvider(props) {
             list: list,
             page: page,
             noMoreData: noMoreData,
-            updateReplyDetails: updateReplyDetails.current,
             loadMore: loadMore,
             loadList: loadList,
             updateCommentAsync: updateCommentAsync,
-            updateList: updateList,
-            updateReply: updateReply,
-            startReply: startReply,
-            updateComment: updateComment
+            updateList: updateList
         } }, props.children));
 }
 // CommentProvider.propTypes={
@@ -162,12 +152,5 @@ function CommentProvider(props) {
 //         PropTypes.number,
 //     ]),
 // }
-function propsAreEqual(prevProps, nextProps) {
-    // maxNest, uniqStr, pageSize, editable
-    return prevProps.maxNest === nextProps.maxNest
-        && prevProps.uniqStr === nextProps.uniqStr
-        && prevProps.pageSize === nextProps.pageSize
-        && prevProps.editable === nextProps.editable;
-}
-var MemoizedCommentProvider = react_1["default"].memo(CommentProvider, propsAreEqual);
-exports["default"] = MemoizedCommentProvider;
+exports["default"] = CommentProvider;
+//# sourceMappingURL=CommentProvider.js.map

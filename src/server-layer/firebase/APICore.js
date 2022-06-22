@@ -227,3 +227,4 @@ exports["default"] = {
     signIn_server: signIn_server,
     signUp_server: signUp_server
 };
+//# sourceMappingURL=APICore.js.map

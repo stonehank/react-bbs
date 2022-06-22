@@ -92,8 +92,8 @@ function PopupButton(props) {
             dspl: finalShow ? 1 : 0
         });
     }, [finalShow]);
-    function stopPropagation(ev) {
-        ev.stopPropagation();
+    function stopPropagation(event) {
+        event.stopPropagation();
     }
     function hide() {
         finalSetShow(false);
@@ -159,3 +159,4 @@ PopupButton.propTypes = {
 };
 exports["default"] = PopupButton;
 var templateObject_1;
+//# sourceMappingURL=PopupButton.js.map

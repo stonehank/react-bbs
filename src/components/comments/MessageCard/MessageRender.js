@@ -37,5 +37,5 @@ function MessageRender(props) {
         />
     )
 }
-
-export default MessageRender;
+const MemoizedMessageRender = React.memo(MessageRender)
+export default MemoizedMessageRender;

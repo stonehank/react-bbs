@@ -11,3 +11,4 @@ function useSyncState(initialState) {
     return [state, syncState, setState];
 }
 exports["default"] = useSyncState;
+//# sourceMappingURL=useSyncState.js.map

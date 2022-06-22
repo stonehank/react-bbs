@@ -51,6 +51,7 @@ export default function useConvertLayer() : ConvertLayerIInterface{
      * Required
      */
     function updateComment(id,message){
+        console.log(id,message)
         return updateComment_server(id,message)
             .then((data)=>{
                 if(!data)return null

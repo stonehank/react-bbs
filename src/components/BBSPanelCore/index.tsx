@@ -9,12 +9,14 @@ import Button from "../UI/Button";
 import {convertToPureMessage} from "../../utils/handlerAtTag";
 import useConvertLayer from "../../server-layer/leancloud/ConvertLayer";
 import CommentProvider from "../../context/comments/CommentProvider";
+import ReplyProvider from "../../context/replys/ReplyProvider";
 import CommentsList from "../comments/CommentsList";
 import Loading from "../UI/Loading";
 import InputInfoContext from "../../context/input-info/InputInfoContext";
 import '../../assets/css/common.scss'
 import '../../assets/css/highlight.scss'
 import '../../assets/css/github-markdown.scss'
+
 
 function BBSPanelCore() {
     const {
@@ -75,7 +77,7 @@ function BBSPanelCore() {
         }
         if (!validate()) return
         setSubmitLoading(true)
-        console.log('start reply')
+
         uploadComment(params)
             .then((data) => {
                 console.log(data,'after reply!!')
@@ -150,18 +152,21 @@ function BBSPanelCore() {
                 <div className="text-right mt-2">
                     <Button onClick={submit}>提交</Button>
                 </div>
-                <CommentProvider
-                    uniqStr={uniqStr}
-                    maxNest={nest}
-                    editable={editable}
-                    pageSize={pageSize}
+                <ReplyProvider
                     startReply={startReply}
                     updateComment={updateComment}
-                    fetchComments={fetchComments}
-                    fetchCurrentUser={fetchCurrentUser}
                 >
-                    <CommentsList ref={commentListRef} />
-                </CommentProvider>
+                    <CommentProvider
+                        uniqStr={uniqStr}
+                        maxNest={nest}
+                        editable={editable}
+                        pageSize={pageSize}
+                        fetchComments={fetchComments}
+                        fetchCurrentUser={fetchCurrentUser}
+                    >
+                        <CommentsList ref={commentListRef} />
+                    </CommentProvider>
+                </ReplyProvider>
             </section>
     );
 }

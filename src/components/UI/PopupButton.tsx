@@ -17,12 +17,12 @@ const StyledAnimatedPopup=styled(animated.div)`
         z-index: 99;
 `
 
-function PopupButton(props) {
+function PopupButton(props: { [x: string]: any; show: any; setShow: any; beforeOpen: any; popupContent: any; children: any; }) {
     const {show,setShow,beforeOpen,popupContent,children,...otherProps}=props
 
     const [newShow, setNewShow]=useState(!!show)
-    const popupBoxRef=useRef(null)
-    const buttonRef=useRef(null)
+    const popupBoxRef=useRef<HTMLDivElement>(null)
+    const buttonRef=useRef<HTMLButtonElement>(null)
     const [boxTop,setBoxTop]=useState(0)
     const [boxLeft,setBoxLeft]=useState(0)
     const [origin,setOrigin]=useState('top left')
@@ -53,13 +53,13 @@ function PopupButton(props) {
 
     },[finalShow])
 
-    function stopPropagation(ev){
-        ev.stopPropagation();
+    function stopPropagation(event: React.MouseEvent){
+        event.stopPropagation();
     }
     function hide(){
         finalSetShow(false)
     }
-    function togglePopup(ev){
+    function togglePopup(ev: Event){
         ev.stopPropagation();
         if(!finalShow){
             if(beforeOpen)beforeOpen()

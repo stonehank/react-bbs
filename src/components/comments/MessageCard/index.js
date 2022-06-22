@@ -1,16 +1,18 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import styled from "styled-components";
 import MessageHead from "./MessageHead";
 import MessageBody from "./MessageBody";
-import ReplyProvider from "../../../context/replys/ReplyProvider";
 
 const BBSCommentCard = styled.div`
     margin:16px 0;
 `
-
+const BBSHr=styled.div`
+    border-top: 1px dashed var(--bbs-text-muted)
+`
 
 function MessageCard(props) {
     const {
+        index,
         details,
         small,
         curNest,
@@ -19,21 +21,31 @@ function MessageCard(props) {
         updateCommentAsync,
     } = props
     return (
-        <BBSCommentCard>
-            <MessageHead small={small} details={details}/>
-            <ReplyProvider
-                small={small}
-                details={details}
-                updateCommentAsync={updateCommentAsync}
-                loadList={loadList}
-                curNest={curNest}
-                maxNest={maxNest}
-            >
-                <MessageBody />
-            </ReplyProvider>
-        </BBSCommentCard>
+        <div
+            id={details.objectId}
+        >
+            {index !== 0 && curNest === 0 ? <BBSHr /> : null}
+            <BBSCommentCard>
+                <MessageHead small={small} details={details}/>
+                <MessageBody
+                    small={small}
+                    details={details}
+                    updateCommentAsync={updateCommentAsync}
+                    // startReply={startReply}
+                    // updateReplyDetails={updateReplyDetails}
+                    // updateComment={updateComment}
+                    loadList={loadList}
+                    curNest={curNest}
+                    maxNest={maxNest}
+                />
+            </BBSCommentCard>
+        </div>
     )
-        ;
 }
-
-export default MessageCard;
+function propsAreEqual(prevProps, nextProps) {
+    return prevProps.details === nextProps.details
+        && prevProps.curNest === nextProps.curNest
+        && prevProps.small === nextProps.small
+        && prevProps.maxNest === nextProps.maxNest
+}
+export default React.memo(MessageCard,propsAreEqual);

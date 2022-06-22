@@ -48,5 +48,5 @@ function MessageHead(props) {
         </div>
     );
 }
-
-export default MessageHead;
+const MemoizedMessageHead = React.memo(MessageHead)
+export default MemoizedMessageHead;

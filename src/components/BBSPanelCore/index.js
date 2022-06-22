@@ -37,6 +37,7 @@ var Button_1 = __importDefault(require("../UI/Button"));
 var handlerAtTag_1 = require("../../utils/handlerAtTag");
 var ConvertLayer_1 = __importDefault(require("../../server-layer/leancloud/ConvertLayer"));
 var CommentProvider_1 = __importDefault(require("../../context/comments/CommentProvider"));
+var ReplyProvider_1 = __importDefault(require("../../context/replys/ReplyProvider"));
 var CommentsList_1 = __importDefault(require("../comments/CommentsList"));
 var Loading_1 = __importDefault(require("../UI/Loading"));
 var InputInfoContext_1 = __importDefault(require("../../context/input-info/InputInfoContext"));
@@ -76,7 +77,6 @@ function BBSPanelCore() {
         if (!validate())
             return;
         setSubmitLoading(true);
-        console.log('start reply');
         uploadComment(params)
             .then(function (data) {
             console.log(data, 'after reply!!');
@@ -119,7 +119,9 @@ function BBSPanelCore() {
                 react_1["default"].createElement(ActionsBar_1["default"], { message: message, replyId: replyId, at: at, insertEmoji: insertEmoji }),
                 react_1["default"].createElement("div", { className: "text-right mt-2" },
                     react_1["default"].createElement(Button_1["default"], { onClick: submit }, "\u63D0\u4EA4")),
-                react_1["default"].createElement(CommentProvider_1["default"], { uniqStr: uniqStr, maxNest: nest, editable: editable, pageSize: pageSize, startReply: startReply, updateComment: updateComment, fetchComments: fetchComments, fetchCurrentUser: fetchCurrentUser },
-                    react_1["default"].createElement(CommentsList_1["default"], { ref: commentListRef }))));
+                react_1["default"].createElement(ReplyProvider_1["default"], { startReply: startReply, updateComment: updateComment },
+                    react_1["default"].createElement(CommentProvider_1["default"], { uniqStr: uniqStr, maxNest: nest, editable: editable, pageSize: pageSize, fetchComments: fetchComments, fetchCurrentUser: fetchCurrentUser },
+                        react_1["default"].createElement(CommentsList_1["default"], { ref: commentListRef })))));
 }
 exports["default"] = BBSPanelCore;
+//# sourceMappingURL=index.js.map

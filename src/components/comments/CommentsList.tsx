@@ -4,6 +4,7 @@ import CommentContext from "../../context/comments/CommentContext";
 import ListRender from "./ListRender";
 import MoreButton from "./MoreButton";
 import Loading from "../UI/Loading";
+import ReplyContext from "../../context/replys/ReplyContext";
 
 const CommentsList=React.forwardRef((props,forwardRef)=>{
     const {
@@ -21,8 +22,11 @@ const CommentsList=React.forwardRef((props,forwardRef)=>{
         loadList,
         updateCommentAsync,
         updateList,
-        updateReply
+        // updateReply
     }=useContext(CommentContext)
+    const {
+        updateReply,
+    }=useContext(ReplyContext)
 
     React.useImperativeHandle(forwardRef,()=>({
         updateList,

@@ -59,6 +59,7 @@ function useConvertLayer() {
      * Required
      */
     function updateComment(id, message) {
+        console.log(id, message);
         return updateComment_server(id, message)
             .then(function (data) {
             if (!data)
@@ -303,3 +304,4 @@ function useConvertLayer() {
     };
 }
 exports["default"] = useConvertLayer;
+//# sourceMappingURL=ConvertLayer.js.map

@@ -11,14 +11,12 @@ interface CommentContextType{
     list:CommentObject[],
     page:number,
     noMoreData:boolean,
-    updateReplyDetails: { replyId:string,rootId:string } | null,
+    // updateReplyDetails: { replyId:string,rootId:string } | null,
     loadMore:()=>void,
     loadList:(parameters:any)=>Promise<{data:CommentObject[],total:number}>,
     updateCommentAsync:(id:string,updatedData:CommentObject)=>void,
-    updateList,
-    updateReply,
-    startReply,
-    updateComment
+    updateList: any,
+    // updateReply: any,
 }
 const CommentContext = React.createContext<CommentContextType | null>(null)
 
