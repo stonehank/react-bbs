@@ -1,6 +1,6 @@
 import React from 'react';
 import InputInfoProvider from "../context/input-info/InputInfoProvider.tsx";
-import BBSPanelCore from "./BBSPanelCore/index";
+import BBSPanelCore from "./core/BBSPanelCore";
 import PropTypes from "prop-types";
 
 function ServerlessBBSPanel(props) {

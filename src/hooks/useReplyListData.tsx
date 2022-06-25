@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import useSyncState from "./useSyncState";
 import {CommentObject} from "../types";
 import cloneDeep from "clone-deep";
@@ -8,13 +8,22 @@ import scrollToEle from "../utils/DOM/scrollToEle";
 import highLightEle from "../utils/DOM/highLightEle";
 
 
-function useReplyListData({details,curNest,maxNest,loadList,updateReplyDetails,updateCommentAsync}) {
-    const [replyPage, setReplyPage]=useState(1)
+function useReplyListData({details,curNest,maxNest,loadList,updateReplyDetails,updateCommentAsync}):{
+    replyList:CommentObject[],
+    nodata:boolean,
+    replyCounts:number,
+    replyLoading:boolean,
+    showReply:boolean,
+    toggleReplyList:()=>Promise<void>,
+    fetchMore:()=>void,
+    updateCommentInReplyAsync:(id:string,data:{message:string,updatedAt:string})=>void
+} {
     const [replyList, syncReplyList,setReplyList]=useSyncState<CommentObject[]>([])
-    const [nodata, setNodata]=useState(false)
+    const [nodata, setNodata]=useState<boolean>(false)
     const [replyCounts, setReplyCounts]=useState<number>(details.replyCounts || 0)
-    const [replyLoading, setReplyLoading]=useState(false)
-    const [showReply, setShowReply]=useState(false)
+    const [replyLoading, setReplyLoading]=useState<boolean>(false)
+    const [showReply, setShowReply]=useState<boolean>(false)
+    const replyPage=useRef<number>(1)
 
     useDidUpdate(()=>{
         if(!updateReplyDetails)return
@@ -34,7 +43,7 @@ function useReplyListData({details,curNest,maxNest,loadList,updateReplyDetails,u
         }
     },[updateReplyDetails])
 
-    function toggleReplyList(){
+    function toggleReplyList():Promise<void>{
         if(showReply){
             setShowReply(false)
             setReplyList([])
@@ -47,10 +56,10 @@ function useReplyListData({details,curNest,maxNest,loadList,updateReplyDetails,u
         }
     }
 
-    function loadData(){
+    function loadData():Promise<void>{
         let params={
             replyId:details.objectId,
-            page:replyPage,
+            page:replyPage.current,
             deepReply:curNest + 1 === maxNest,
             deepReplyCounts:curNest + 2 >= maxNest,
         }
@@ -64,7 +73,7 @@ function useReplyListData({details,curNest,maxNest,loadList,updateReplyDetails,u
             })
     }
 
-    function updateCommentInReplyAsync(id,data){
+    function updateCommentInReplyAsync(id:string,data:{message:string,updatedAt:string}):void{
         let idx=syncReplyList.current.findIndex(obj=>obj.objectId===id)
         let newReplyList=replyList.slice()
         if(idx!==-1){
@@ -80,12 +89,12 @@ function useReplyListData({details,curNest,maxNest,loadList,updateReplyDetails,u
     }
 
     function fetchMore(){
-        setReplyPage(replyPage+1)
+        replyPage.current+=1
         return loadData()
 
     }
 
-    function updateDataAfterReply(){
+    function updateDataAfterReply():void{
         let next
         if(!showReply){
             next=toggleReplyList()
@@ -110,13 +119,11 @@ function useReplyListData({details,curNest,maxNest,loadList,updateReplyDetails,u
     }
 
     return {
-        replyPage,
         replyList,
         nodata,
         replyCounts,
         replyLoading,
         showReply,
-
         toggleReplyList,
         fetchMore,
         updateCommentInReplyAsync

@@ -4,6 +4,8 @@ import ServerlessBBSPanel from "./components/ServerlessBBSPanel";
 export default function App() {
 
   return (
-       <ServerlessBBSPanel />
+       <ServerlessBBSPanel
+           nest={2}
+       />
   )
 }

@@ -13,16 +13,16 @@ function ReplyListNest({
                            maxNest,
                            replyList,
                            replyCounts,
-                           nodata,
+                           // nodata,
                            updateCommentInReplyAsync,
                            loadList,
                            fetchMore
 }) {
+    if(replyLoading) return <Loading size={32}/>
     return (
         showReply && canRenderReplyBtn
         &&
         <div>
-            {replyLoading ? <Loading size={32}/> : null}
             <ListRender
                 className={clx('mt-2', 'pl-1', messageBodyStyle['bbs-reply-wrapper'])}
                 curNest={curNest + 1}
@@ -32,12 +32,10 @@ function ReplyListNest({
                 loadList={loadList}
             />
             {
-                !replyLoading && replyCounts > replyList.length
-                &&
                 <MoreButton
                     align={"left"}
                     simple={true}
-                    nodata={nodata}
+                    noMoreData={replyCounts <= replyList.length}
                     loadMore={fetchMore}
                 />
             }

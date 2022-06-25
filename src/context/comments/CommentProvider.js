@@ -125,14 +125,14 @@ function CommentProvider(props) {
     }
     return (react_1["default"].createElement(CommentContext_1["default"].Provider, { value: {
             maxNest: maxNest,
-            uniqStr: uniqStr,
-            pageSize: pageSize,
-            editable: editable,
+            // uniqStr,
+            // pageSize,
+            // editable,
             loading: loading,
             userLoading: userLoading,
             total: total,
             list: list,
-            page: page,
+            // page,
             noMoreData: noMoreData,
             loadMore: loadMore,
             loadList: loadList,

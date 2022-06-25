@@ -1,21 +1,22 @@
 import {useState} from 'react';
 
+
 function useReplyEdit(props) {
     const {details, editMessageRef, updateComment, updateCommentAsync}=props
-    const [edit, setEdit]=useState(false)
-    const [editMessage, setEditMessage]=useState(details.message)
+    const [edit, setEdit]=useState<boolean>(false)
+    const [editMessage, setEditMessage]=useState<string>(details.message)
 
-    function showEdit(){
+    function showEdit():void{
         setEdit(true)
         setEditMessage(details.message)
     }
 
-    function closeEdit(){
+    function closeEdit():void{
         setEdit(false)
         setEditMessage(details.message)
     }
 
-    function saveEdit(){
+    function saveEdit():void{
         if(!validate())return
         let id=details.objectId
         updateComment(id,editMessage)
@@ -26,7 +27,7 @@ function useReplyEdit(props) {
             })
     }
 
-    function validate() {
+    function validate():boolean {
         return editMessageRef.current.validate()
     }
 

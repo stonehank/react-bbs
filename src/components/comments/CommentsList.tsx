@@ -9,13 +9,13 @@ import ReplyContext from "../../context/replys/ReplyContext";
 const CommentsList=React.forwardRef((props,forwardRef)=>{
     const {
         maxNest,
-        uniqStr,
-        pageSize,
-        editable,
+        // uniqStr,
+        // pageSize,
+        // editable,
         loading,
         userLoading,
         list,
-        page,
+        // page,
         total,
         noMoreData,
         loadMore,
@@ -33,15 +33,15 @@ const CommentsList=React.forwardRef((props,forwardRef)=>{
         updateReply
     }))
 
-
+    if(loading || userLoading){
+        return(
+            <div className="text-center" >
+                <Loading size={48} />
+            </div>
+        )
+    }
 
     return (
-        loading || userLoading
-        ?
-        <div className="text-center" >
-            <Loading size={48} />
-        </div>
-        :
         <section>
             <p className={"text-md"}>
                 评论数：<span>{total > 999 ? '999+' : total}</span>

@@ -23,12 +23,12 @@ var scrollToEle_1 = __importDefault(require("../utils/DOM/scrollToEle"));
 var highLightEle_1 = __importDefault(require("../utils/DOM/highLightEle"));
 function useReplyListData(_a) {
     var details = _a.details, curNest = _a.curNest, maxNest = _a.maxNest, loadList = _a.loadList, updateReplyDetails = _a.updateReplyDetails, updateCommentAsync = _a.updateCommentAsync;
-    var _b = (0, react_1.useState)(1), replyPage = _b[0], setReplyPage = _b[1];
-    var _c = (0, useSyncState_1["default"])([]), replyList = _c[0], syncReplyList = _c[1], setReplyList = _c[2];
-    var _d = (0, react_1.useState)(false), nodata = _d[0], setNodata = _d[1];
-    var _e = (0, react_1.useState)(details.replyCounts || 0), replyCounts = _e[0], setReplyCounts = _e[1];
-    var _f = (0, react_1.useState)(false), replyLoading = _f[0], setReplyLoading = _f[1];
-    var _g = (0, react_1.useState)(false), showReply = _g[0], setShowReply = _g[1];
+    var _b = (0, useSyncState_1["default"])([]), replyList = _b[0], syncReplyList = _b[1], setReplyList = _b[2];
+    var _c = (0, react_1.useState)(false), nodata = _c[0], setNodata = _c[1];
+    var _d = (0, react_1.useState)(details.replyCounts || 0), replyCounts = _d[0], setReplyCounts = _d[1];
+    var _e = (0, react_1.useState)(false), replyLoading = _e[0], setReplyLoading = _e[1];
+    var _f = (0, react_1.useState)(false), showReply = _f[0], setShowReply = _f[1];
+    var replyPage = (0, react_1.useRef)(1);
     (0, useDidUpdate_1["default"])(function () {
         if (!updateReplyDetails)
             return;
@@ -65,7 +65,7 @@ function useReplyListData(_a) {
     function loadData() {
         var params = {
             replyId: details.objectId,
-            page: replyPage,
+            page: replyPage.current,
             deepReply: curNest + 1 === maxNest,
             deepReplyCounts: curNest + 2 >= maxNest
         };
@@ -92,7 +92,7 @@ function useReplyListData(_a) {
         }
     }
     function fetchMore() {
-        setReplyPage(replyPage + 1);
+        replyPage.current += 1;
         return loadData();
     }
     function updateDataAfterReply() {
@@ -121,7 +121,6 @@ function useReplyListData(_a) {
         });
     }
     return {
-        replyPage: replyPage,
         replyList: replyList,
         nodata: nodata,
         replyCounts: replyCounts,

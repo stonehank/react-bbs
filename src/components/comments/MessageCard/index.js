@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 import styled from "styled-components";
 import MessageHead from "./MessageHead";
-import MessageBody from "./MessageBody";
+import MessageBody from "./MessageBody.tsx";
 
 const BBSCommentCard = styled.div`
     margin:16px 0;
@@ -20,6 +20,7 @@ function MessageCard(props) {
         loadList,
         updateCommentAsync,
     } = props
+    console.log('---render---')
     return (
         <div
             id={details.objectId}
@@ -42,8 +43,14 @@ function MessageCard(props) {
         </div>
     )
 }
+
 function propsAreEqual(prevProps, nextProps) {
-    return prevProps.details === nextProps.details
+    return prevProps.details.objectId === nextProps.details.objectId
+        && prevProps.details.nickname === nextProps.details.nickname
+        && prevProps.details.at === nextProps.details.at
+        && prevProps.details.avatar === nextProps.details.avatar
+        && prevProps.details.message === nextProps.details.message
+        && prevProps.details.replyCounts === nextProps.details.replyCounts
         && prevProps.curNest === nextProps.curNest
         && prevProps.small === nextProps.small
         && prevProps.maxNest === nextProps.maxNest

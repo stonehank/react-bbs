@@ -109,14 +109,14 @@ function CommentProvider(props) {
     return (
         <CommentContext.Provider value={{
             maxNest,
-            uniqStr,
-            pageSize,
-            editable,
+            // uniqStr,
+            // pageSize,
+            // editable,
             loading,
             userLoading,
             total,
             list,
-            page,
+            // page,
             noMoreData,
             loadMore,
             loadList,

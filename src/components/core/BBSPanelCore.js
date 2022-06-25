@@ -124,4 +124,4 @@ function BBSPanelCore() {
                         react_1["default"].createElement(CommentsList_1["default"], { ref: commentListRef })))));
 }
 exports["default"] = BBSPanelCore;
-//# sourceMappingURL=index.js.map
+//# sourceMappingURL=BBSPanelCore.js.map

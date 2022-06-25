@@ -2,14 +2,14 @@ import React from 'react';
 import {CommentObject} from "../../types";
 interface CommentContextType{
     maxNest:string,
-    uniqStr:string,
-    pageSize:number,
-    editable:boolean,
+    // uniqStr:string,
+    // pageSize:number,
+    // editable:boolean,
     loading:boolean,
     userLoading:boolean,
     total:number,
     list:CommentObject[],
-    page:number,
+    // page:number,
     noMoreData:boolean,
     // updateReplyDetails: { replyId:string,rootId:string } | null,
     loadMore:()=>void,

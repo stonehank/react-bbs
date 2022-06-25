@@ -10,22 +10,23 @@ function MoreButton(props) {
         setMoreLoading(true)
         loadMore().finally(()=>setMoreLoading(false))
     }
+    if(moreLoading)return (
+        <div className={'text-'+align}>
+            <Loading size={24} />
+        </div>
+    )
+    if(noMoreData && simple)return null
     return (
         <div className={'text-'+align}>
-            {moreLoading
-                ?
-                <Loading size={48} />
-                :
-                <Button
-                    disabled={noMoreData}
-                    text={noMoreData || simple}
-                    color={noMoreData ? 'secondary' : 'info'}
-                    dense={simple}
-                    onClick={load}
-                >
-                    { noMoreData ? '没有更多了' : '查看更多' }
-                </Button>
-            }
+            <Button
+                disabled={noMoreData}
+                text={noMoreData || simple}
+                color={noMoreData ? 'secondary' : 'info'}
+                dense={simple}
+                onClick={load}
+            >
+                { noMoreData ? '没有更多了' : '查看更多' }
+            </Button>
         </div>
     );
 }
@@ -35,7 +36,7 @@ MoreButton.propTypes={
     loadMore:PropTypes.func,
     align:PropTypes.string
 }
-MoreButton.defaultTypes={
+MoreButton.defaultProps={
     align:'center'
 }
 export default MoreButton;
