@@ -110,6 +110,12 @@ Avatar.defaultProps = {
     nickname: '',
     avatar: null
 };
-exports["default"] = react_1["default"].memo(Avatar);
+function propsAreEqual(prev, next) {
+    return prev.size === next.size
+        && prev.email === next.email
+        && prev.nickname === next.nickname
+        && prev.avatar === next.avatar;
+}
+exports["default"] = react_1["default"].memo(Avatar, propsAreEqual);
 var templateObject_1;
 //# sourceMappingURL=index.js.map

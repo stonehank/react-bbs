@@ -1,17 +1,18 @@
 import React, { useRef, useState} from 'react';
 import MessageInput from "../inputs/MessageInput";
 import ActionsBar from "../actions/ActionsBar";
-import Button from "../UI/Button";
 import {convertToPureMessage} from "../../utils/handlerAtTag";
-import useConvertLayer from "../../server-layer/leancloud/ConvertLayer";
-import ReplyUpdateContext from "../../context/replys/ReplyUpdateProvider";
-import CommentsList from "../comments/CommentsList";
 import Loading from "../UI/Loading";
-import useUserCacheData from "../../hooks/useUserCacheData";
 import useMessageData from "../../hooks/useMessageData";
-import {BBSPanelParams} from "../../types";
+import {BBSPanelParams, CommentObject, ConvertLayerIInterface} from "../../types";
 import UserInputInfo from "../inputs/UserInputInfo";
+import ReplyUpdateProvider from "../../context/replys/ReplyUpdateProvider";
+import Comments from "../comments/Comments";
+import Submit from "../actions/Submit";
 
+type BBSPanelCoreProps=BBSPanelParams & {
+    useConvertLayer:()=>ConvertLayerIInterface
+}
 
 function BBSPanelCore({
                           editable,
@@ -19,7 +20,13 @@ function BBSPanelCore({
                           nest,
                           offset,
                           uniqStr,
-}:BBSPanelParams) {
+                          useConvertLayer
+}:BBSPanelCoreProps) {
+
+    const [submitLoading,setSubmitLoading]=useState(false)
+    const commentListRef=useRef(null)
+    const userInputRef=useRef(null)
+
     const {
         initialLoading,
         uploadComment,
@@ -28,17 +35,8 @@ function BBSPanelCore({
         fetchCurrentUser
     } = useConvertLayer()
 
-    const {
-        avatar,
-        email,
-        nickname,
-        setAvatar,
-        setEmail,
-        setNickname,
-    }=useUserCacheData()
 
     const {
-        bbsInputBoxRef,
         messageEleRef,
         at,
         rootId,
@@ -47,12 +45,7 @@ function BBSPanelCore({
         setMessage,
         startReply,
         cancelReply,
-    }=useMessageData({offset})
-
-    const [submitLoading,setSubmitLoading]=useState(false)
-    const commentListRef=useRef(null)
-    const nicknameRef=useRef(null)
-    const emailRef=useRef(null)
+    }=useMessageData({offset,userInputRef})
 
     function reset() {
         setMessage('')
@@ -63,16 +56,15 @@ function BBSPanelCore({
     }
 
     function validate() {
-        return nicknameRef.current.validate()
-            && emailRef.current.validate()
+        return userInputRef.current.validate()
             && messageEleRef.current.validate()
     }
 
     function submit() {
         let params = {
-            avatar: avatar,
-            nickname: nickname,
-            email: email,
+            avatar: userInputRef.current.avatar,
+            nickname: userInputRef.current.nickname,
+            email: userInputRef.current.email,
             message: convertToPureMessage(message,at),
             rootId: rootId,
             replyId: replyId,
@@ -81,10 +73,8 @@ function BBSPanelCore({
         }
         if (!validate()) return
         setSubmitLoading(true)
-
         uploadComment(params)
-            .then((data) => {
-                console.log(data,'after reply!!')
+            .then((data:CommentObject) => {
                 if (!data) {
                     return
                 }
@@ -96,7 +86,6 @@ function BBSPanelCore({
                 } else {
                     /* 更新reply */
                     // updateReply()
-                    console.log('update reply in BBS!!')
                     commentListRef.current.updateReply({replyId:data.replyId,rootId:data.rootId})
                 }
             })
@@ -121,15 +110,7 @@ function BBSPanelCore({
     return (
         <>
             <UserInputInfo
-                bbsInputBoxRef={bbsInputBoxRef}
-                nicknameRef={nicknameRef}
-                emailRef={emailRef}
-                nickname={nickname}
-                avatar={avatar}
-                email={email}
-                setAvatar={setAvatar}
-                setNickname={setNickname}
-                setEmail={setEmail}
+                ref={userInputRef}
             />
             <MessageInput
                 ref={messageEleRef}
@@ -142,14 +123,13 @@ function BBSPanelCore({
                 at={at}
                 insertEmoji={insertEmoji}
             />
-            <div className="text-right mt-2">
-                <Button onClick={submit} loading={submitLoading}>提交</Button>
-            </div>
-            <ReplyUpdateContext
+            <Submit submit={submit} submitLoading={submitLoading} />
+            {/* ReplyUpdateContext can use throughout the list and nested list*/}
+            <ReplyUpdateProvider
                 startReply={startReply}
                 updateComment={updateComment}
             >
-                <CommentsList
+                <Comments
                     uniqStr={uniqStr}
                     maxNest={nest}
                     editable={editable}
@@ -158,7 +138,7 @@ function BBSPanelCore({
                     fetchCurrentUser={fetchCurrentUser}
                     ref={commentListRef}
                 />
-            </ReplyUpdateContext>
+            </ReplyUpdateProvider>
         </>
     );
 }

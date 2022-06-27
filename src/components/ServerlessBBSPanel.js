@@ -20,9 +20,10 @@ var prop_types_1 = __importDefault(require("prop-types"));
 require("../assets/css/common.scss");
 require("../assets/css/highlight.scss");
 require("../assets/css/github-markdown.scss");
+var ConvertLayer_1 = __importDefault(require("../server-layer/leancloud/ConvertLayer"));
 function ServerlessBBSPanel(props) {
     return (react_1["default"].createElement("section", { className: "serverless-bbs" },
-        react_1["default"].createElement(BBSPanelCore_1["default"], __assign({}, props))));
+        react_1["default"].createElement(BBSPanelCore_1["default"], __assign({}, props, { useConvertLayer: ConvertLayer_1["default"] }))));
 }
 ServerlessBBSPanel.propTypes = {
     pageSize: prop_types_1["default"].oneOfType([

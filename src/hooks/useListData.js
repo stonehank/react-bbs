@@ -82,23 +82,23 @@ function useListData(_a) {
         setLoading(true);
         loadData();
     }
-    function loadList(parameters) {
+    var loadList = (0, react_1.useCallback)(function (parameters) {
         var params = __assign({ uniqStr: uniqStr, pageSize: +pageSize }, parameters);
         return fetchComments(params);
-    }
-    function loadMore() {
+    }, [uniqStr, pageSize]);
+    var loadMore = (0, react_1.useCallback)(function () {
         setPage(page + 1);
         return loadData();
-    }
-    function updateCommentAsync(id, updatedData) {
-        console.log(syncList, 'updateCommentAsync');
+    }, [page]);
+    var updateCommentAsync = (0, react_1.useCallback)(function (id, updatedData) {
+        // console.log(syncList,'updateCommentAsync')
         var idx = list.findIndex(function (obj) { return obj.objectId === id; });
         var newList = list.slice();
         if (idx !== -1) {
             newList[idx] = __assign(__assign({}, newList[idx]), { message: updatedData.message, updatedAt: updatedData.updatedAt });
             setList(newList);
         }
-    }
+    }, [list]);
     return {
         loading: loading,
         userLoading: userLoading,

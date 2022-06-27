@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import useSyncState from "./useSyncState";
 import {CommentObject, FetchCommentParams, FetchCommentResult, SingUserInfo} from "../types";
 import useDidUpdate from "./useDidUpdate";
@@ -91,23 +91,21 @@ function useListData({maxNest, uniqStr, pageSize, fetchComments, fetchCurrentUse
         setLoading(true)
         loadData()
     }
-
-    function loadList(parameters){
+    const loadList=useCallback((parameters)=>{
         let params={
             uniqStr:uniqStr,
             pageSize:+pageSize,
             ...parameters
         }
         return fetchComments(params)
-    }
-
-    function loadMore(){
+    },[uniqStr,pageSize])
+    const loadMore=useCallback(()=>{
         setPage(page + 1)
         return loadData()
-    }
+    },[page])
 
-    function updateCommentAsync(id,updatedData){
-        console.log(syncList,'updateCommentAsync')
+    const updateCommentAsync=useCallback((id,updatedData)=>{
+        // console.log(syncList,'updateCommentAsync')
         let idx=list.findIndex(obj=>obj.objectId===id)
         let newList=list.slice()
         if(idx!==-1){
@@ -118,9 +116,7 @@ function useListData({maxNest, uniqStr, pageSize, fetchComments, fetchCurrentUse
             }
             setList(newList)
         }
-
-
-    }
+    },[list])
     return {
         loading,
         userLoading,

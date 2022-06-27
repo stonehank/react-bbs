@@ -7,7 +7,7 @@ const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
 const ErrorOverlayPlugin = require('error-overlay-webpack-plugin')
 
 module.exports = {
-  entry: path.join( src, 'index.tsx'),
+  entry: path.join( src, 'index.js'),
   output: {
     path: path.join(__dirname, 'demo'),
     filename:'react-bbs.js'

@@ -51,6 +51,7 @@ function MessageBody(props) {
     function insertEmoji(emoji) {
         editMessageRef.current.insertToValue(emoji);
     }
+    console.log('body render');
     return (react_1["default"].createElement("div", { className: (0, classnames_1["default"])(message_body_module_scss_1["default"]["bbs-msg-wrapper"], (_a = {},
             _a[message_body_module_scss_1["default"]["msg-small"]] = small,
             _a)) },

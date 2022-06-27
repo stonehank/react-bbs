@@ -120,4 +120,11 @@ Avatar.defaultProps={
     avatar:null,
 }
 
-export default React.memo(Avatar);
+function propsAreEqual(prev,next){
+    return prev.size===next.size
+    && prev.email === next.email
+    && prev.nickname === next.nickname
+    && prev.avatar === next.avatar
+}
+
+export default React.memo(Avatar,propsAreEqual);

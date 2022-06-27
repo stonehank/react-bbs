@@ -13,7 +13,7 @@ export interface ConvertLayerIInterface {
     initialLoading:boolean,
     fetchPageViews,
     fetchCounts,
-    updateComment,
+    updateComment:(id:string,message:string)=>Promise<CommentObject>,
     uploadComment,
     fetchCurrentUser,
     fetchComments:(params:{

@@ -63,5 +63,5 @@ var Nickname = react_1["default"].forwardRef(function (props, forwardRef) {
 Nickname.defaultProps = {
     nickname: ''
 };
-exports["default"] = react_1["default"].memo(Nickname);
+exports["default"] = react_1["default"].memo(Nickname, function (prev, next) { return prev.nickname === next.nickname; });
 //# sourceMappingURL=Nickname.js.map

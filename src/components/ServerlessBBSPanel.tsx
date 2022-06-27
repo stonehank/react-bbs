@@ -5,12 +5,13 @@ import {BBSPanelParams} from "../types";
 import '../assets/css/common.scss'
 import '../assets/css/highlight.scss'
 import '../assets/css/github-markdown.scss'
+import useConvertLayer from "../server-layer/leancloud/ConvertLayer";
 
 
 function ServerlessBBSPanel(props:BBSPanelParams) {
     return (
         <section className="serverless-bbs">
-            <BBSPanelCore {...props} />
+            <BBSPanelCore {...props} useConvertLayer={useConvertLayer} />
         </section>
     );
 }

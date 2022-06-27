@@ -1,6 +1,5 @@
 import React, {useRef, useImperativeHandle} from 'react';
 import TextField from "../UI/TextField";
-import PropTypes from "prop-types";
 
 type NicknameProps={
     nickname:string,
@@ -35,6 +34,6 @@ Nickname.defaultProps={
     nickname:'',
 }
 
-export default React.memo(Nickname);
+export default React.memo(Nickname,(prev,next)=>prev.nickname===next.nickname);
 
 

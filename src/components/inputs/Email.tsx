@@ -36,5 +36,5 @@ Email.defaultProps={
     email:'',
 }
 
-export default React.memo(Email);
+export default React.memo(Email,(prev,next)=>prev.email===next.email);
 

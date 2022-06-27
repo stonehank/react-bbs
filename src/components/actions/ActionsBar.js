@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import styled from 'styled-components'
 import {useSpring, animated} from 'react-spring'
 import MarkdownIcon from "./MarkdownIcon";
-import Emoji from "../inputs/Emoji";
+import Emoji from "../inputs/Emoji.tsx";
 import Button from "../UI/Button";
 import PreviewRender from "./PreviewRender";
 import PropTypes from "prop-types";

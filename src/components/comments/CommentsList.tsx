@@ -1,29 +1,23 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import ListRender from "./ListRender";
 import MoreButton from "./MoreButton";
 import Loading from "../UI/Loading";
-import ReplyUpdateContext from "../../context/replys/ReplyUpdateContext";
-import useListData from "../../hooks/useListData";
-import {FetchCommentParams, FetchCommentResult, SingUserInfo} from "../../types";
+import isEqual from "react-fast-compare";
 
 type Params={
-    uniqStr:string,
-    maxNest:number,
-    editable:boolean,
-    pageSize:number,
-    fetchComments:(params:FetchCommentParams)=>Promise<FetchCommentResult>,
-    fetchCurrentUser:()=>Promise<SingUserInfo>
+    maxNest,
+    loading,
+    userLoading,
+    list,
+    total,
+    noMoreData,
+    loadMore,
+    loadList,
+    updateCommentAsync,
 }
-const CommentsList=React.forwardRef((props:Params,forwardRef)=>{
+function CommentsList(props:Params){
     const {
-        uniqStr,
         maxNest,
-        editable,
-        pageSize,
-        fetchComments,
-        fetchCurrentUser,
-    }=props
-    const {
         loading,
         userLoading,
         list,
@@ -32,17 +26,8 @@ const CommentsList=React.forwardRef((props:Params,forwardRef)=>{
         loadMore,
         loadList,
         updateCommentAsync,
-        updateList,
-    }=useListData({uniqStr,maxNest,pageSize,fetchComments,fetchCurrentUser})
+    }=props
 
-    const {
-        updateReply,
-    }=useContext(ReplyUpdateContext)
-
-    React.useImperativeHandle(forwardRef,()=>({
-        updateList,
-        updateReply
-    }))
 
     if(loading || userLoading){
         return(
@@ -51,7 +36,7 @@ const CommentsList=React.forwardRef((props:Params,forwardRef)=>{
             </div>
         )
     }
-
+    console.log('comment list render')
     return (
         <section>
             <p className={"text-md"}>
@@ -78,6 +63,14 @@ const CommentsList=React.forwardRef((props:Params,forwardRef)=>{
 
         </section>
     );
-})
+}
 
-export default CommentsList;
+// function propsIsEqual(prev,next){
+//     for(let k in prev){
+//         if(!prev.hasOwnProperty(k))continue
+//         if(typeof prev[k]!=='function' && prev[k]!==next[k])return false
+//     }
+//     return true
+// }
+
+export default React.memo(CommentsList);

@@ -36,12 +36,13 @@ function ReplyUpdateProvider(_a) {
         var replyId = _a.replyId, rootId = _a.rootId;
         updateReplyDetails.current = { replyId: replyId, rootId: rootId };
     }
-    return (react_1["default"].createElement(ReplyUpdateContext_1["default"].Provider, { value: {
-            startReply: startReply,
-            updateComment: updateComment,
-            updateReply: updateReply,
-            updateReplyDetails: updateReplyDetails.current
-        } }, children));
+    var value = (0, react_1.useMemo)(function () { return ({
+        startReply: startReply,
+        updateComment: updateComment,
+        updateReply: updateReply,
+        updateReplyDetails: updateReplyDetails.current
+    }); }, [updateReplyDetails.current]);
+    return (react_1["default"].createElement(ReplyUpdateContext_1["default"].Provider, { value: value }, children));
 }
 exports["default"] = ReplyUpdateProvider;
 //# sourceMappingURL=ReplyUpdateProvider.js.map

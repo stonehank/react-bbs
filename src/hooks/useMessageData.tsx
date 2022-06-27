@@ -1,10 +1,9 @@
 import React, {useReducer, useRef, useState} from 'react';
 import {ReplyInfo} from "../types";
 import useDidUpdate from "./useDidUpdate";
-import {scrollToEle} from "../utils/index";
 import {convertToAtMessage} from "../utils/handlerAtTag";
 
-function useMessageData({offset}) {
+function useMessageData({offset,userInputRef}) {
     let initialReplyInfo:ReplyInfo={
         at: '',
         rootId: '',
@@ -12,7 +11,6 @@ function useMessageData({offset}) {
     }
     const [replyInfo,replyInfoDispatch] = useReducer(replyInfoReducer, initialReplyInfo)
     const [message,setMessage] = useState('')
-    const bbsInputBoxRef=useRef(null)
     const messageEleRef=useRef(null)
 
     function replyInfoReducer(state:ReplyInfo,action:{type:string,data?:ReplyInfo}):ReplyInfo {
@@ -43,22 +41,19 @@ function useMessageData({offset}) {
         replyInfoDispatch({type:'reply',data:{rootId,replyId,at:replyName}})
         let newMessage=convertToAtMessage(message,replyName)
         setMessage(newMessage)
-        scrollToEle(bbsInputBoxRef.current, {
-            highlight: false,
-            smooth: true,
-            offset: offset
-        }).then(() => {
-            messageEleRef.current.getElement().selectionStart = newMessage.length
-            messageEleRef.current.getElement().selectionEnd = newMessage.length
-            messageEleRef.current.getElement().focus()
-        })
+        if(userInputRef.current){
+            userInputRef.current.scrollToMessageInput(offset).then(() => {
+                messageEleRef.current.getElement().selectionStart = newMessage.length
+                messageEleRef.current.getElement().selectionEnd = newMessage.length
+                messageEleRef.current.getElement().focus()
+            })
+        }
     }
     function cancelReply() {
         setMessage(message.slice(replyInfo.at.length + 1))
         replyInfoDispatch({type:'cancel'})
     }
     return {
-        bbsInputBoxRef,
         messageEleRef,
         message,
         setMessage,

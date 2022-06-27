@@ -64,5 +64,5 @@ var Email = react_1["default"].forwardRef(function (props, forwardRef) {
 Email.defaultProps = {
     email: ''
 };
-exports["default"] = react_1["default"].memo(Email);
+exports["default"] = react_1["default"].memo(Email, function (prev, next) { return prev.email === next.email; });
 //# sourceMappingURL=Email.js.map
