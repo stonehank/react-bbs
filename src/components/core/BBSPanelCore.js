@@ -27,27 +27,23 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 exports.__esModule = true;
 var react_1 = __importStar(require("react"));
-var bbs_panel_core_module_scss_1 = __importDefault(require("./bbs-panel-core.module.scss"));
-var Avatar_1 = __importDefault(require("../inputs/Avatar"));
-var Nickname_1 = __importDefault(require("../inputs/Nickname"));
-var Email_1 = __importDefault(require("../inputs/Email"));
 var MessageInput_1 = __importDefault(require("../inputs/MessageInput"));
 var ActionsBar_1 = __importDefault(require("../actions/ActionsBar"));
 var Button_1 = __importDefault(require("../UI/Button"));
 var handlerAtTag_1 = require("../../utils/handlerAtTag");
 var ConvertLayer_1 = __importDefault(require("../../server-layer/leancloud/ConvertLayer"));
-var CommentProvider_1 = __importDefault(require("../../context/comments/CommentProvider"));
-var ReplyProvider_1 = __importDefault(require("../../context/replys/ReplyProvider"));
+var ReplyUpdateProvider_1 = __importDefault(require("../../context/replys/ReplyUpdateProvider"));
 var CommentsList_1 = __importDefault(require("../comments/CommentsList"));
 var Loading_1 = __importDefault(require("../UI/Loading"));
-var InputInfoContext_1 = __importDefault(require("../../context/input-info/InputInfoContext"));
-require("../../assets/css/common.scss");
-require("../../assets/css/highlight.scss");
-require("../../assets/css/github-markdown.scss");
-function BBSPanelCore() {
-    var _a = (0, ConvertLayer_1["default"])(), initialLoading = _a.initialLoading, uploadComment = _a.uploadComment, updateComment = _a.updateComment, fetchComments = _a.fetchComments, fetchCurrentUser = _a.fetchCurrentUser;
-    var _b = (0, react_1.useContext)(InputInfoContext_1["default"]), uniqStr = _b.uniqStr, nest = _b.nest, pageSize = _b.pageSize, editable = _b.editable, avatar = _b.avatar, email = _b.email, nickname = _b.nickname, setAvatar = _b.setAvatar, setEmail = _b.setEmail, setNickname = _b.setNickname, bbsInputBoxRef = _b.bbsInputBoxRef, messageEleRef = _b.messageEleRef, startReply = _b.startReply, cancelReply = _b.cancelReply, message = _b.message, setMessage = _b.setMessage, at = _b.at, rootId = _b.rootId, replyId = _b.replyId;
-    var _c = (0, react_1.useState)(false), submitLoading = _c[0], setSubmitLoading = _c[1];
+var useUserCacheData_1 = __importDefault(require("../../hooks/useUserCacheData"));
+var useMessageData_1 = __importDefault(require("../../hooks/useMessageData"));
+var UserInputInfo_1 = __importDefault(require("../inputs/UserInputInfo"));
+function BBSPanelCore(_a) {
+    var editable = _a.editable, pageSize = _a.pageSize, nest = _a.nest, offset = _a.offset, uniqStr = _a.uniqStr;
+    var _b = (0, ConvertLayer_1["default"])(), initialLoading = _b.initialLoading, uploadComment = _b.uploadComment, updateComment = _b.updateComment, fetchComments = _b.fetchComments, fetchCurrentUser = _b.fetchCurrentUser;
+    var _c = (0, useUserCacheData_1["default"])(), avatar = _c.avatar, email = _c.email, nickname = _c.nickname, setAvatar = _c.setAvatar, setEmail = _c.setEmail, setNickname = _c.setNickname;
+    var _d = (0, useMessageData_1["default"])({ offset: offset }), bbsInputBoxRef = _d.bbsInputBoxRef, messageEleRef = _d.messageEleRef, at = _d.at, rootId = _d.rootId, replyId = _d.replyId, message = _d.message, setMessage = _d.setMessage, startReply = _d.startReply, cancelReply = _d.cancelReply;
+    var _e = (0, react_1.useState)(false), submitLoading = _e[0], setSubmitLoading = _e[1];
     var commentListRef = (0, react_1.useRef)(null);
     var nicknameRef = (0, react_1.useRef)(null);
     var emailRef = (0, react_1.useRef)(null);
@@ -102,26 +98,19 @@ function BBSPanelCore() {
     function insertEmoji(emoji) {
         messageEleRef.current.insertToValue(emoji);
     }
-    return (initialLoading
-        ?
-            react_1["default"].createElement("section", { className: "serverless-bbs" },
-                react_1["default"].createElement("div", { className: "text-center" },
-                    react_1["default"].createElement(Loading_1["default"], { size: 64 })))
-        :
-            react_1["default"].createElement("section", { className: "serverless-bbs" },
-                react_1["default"].createElement("div", { className: bbs_panel_core_module_scss_1["default"]["bbs-input-box"] },
-                    react_1["default"].createElement("div", { className: bbs_panel_core_module_scss_1["default"]["bbs-name-avatar"] + ' ' + bbs_panel_core_module_scss_1["default"]["bbs-input"], ref: bbsInputBoxRef },
-                        react_1["default"].createElement(Avatar_1["default"], { avatar: avatar, setAvatar: setAvatar, email: email, nickname: nickname }),
-                        react_1["default"].createElement(Nickname_1["default"], { style: { flex: 1 }, ref: nicknameRef, nickname: nickname, setNickname: setNickname })),
-                    react_1["default"].createElement("div", { className: bbs_panel_core_module_scss_1["default"]["bbs-input"] },
-                        react_1["default"].createElement(Email_1["default"], { ref: emailRef, email: email, setEmail: setEmail }))),
-                react_1["default"].createElement(MessageInput_1["default"], { ref: messageEleRef, message: message, setMessage: setMessage }),
-                react_1["default"].createElement(ActionsBar_1["default"], { message: message, replyId: replyId, at: at, insertEmoji: insertEmoji }),
-                react_1["default"].createElement("div", { className: "text-right mt-2" },
-                    react_1["default"].createElement(Button_1["default"], { onClick: submit }, "\u63D0\u4EA4")),
-                react_1["default"].createElement(ReplyProvider_1["default"], { startReply: startReply, updateComment: updateComment },
-                    react_1["default"].createElement(CommentProvider_1["default"], { uniqStr: uniqStr, maxNest: nest, editable: editable, pageSize: pageSize, fetchComments: fetchComments, fetchCurrentUser: fetchCurrentUser },
-                        react_1["default"].createElement(CommentsList_1["default"], { ref: commentListRef })))));
+    if (initialLoading) {
+        return (react_1["default"].createElement("section", { className: "serverless-bbs" },
+            react_1["default"].createElement("div", { className: "text-center" },
+                react_1["default"].createElement(Loading_1["default"], { size: 64 }))));
+    }
+    return (react_1["default"].createElement(react_1["default"].Fragment, null,
+        react_1["default"].createElement(UserInputInfo_1["default"], { bbsInputBoxRef: bbsInputBoxRef, nicknameRef: nicknameRef, emailRef: emailRef, nickname: nickname, avatar: avatar, email: email, setAvatar: setAvatar, setNickname: setNickname, setEmail: setEmail }),
+        react_1["default"].createElement(MessageInput_1["default"], { ref: messageEleRef, message: message, setMessage: setMessage }),
+        react_1["default"].createElement(ActionsBar_1["default"], { message: message, replyId: replyId, at: at, insertEmoji: insertEmoji }),
+        react_1["default"].createElement("div", { className: "text-right mt-2" },
+            react_1["default"].createElement(Button_1["default"], { onClick: submit, loading: submitLoading }, "\u63D0\u4EA4")),
+        react_1["default"].createElement(ReplyUpdateProvider_1["default"], { startReply: startReply, updateComment: updateComment },
+            react_1["default"].createElement(CommentsList_1["default"], { uniqStr: uniqStr, maxNest: nest, editable: editable, pageSize: pageSize, fetchComments: fetchComments, fetchCurrentUser: fetchCurrentUser, ref: commentListRef }))));
 }
 exports["default"] = BBSPanelCore;
 //# sourceMappingURL=BBSPanelCore.js.map

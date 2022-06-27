@@ -1,32 +1,43 @@
 import React, {useContext} from 'react';
-import PropTypes from 'prop-types'
-import CommentContext from "../../context/comments/CommentContext";
 import ListRender from "./ListRender";
 import MoreButton from "./MoreButton";
 import Loading from "../UI/Loading";
-import ReplyContext from "../../context/replys/ReplyContext";
+import ReplyUpdateContext from "../../context/replys/ReplyUpdateContext";
+import useListData from "../../hooks/useListData";
+import {FetchCommentParams, FetchCommentResult, SingUserInfo} from "../../types";
 
-const CommentsList=React.forwardRef((props,forwardRef)=>{
+type Params={
+    uniqStr:string,
+    maxNest:number,
+    editable:boolean,
+    pageSize:number,
+    fetchComments:(params:FetchCommentParams)=>Promise<FetchCommentResult>,
+    fetchCurrentUser:()=>Promise<SingUserInfo>
+}
+const CommentsList=React.forwardRef((props:Params,forwardRef)=>{
     const {
+        uniqStr,
         maxNest,
-        // uniqStr,
-        // pageSize,
-        // editable,
+        editable,
+        pageSize,
+        fetchComments,
+        fetchCurrentUser,
+    }=props
+    const {
         loading,
         userLoading,
         list,
-        // page,
         total,
         noMoreData,
         loadMore,
         loadList,
         updateCommentAsync,
         updateList,
-        // updateReply
-    }=useContext(CommentContext)
+    }=useListData({uniqStr,maxNest,pageSize,fetchComments,fetchCurrentUser})
+
     const {
         updateReply,
-    }=useContext(ReplyContext)
+    }=useContext(ReplyUpdateContext)
 
     React.useImperativeHandle(forwardRef,()=>({
         updateList,

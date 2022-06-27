@@ -1,7 +1,7 @@
 import {useEffect, useState,useRef} from 'react'
 import configMethods from '../../config'
 import useAPICore from "./APICore";
-import {CommentObject, ConvertLayerIInterface} from "../../types";
+import {CommentObject, ConvertLayerIInterface, FetchCommentParams, FetchCommentResult, SingUserInfo} from "../../types";
 const {readConfig, setLoggedUser} = configMethods
 const {pageviewMap, countMap} = readConfig()
 const cloneDeep=require('clone-deep')
@@ -51,7 +51,6 @@ export default function useConvertLayer() : ConvertLayerIInterface{
      * Required
      */
     function updateComment(id,message){
-        console.log(id,message)
         return updateComment_server(id,message)
             .then((data)=>{
                 if(!data)return null
@@ -81,10 +80,10 @@ export default function useConvertLayer() : ConvertLayerIInterface{
     /**
      * Required
      */
-    function fetchCurrentUser(){
+    function fetchCurrentUser():Promise<SingUserInfo>{
         return signIn_server()
             .then(user=>{
-                let simpleUser=user
+                let simpleUser:SingUserInfo=user
                 if(user.attributes){
                     simpleUser={
                         id:user.id,
@@ -101,18 +100,7 @@ export default function useConvertLayer() : ConvertLayerIInterface{
      * @param params
      * @returns {Promise<Object>} {data, total}
      */
-    function fetchComments(params:{
-        uniqStr:string,
-        rootId:string,
-        replyId:string,
-        page:number,
-        pageSize:number,
-        deepReply:boolean,
-        deepReplyCounts:number,
-    }):Promise<{
-        data:CommentObject[],
-        total:number
-    }> {
+    function fetchComments(params:FetchCommentParams):Promise<FetchCommentResult> {
         /*
             uniqStr         // 页面唯一值
             rootId          // rootId， 用于插入数据

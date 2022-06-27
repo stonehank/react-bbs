@@ -1,22 +1,22 @@
 import React, {useRef} from 'react';
-import ReplyContext from "./ReplyContext";
+import ReplyUpdateContext from "./ReplyUpdateContext";
 
-function ReplyProvider({children,startReply,updateComment}) {
+function ReplyUpdateProvider({children,startReply,updateComment}) {
     const updateReplyDetails=useRef<{rootId:string,replyId:string} | null>(null)
     // 更新reply
     function updateReply({replyId,rootId}){
         updateReplyDetails.current={replyId,rootId}
     }
     return (
-        <ReplyContext.Provider value={{
+        <ReplyUpdateContext.Provider value={{
             startReply,
             updateComment,
             updateReply,
             updateReplyDetails:updateReplyDetails.current
         }}>
             {children}
-        </ReplyContext.Provider>
+        </ReplyUpdateContext.Provider>
     );
 }
 
-export default ReplyProvider;
+export default ReplyUpdateProvider;

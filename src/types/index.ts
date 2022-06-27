@@ -65,3 +65,32 @@ export type ConfigInfo ={
     offset?:number,
     editable?:boolean
 }
+
+export type SingUserInfo={
+    id:string,
+    sessionToken:string,
+    username:string,
+}
+
+export type FetchCommentParams={
+    uniqStr:string,
+    rootId:string,
+    replyId:string,
+    page:number,
+    pageSize:number,
+    deepReply:boolean,
+    deepReplyCounts:number,
+}
+
+export type FetchCommentResult={
+    data:CommentObject[],
+    total:number
+}
+
+export type BBSPanelParams={
+    editable:boolean,
+    pageSize:number,
+    nest:number,
+    offset:number,
+    uniqStr: string
+}

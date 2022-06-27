@@ -1,3 +1,5 @@
+// import LeanCloudLayer from "./server-layer/leancloud/ConvertLayer";
+// import FirebaseLayer from "./server-layer/firebase/ConvertLayer";
 
 enum serverName{
     firebase ='firebase',
@@ -43,7 +45,7 @@ let configs:configType={
     editMode:false,
     CommentClass:'Comments_demo',
     CounterClass:'Counters_demo',
-    server:serverName.firebase
+    server:serverName.leancloud
 }
 
 const stableConfig:stableConfigType={
@@ -68,7 +70,7 @@ const methods={
     },
     readLoggedUser(){
         return loggedUser
-    },
+    }
 }
 
 export default methods

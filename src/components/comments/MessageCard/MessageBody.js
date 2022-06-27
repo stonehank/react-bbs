@@ -36,13 +36,13 @@ var ReplyEditRender_1 = __importDefault(require("./body-components/ReplyEditRend
 var useReplyEdit_1 = __importDefault(require("../../../hooks/useReplyEdit"));
 var useReplyListData_1 = __importDefault(require("../../../hooks/useReplyListData"));
 var config_1 = __importDefault(require("../../../config"));
-var ReplyContext_1 = __importDefault(require("../../../context/replys/ReplyContext"));
+var ReplyUpdateContext_1 = __importDefault(require("../../../context/replys/ReplyUpdateContext"));
 var readLoggedUser = config_1["default"].readLoggedUser;
 function MessageBody(props) {
     var _a, _b;
     var small = props.small, details = props.details, curNest = props.curNest, maxNest = props.maxNest, loadList = props.loadList, updateCommentAsync = props.updateCommentAsync;
     var editMessageRef = (0, react_1.useRef)(null);
-    var _c = (0, react_1.useContext)(ReplyContext_1["default"]), startReply = _c.startReply, updateReplyDetails = _c.updateReplyDetails, updateComment = _c.updateComment;
+    var _c = (0, react_1.useContext)(ReplyUpdateContext_1["default"]), startReply = _c.startReply, updateReplyDetails = _c.updateReplyDetails, updateComment = _c.updateComment;
     var _d = (0, useReplyEdit_1["default"])({ details: details, editMessageRef: editMessageRef, updateComment: updateComment, updateCommentAsync: updateCommentAsync }), edit = _d.edit, editMessage = _d.editMessage, setEditMessage = _d.setEditMessage, saveEdit = _d.saveEdit, showEdit = _d.showEdit, closeEdit = _d.closeEdit;
     var _e = (0, useReplyListData_1["default"])({ details: details, curNest: curNest, maxNest: maxNest, loadList: loadList, updateReplyDetails: updateReplyDetails, updateCommentAsync: updateCommentAsync }), replyList = _e.replyList, nodata = _e.nodata, replyCounts = _e.replyCounts, replyLoading = _e.replyLoading, showReply = _e.showReply, toggleReplyList = _e.toggleReplyList, fetchMore = _e.fetchMore, updateCommentInReplyAsync = _e.updateCommentInReplyAsync;
     var loggedUser = readLoggedUser();

@@ -11,9 +11,9 @@ function ReplyActions({
                           showEdit,
                           closeEdit
                       }) {
-    return (
-        edit && isOwnerComment
-            ?
+
+    if(edit && isOwnerComment){
+        return (
             <div className={messageBodyStyle['bbs-msg-action-edit']}>
                 <Button
                     dense
@@ -33,38 +33,38 @@ function ReplyActions({
                     保存
                 </Button>
             </div>
-            :
-            <div className={messageBodyStyle['bbs-msg-action-no-edit']}>
-                {
-                    isOwnerComment
-                        ?
-                        <Button
-                            dense
-                            text
-                            className="mr-4"
-                            onClick={showEdit}
-                        >
-                            编辑
-                        </Button>
-                        :
-                        null
-                }
-                <Button
-                    dense
-                    text
-                    className="mr-4"
-                    color="info"
-                    onClick={() => startReply({
-                        rootId: details.rootId || details.objectId,
-                        replyId: details.objectId,
-                        replyName: details.nickname,
-                    })}
-                >
-                    回复
-                </Button>
-
-
-            </div>
+        )
+    }
+    return (
+        <div className={messageBodyStyle['bbs-msg-action-no-edit']}>
+            {
+                isOwnerComment
+                    ?
+                    <Button
+                        dense
+                        text
+                        className="mr-4"
+                        onClick={showEdit}
+                    >
+                        编辑
+                    </Button>
+                    :
+                    null
+            }
+            <Button
+                dense
+                text
+                className="mr-4"
+                color="info"
+                onClick={() => startReply({
+                    rootId: details.rootId || details.objectId,
+                    replyId: details.objectId,
+                    replyName: details.nickname,
+                })}
+            >
+                回复
+            </Button>
+        </div>
     );
 }
 

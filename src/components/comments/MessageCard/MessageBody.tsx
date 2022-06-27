@@ -8,7 +8,7 @@ import ReplyEditRender from "./body-components/ReplyEditRender";
 import useReplyEdit from "../../../hooks/useReplyEdit";
 import useReplyListData from "../../../hooks/useReplyListData";
 import configMethods from '../../../config'
-import ReplyContext from "../../../context/replys/ReplyContext";
+import ReplyUpdateContext from "../../../context/replys/ReplyUpdateContext";
 const {readLoggedUser} = configMethods
 
 
@@ -24,7 +24,7 @@ function MessageBody(props) {
     } = props
 
     const editMessageRef=useRef(null)
-    const {startReply, updateReplyDetails, updateComment}=useContext(ReplyContext)
+    const {startReply, updateReplyDetails, updateComment}=useContext(ReplyUpdateContext)
     const {
         edit,
         editMessage,

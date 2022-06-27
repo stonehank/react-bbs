@@ -1,4 +1,6 @@
 "use strict";
+// import LeanCloudLayer from "./server-layer/leancloud/ConvertLayer";
+// import FirebaseLayer from "./server-layer/firebase/ConvertLayer";
 exports.__esModule = true;
 var serverName;
 (function (serverName) {
@@ -27,7 +29,7 @@ var configs = {
     editMode: false,
     CommentClass: 'Comments_demo',
     CounterClass: 'Counters_demo',
-    server: serverName.firebase
+    server: serverName.leancloud
 };
 var stableConfig = {
     UserClass: "_User",

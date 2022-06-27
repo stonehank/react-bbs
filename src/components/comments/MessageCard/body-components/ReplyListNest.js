@@ -19,9 +19,8 @@ function ReplyListNest({
                            fetchMore
 }) {
     if(replyLoading) return <Loading size={32}/>
+    if(!showReply || !canRenderReplyBtn)return null
     return (
-        showReply && canRenderReplyBtn
-        &&
         <div>
             <ListRender
                 className={clx('mt-2', 'pl-1', messageBodyStyle['bbs-reply-wrapper'])}

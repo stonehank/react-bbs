@@ -20,7 +20,7 @@ function MessageCard(props) {
         loadList,
         updateCommentAsync,
     } = props
-    console.log('---render---')
+
     return (
         <div
             id={details.objectId}
@@ -32,9 +32,6 @@ function MessageCard(props) {
                     small={small}
                     details={details}
                     updateCommentAsync={updateCommentAsync}
-                    // startReply={startReply}
-                    // updateReplyDetails={updateReplyDetails}
-                    // updateComment={updateComment}
                     loadList={loadList}
                     curNest={curNest}
                     maxNest={maxNest}

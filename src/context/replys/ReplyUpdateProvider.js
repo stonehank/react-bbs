@@ -27,8 +27,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 exports.__esModule = true;
 var react_1 = __importStar(require("react"));
-var ReplyContext_1 = __importDefault(require("./ReplyContext"));
-function ReplyProvider(_a) {
+var ReplyUpdateContext_1 = __importDefault(require("./ReplyUpdateContext"));
+function ReplyUpdateProvider(_a) {
     var children = _a.children, startReply = _a.startReply, updateComment = _a.updateComment;
     var updateReplyDetails = (0, react_1.useRef)(null);
     // 更新reply
@@ -36,12 +36,12 @@ function ReplyProvider(_a) {
         var replyId = _a.replyId, rootId = _a.rootId;
         updateReplyDetails.current = { replyId: replyId, rootId: rootId };
     }
-    return (react_1["default"].createElement(ReplyContext_1["default"].Provider, { value: {
+    return (react_1["default"].createElement(ReplyUpdateContext_1["default"].Provider, { value: {
             startReply: startReply,
             updateComment: updateComment,
             updateReply: updateReply,
             updateReplyDetails: updateReplyDetails.current
         } }, children));
 }
-exports["default"] = ReplyProvider;
-//# sourceMappingURL=ReplyProvider.js.map
+exports["default"] = ReplyUpdateProvider;
+//# sourceMappingURL=ReplyUpdateProvider.js.map

@@ -1,5 +1,5 @@
 import React from 'react'
-import ServerlessBBSPanel from "./components/ServerlessBBSPanel";
+import ServerlessBBSPanel from "./components/ServerlessBBSPanel.tsx";
 
 export default function App() {
 

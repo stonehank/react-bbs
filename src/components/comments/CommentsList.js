@@ -27,20 +27,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 exports.__esModule = true;
 var react_1 = __importStar(require("react"));
-var CommentContext_1 = __importDefault(require("../../context/comments/CommentContext"));
 var ListRender_1 = __importDefault(require("./ListRender"));
 var MoreButton_1 = __importDefault(require("./MoreButton"));
 var Loading_1 = __importDefault(require("../UI/Loading"));
-var ReplyContext_1 = __importDefault(require("../../context/replys/ReplyContext"));
+var ReplyUpdateContext_1 = __importDefault(require("../../context/replys/ReplyUpdateContext"));
+var useListData_1 = __importDefault(require("../../hooks/useListData"));
 var CommentsList = react_1["default"].forwardRef(function (props, forwardRef) {
-    var _a = (0, react_1.useContext)(CommentContext_1["default"]), maxNest = _a.maxNest, 
-    // uniqStr,
-    // pageSize,
-    // editable,
-    loading = _a.loading, userLoading = _a.userLoading, list = _a.list, 
-    // page,
-    total = _a.total, noMoreData = _a.noMoreData, loadMore = _a.loadMore, loadList = _a.loadList, updateCommentAsync = _a.updateCommentAsync, updateList = _a.updateList;
-    var updateReply = (0, react_1.useContext)(ReplyContext_1["default"]).updateReply;
+    var uniqStr = props.uniqStr, maxNest = props.maxNest, editable = props.editable, pageSize = props.pageSize, fetchComments = props.fetchComments, fetchCurrentUser = props.fetchCurrentUser;
+    var _a = (0, useListData_1["default"])({ uniqStr: uniqStr, maxNest: maxNest, pageSize: pageSize, fetchComments: fetchComments, fetchCurrentUser: fetchCurrentUser }), loading = _a.loading, userLoading = _a.userLoading, list = _a.list, total = _a.total, noMoreData = _a.noMoreData, loadMore = _a.loadMore, loadList = _a.loadList, updateCommentAsync = _a.updateCommentAsync, updateList = _a.updateList;
+    var updateReply = (0, react_1.useContext)(ReplyUpdateContext_1["default"]).updateReply;
     react_1["default"].useImperativeHandle(forwardRef, function () { return ({
         updateList: updateList,
         updateReply: updateReply

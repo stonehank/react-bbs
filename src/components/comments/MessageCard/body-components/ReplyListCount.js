@@ -8,20 +8,19 @@ function ReplyListCount({
                             showReply,
                             toggleReplyList
 }) {
+    if(!canRenderReplyBtn)return null
     return (
-        canRenderReplyBtn
-        &&
         <span className={messageBodyStyle['bbs-reply-btn']}>
-                            {
-                                replyCounts > 0 &&
-                                <Button dense onClick={toggleReplyList} text>
-                                    {
-                                        showReply ? <span>收起评论</span> : <span>{replyCounts}条评论</span>
-                                    }
-                                </Button>
-                            }
+            {
+                replyCounts > 0 &&
+                <Button dense onClick={toggleReplyList} text>
+                    {
+                        showReply ? <span>收起评论</span> : <span>{replyCounts}条评论</span>
+                    }
+                </Button>
+            }
 
-                        </span>
+        </span>
     );
 }
 
