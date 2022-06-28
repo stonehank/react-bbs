@@ -13,7 +13,6 @@ function CommentsList(props) {
         return (react_1["default"].createElement("div", { className: "text-center" },
             react_1["default"].createElement(Loading_1["default"], { size: 48 })));
     }
-    console.log('comment list render');
     return (react_1["default"].createElement("section", null,
         react_1["default"].createElement("p", { className: "text-md" },
             "\u8BC4\u8BBA\u6570\uFF1A",
@@ -29,12 +28,5 @@ function CommentsList(props) {
             :
                 react_1["default"].createElement(MoreButton_1["default"], { noMoreData: noMoreData, loadMore: loadMore })));
 }
-// function propsIsEqual(prev,next){
-//     for(let k in prev){
-//         if(!prev.hasOwnProperty(k))continue
-//         if(typeof prev[k]!=='function' && prev[k]!==next[k])return false
-//     }
-//     return true
-// }
 exports["default"] = react_1["default"].memo(CommentsList);
 //# sourceMappingURL=CommentsList.js.map

@@ -20,7 +20,7 @@ function ReplyListNest({
 }) {
     if(replyLoading) return <Loading size={32}/>
     if(!showReply || !canRenderReplyBtn)return null
-    console.log('nest list render')
+
     return (
         <div>
             <ListRender

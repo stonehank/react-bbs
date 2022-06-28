@@ -52,7 +52,6 @@ function MessageBody(props) {
     function insertEmoji(emoji) {
         editMessageRef.current.insertToValue(emoji)
     }
-    console.log('body render')
     return (
         <div
             className={clx(messageBodyStyle["bbs-msg-wrapper"],{

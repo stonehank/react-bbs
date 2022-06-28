@@ -35,7 +35,7 @@ var useMessageData_1 = __importDefault(require("../../hooks/useMessageData"));
 var UserInputInfo_1 = __importDefault(require("../inputs/UserInputInfo"));
 var ReplyUpdateProvider_1 = __importDefault(require("../../context/replys/ReplyUpdateProvider"));
 var Comments_1 = __importDefault(require("../comments/Comments"));
-var Submit_1 = __importDefault(require("../actions/Submit"));
+var Button_1 = __importDefault(require("../UI/Button"));
 function BBSPanelCore(_a) {
     var editable = _a.editable, pageSize = _a.pageSize, nest = _a.nest, offset = _a.offset, uniqStr = _a.uniqStr, useConvertLayer = _a.useConvertLayer;
     var _b = (0, react_1.useState)(false), submitLoading = _b[0], setSubmitLoading = _b[1];
@@ -100,7 +100,8 @@ function BBSPanelCore(_a) {
         react_1["default"].createElement(UserInputInfo_1["default"], { ref: userInputRef }),
         react_1["default"].createElement(MessageInput_1["default"], { ref: messageEleRef, message: message, setMessage: setMessage }),
         react_1["default"].createElement(ActionsBar_1["default"], { message: message, replyId: replyId, at: at, insertEmoji: insertEmoji }),
-        react_1["default"].createElement(Submit_1["default"], { submit: submit, submitLoading: submitLoading }),
+        react_1["default"].createElement("div", { className: "text-right mt-2" },
+            react_1["default"].createElement(Button_1["default"], { onClick: submit, loading: submitLoading }, "\u63D0\u4EA4")),
         react_1["default"].createElement(ReplyUpdateProvider_1["default"], { startReply: startReply, updateComment: updateComment },
             react_1["default"].createElement(Comments_1["default"], { uniqStr: uniqStr, maxNest: nest, editable: editable, pageSize: pageSize, fetchComments: fetchComments, fetchCurrentUser: fetchCurrentUser, ref: commentListRef }))));
 }

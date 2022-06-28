@@ -8,7 +8,7 @@ import {BBSPanelParams, CommentObject, ConvertLayerIInterface} from "../../types
 import UserInputInfo from "../inputs/UserInputInfo";
 import ReplyUpdateProvider from "../../context/replys/ReplyUpdateProvider";
 import Comments from "../comments/Comments";
-import Submit from "../actions/Submit";
+import Button from "../UI/Button";
 
 type BBSPanelCoreProps=BBSPanelParams & {
     useConvertLayer:()=>ConvertLayerIInterface
@@ -123,7 +123,9 @@ function BBSPanelCore({
                 at={at}
                 insertEmoji={insertEmoji}
             />
-            <Submit submit={submit} submitLoading={submitLoading} />
+            <div className="text-right mt-2">
+                <Button onClick={submit} loading={submitLoading}>提交</Button>
+            </div>
             {/* ReplyUpdateContext can use throughout the list and nested list*/}
             <ReplyUpdateProvider
                 startReply={startReply}

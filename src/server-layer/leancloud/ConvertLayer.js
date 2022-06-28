@@ -141,6 +141,7 @@ function useConvertLayer() {
                     filterData = Object.values(objectIdToData.current);
                 }
             }
+            filterData = filterData.sort(function (a, b) { return a.createdAt < b.createdAt ? 1 : -1; });
             // 这里获取从0到当前page的所有评论
             var result = cloneDeep(filterData.slice(0, pageSize * page));
             if (deepReplyCounts) {
@@ -149,7 +150,7 @@ function useConvertLayer() {
             result = result.map(function (obj) {
                 obj.replys = null;
                 return obj;
-            }).sort(function (a, b) { return a.createdAt < b.createdAt ? 1 : -1; });
+            });
             return new Promise(function (res) {
                 setTimeout(function () {
                     res({

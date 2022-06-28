@@ -17,7 +17,6 @@ function ReplyListNest(_a) {
         return react_1["default"].createElement(Loading_1["default"], { size: 32 });
     if (!showReply || !canRenderReplyBtn)
         return null;
-    console.log('nest list render');
     return (react_1["default"].createElement("div", null,
         react_1["default"].createElement(ListRender_1["default"], { className: (0, classnames_1["default"])('mt-2', 'pl-1', message_body_module_scss_1["default"]['bbs-reply-wrapper']), curNest: curNest + 1, maxNest: maxNest, list: replyList, updateCommentAsync: updateCommentInReplyAsync, loadList: loadList }),
         react_1["default"].createElement(MoreButton_1["default"], { align: "left", simple: true, noMoreData: replyCounts <= replyList.length, loadMore: fetchMore })));

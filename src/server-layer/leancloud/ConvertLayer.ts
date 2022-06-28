@@ -130,6 +130,7 @@ export default function useConvertLayer() : ConvertLayerIInterface{
                     filterData = Object.values(objectIdToData.current)
                 }
             }
+            filterData=filterData.sort((a,b)=>a.createdAt < b.createdAt ? 1 : -1)
             // 这里获取从0到当前page的所有评论
             let result:CommentObject[] = cloneDeep(filterData.slice(0, pageSize * page))
             if (deepReplyCounts) {
@@ -138,7 +139,7 @@ export default function useConvertLayer() : ConvertLayerIInterface{
             result = result.map(obj => {
                 obj.replys = null
                 return obj
-            }).sort((a,b)=>a.createdAt < b.createdAt ? 1 : -1)
+            })
 
             return new Promise(res => {
                 setTimeout(() => {

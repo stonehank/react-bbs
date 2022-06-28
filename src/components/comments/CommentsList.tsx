@@ -2,7 +2,6 @@ import React from 'react';
 import ListRender from "./ListRender";
 import MoreButton from "./MoreButton";
 import Loading from "../UI/Loading";
-import isEqual from "react-fast-compare";
 
 type Params={
     maxNest,
@@ -36,7 +35,6 @@ function CommentsList(props:Params){
             </div>
         )
     }
-    console.log('comment list render')
     return (
         <section>
             <p className={"text-md"}>
@@ -64,13 +62,5 @@ function CommentsList(props:Params){
         </section>
     );
 }
-
-// function propsIsEqual(prev,next){
-//     for(let k in prev){
-//         if(!prev.hasOwnProperty(k))continue
-//         if(typeof prev[k]!=='function' && prev[k]!==next[k])return false
-//     }
-//     return true
-// }
 
 export default React.memo(CommentsList);
