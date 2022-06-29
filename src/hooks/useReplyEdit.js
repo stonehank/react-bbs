@@ -1,10 +1,8 @@
-"use strict";
-exports.__esModule = true;
-var react_1 = require("react");
+import { useCallback, useState } from 'react';
 function useReplyEdit(props) {
     var details = props.details, editMessageRef = props.editMessageRef, updateComment = props.updateComment, updateCommentAsync = props.updateCommentAsync;
-    var _a = (0, react_1.useState)(false), edit = _a[0], setEdit = _a[1];
-    var _b = (0, react_1.useState)(details.message), editMessage = _b[0], setEditMessage = _b[1];
+    var _a = useState(false), edit = _a[0], setEdit = _a[1];
+    var _b = useState(details.message), editMessage = _b[0], setEditMessage = _b[1];
     function showEdit() {
         setEdit(true);
         setEditMessage(details.message);
@@ -13,12 +11,11 @@ function useReplyEdit(props) {
         setEdit(false);
         setEditMessage(details.message);
     }
-    var saveEdit = (0, react_1.useCallback)(function () {
+    var saveEdit = useCallback(function () {
         if (!validate())
             return;
         var id = details.objectId;
-        updateComment(id, editMessage)
-            .then(function (data) {
+        updateComment(id, editMessage).then(function (data) {
             if (!data)
                 return;
             closeEdit();
@@ -37,5 +34,5 @@ function useReplyEdit(props) {
         closeEdit: closeEdit
     };
 }
-exports["default"] = useReplyEdit;
+export default useReplyEdit;
 //# sourceMappingURL=useReplyEdit.js.map

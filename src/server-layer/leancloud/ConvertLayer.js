@@ -1,4 +1,3 @@
-"use strict";
 var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
         if (ar || !(i in from)) {
@@ -8,13 +7,9 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     }
     return to.concat(ar || Array.prototype.slice.call(from));
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-exports.__esModule = true;
-var react_1 = require("react");
-var config_1 = require("../../config");
-var APICore_1 = __importDefault(require("./APICore"));
+import { useEffect, useState, useRef } from 'react';
+import { readConfig, setLoggedUser } from '../../config';
+import useAPICore from './APICore';
 var cloneDeep = require('clone-deep');
 /**
  * STEP1: 一次性获取1000个数据
@@ -22,24 +17,23 @@ var cloneDeep = require('clone-deep');
  * STEP3: 根据参数要求提供对应的数据展示
  * 更少的API调用，但是会获取更多的数据
  */
-function useConvertLayer() {
-    var _a = (0, react_1.useState)(true), initialLoading = _a[0], setInitialLoading = _a[1];
-    var _b = (0, react_1.useState)(false), noMoreRemoteData = _b[0], setNoMoreRemoteData = _b[1];
-    var _c = (0, react_1.useState)([]), waitNextInserted = _c[0], setWaitNextInserted = _c[1];
-    var _d = (0, react_1.useState)(false), checkOnNextInsert = _d[0], setCheckOnNextInsert = _d[1];
-    var allCommentData = (0, react_1.useRef)([]);
-    var objectIdToData = (0, react_1.useRef)({});
-    var _e = (0, config_1.readConfig)(), pageviewMap = _e.pageviewMap, countMap = _e.countMap;
-    var _f = (0, APICore_1["default"])(), serverInit = _f.serverInit, signIn_server = _f.signIn_server, fetchCounts_server = _f.fetchCounts_server, fetchPageViews_server = _f.fetchPageViews_server, updateComment_server = _f.updateComment_server, uploadComment_server = _f.uploadComment_server, fetchComments_server = _f.fetchComments_server;
-    (0, react_1.useEffect)(function () {
+export default function useConvertLayer() {
+    var _a = useState(true), initialLoading = _a[0], setInitialLoading = _a[1];
+    var _b = useState(false), noMoreRemoteData = _b[0], setNoMoreRemoteData = _b[1];
+    var _c = useState([]), waitNextInserted = _c[0], setWaitNextInserted = _c[1];
+    var _d = useState(false), checkOnNextInsert = _d[0], setCheckOnNextInsert = _d[1];
+    var allCommentData = useRef([]);
+    var objectIdToData = useRef({});
+    var _e = readConfig(), pageviewMap = _e.pageviewMap, countMap = _e.countMap;
+    var _f = useAPICore(), serverInit = _f.serverInit, signIn_server = _f.signIn_server, fetchCounts_server = _f.fetchCounts_server, fetchPageViews_server = _f.fetchPageViews_server, updateComment_server = _f.updateComment_server, uploadComment_server = _f.uploadComment_server, fetchComments_server = _f.fetchComments_server;
+    useEffect(function () {
         serverInit().then(function () { return setInitialLoading(false); });
     }, []);
     /**
      * Required
      */
     function fetchPageViews(uniqStr) {
-        return fetchPageViews_server(uniqStr)
-            .then(function (counts) {
+        return fetchPageViews_server(uniqStr).then(function (counts) {
             pageviewMap.set(uniqStr, counts);
             return counts;
         });
@@ -48,8 +42,7 @@ function useConvertLayer() {
      * Required
      */
     function fetchCounts(uniqStr) {
-        return fetchCounts_server(uniqStr)
-            .then(function (counts) {
+        return fetchCounts_server(uniqStr).then(function (counts) {
             countMap.set(uniqStr, counts);
             return counts;
         });
@@ -58,8 +51,7 @@ function useConvertLayer() {
      * Required
      */
     function updateComment(id, message) {
-        return updateComment_server(id, message)
-            .then(function (data) {
+        return updateComment_server(id, message).then(function (data) {
             if (!data)
                 return null;
             __updateCommentAfterEdit__(id, data);
@@ -89,8 +81,7 @@ function useConvertLayer() {
      * Required
      */
     function fetchCurrentUser() {
-        return signIn_server()
-            .then(function (user) {
+        return signIn_server().then(function (user) {
             var simpleUser = user;
             if (user.attributes) {
                 simpleUser = {
@@ -99,7 +90,7 @@ function useConvertLayer() {
                     username: user.attributes.username
                 };
             }
-            (0, config_1.setLoggedUser)(simpleUser);
+            setLoggedUser(simpleUser);
             return simpleUser;
         });
     }
@@ -110,14 +101,14 @@ function useConvertLayer() {
      */
     function fetchComments(params) {
         /*
-            uniqStr         // 页面唯一值
-            rootId          // rootId， 用于插入数据
-            replyId         // 存在则搜索对应replyId的数据
-            page            // 数据页码
-            pageSize        // 数据每页条数
-            deepReply       // Boolean, 存在则深度搜索每一个回复（嵌套回复）
-            deepReplyCounts // 存在则深度搜索回复数量
-         */
+                uniqStr         // 页面唯一值
+                rootId          // rootId， 用于插入数据
+                replyId         // 存在则搜索对应replyId的数据
+                page            // 数据页码
+                pageSize        // 数据每页条数
+                deepReply       // Boolean, 存在则深度搜索每一个回复（嵌套回复）
+                deepReplyCounts // 存在则深度搜索回复数量
+             */
         var uniqStr = params.uniqStr, replyId = params.replyId, pageSize = params.pageSize, page = params.page, deepReply = params.deepReply, deepReplyCounts = params.deepReplyCounts;
         var data;
         setCheckOnNextInsert(true);
@@ -140,7 +131,7 @@ function useConvertLayer() {
                     filterData = Object.values(objectIdToData.current);
                 }
             }
-            filterData = filterData.sort(function (a, b) { return a.createdAt < b.createdAt ? 1 : -1; });
+            filterData = filterData.sort(function (a, b) { return (a.createdAt < b.createdAt ? 1 : -1); });
             // 这里获取从0到当前page的所有评论
             var result = cloneDeep(filterData.slice(0, pageSize * page));
             if (deepReplyCounts) {
@@ -231,7 +222,7 @@ function useConvertLayer() {
             }
             newAllCommentData.push(item);
         }
-        replyCandid.sort(function (a, b) { return a.createdAt < b.createdAt ? -1 : 1; });
+        replyCandid.sort(function (a, b) { return (a.createdAt < b.createdAt ? -1 : 1); });
         // DFS遍历arr
         for (var _a = 0, replyCandid_1 = replyCandid; _a < replyCandid_1.length; _a++) {
             var replyItem = replyCandid_1[_a];
@@ -269,7 +260,7 @@ function useConvertLayer() {
     function __insertReplyItem__(allList, item) {
         if (!allList || allList.length === 0)
             return { list: allList, inserted: false };
-        allList.sort(function (a, b) { return a.createdAt < b.createdAt ? 1 : -1; });
+        allList.sort(function (a, b) { return (a.createdAt < b.createdAt ? 1 : -1); });
         var replyId = item.replyId, rootId = item.rootId;
         for (var i = 0; i < allList.length; i++) {
             var curDetectObj = allList[i];
@@ -302,5 +293,4 @@ function useConvertLayer() {
         uploadComment: uploadComment
     };
 }
-exports["default"] = useConvertLayer;
 //# sourceMappingURL=ConvertLayer.js.map

@@ -1,8 +1,3 @@
-"use strict";
-// import LeanCloudLayer from "./server-layer/leancloud/ConvertLayer";
-// import FirebaseLayer from "./server-layer/firebase/ConvertLayer";
-exports.__esModule = true;
-exports.readLoggedUser = exports.setLoggedUser = exports.readConfig = exports.setConfig = void 0;
 /**
  *
  appId:"#########-####",
@@ -28,26 +23,23 @@ var configs = {
     server: 'leancloud'
 };
 var stableConfig = {
-    UserClass: "_User",
+    UserClass: '_User',
     initialLoading: true,
     countMap: new Map(),
     pageviewMap: new Map()
 };
-var loggedUser = null;
+var loggedUser;
 function setConfig(newConfigs) {
     configs = Object.assign({}, configs, newConfigs);
 }
-exports.setConfig = setConfig;
 function readConfig() {
     return Object.assign({}, configs, stableConfig);
 }
-exports.readConfig = readConfig;
 function setLoggedUser(user) {
     loggedUser = user;
 }
-exports.setLoggedUser = setLoggedUser;
 function readLoggedUser() {
     return loggedUser;
 }
-exports.readLoggedUser = readLoggedUser;
+export { setConfig, readConfig, setLoggedUser, readLoggedUser };
 //# sourceMappingURL=config.js.map

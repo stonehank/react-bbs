@@ -1,30 +1,8 @@
 import React from 'react';
-import MessageCard from "./MessageCard";
-
-
-
+import MessageCard from './MessageCard';
 function ListRender(props) {
-    const {curNest, list,maxNest, updateCommentAsync, loadList} = props
-    return (
-        <section>
-            {
-                list.map((details, index) => (
-                    <MessageCard
-                        key={details.objectId}
-                        index={index}
-                        small={curNest > 0}
-                        details={details}
-                        curNest={curNest}
-                        maxNest={maxNest}
-                        updateCommentAsync={updateCommentAsync}
-                        loadList={loadList}
-                    />
-                ))
-            }
-        </section>
-    )
+    var curNest = props.curNest, list = props.list, maxNest = props.maxNest, updateCommentAsync = props.updateCommentAsync, loadList = props.loadList;
+    return (React.createElement("section", null, list.map(function (details, index) { return (React.createElement(MessageCard, { key: details.objectId, index: index, small: curNest > 0, details: details, curNest: curNest, maxNest: maxNest, updateCommentAsync: updateCommentAsync, loadList: loadList })); })));
 }
-
-const MemoizedListRender = React.memo(ListRender);
-
-export default MemoizedListRender;
+export default React.memo(ListRender);
+//# sourceMappingURL=ListRender.js.map

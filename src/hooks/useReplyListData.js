@@ -1,4 +1,3 @@
-"use strict";
 var __assign = (this && this.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
@@ -10,26 +9,22 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-exports.__esModule = true;
-var react_1 = require("react");
-var useSyncState_1 = __importDefault(require("./useSyncState"));
-var clone_deep_1 = __importDefault(require("clone-deep"));
-var message_body_module_scss_1 = __importDefault(require("../components/comments/MessageCard/scss/message-body.module.scss"));
-var useDidUpdate_1 = __importDefault(require("./useDidUpdate"));
-var scrollToEle_1 = __importDefault(require("../utils/DOM/scrollToEle"));
-var highLightEle_1 = __importDefault(require("../utils/DOM/highLightEle"));
+import { useCallback, useRef, useState } from 'react';
+import useSyncState from './useSyncState';
+import cloneDeep from 'clone-deep';
+import messageBodyStyle from '../components/comments/MessageCard/scss/message-body.module.scss';
+import useDidUpdate from './useDidUpdate';
+import scrollToEle from '../utils/DOM/scrollToEle';
+import highLightEle from '../utils/DOM/highLightEle';
 function useReplyListData(_a) {
     var details = _a.details, curNest = _a.curNest, maxNest = _a.maxNest, loadList = _a.loadList, updateReplyDetails = _a.updateReplyDetails, updateCommentAsync = _a.updateCommentAsync;
-    var _b = (0, useSyncState_1["default"])([]), replyList = _b[0], syncReplyList = _b[1], setReplyList = _b[2];
-    var _c = (0, react_1.useState)(false), nodata = _c[0], setNodata = _c[1];
-    var _d = (0, react_1.useState)(details.replyCounts || 0), replyCounts = _d[0], setReplyCounts = _d[1];
-    var _e = (0, react_1.useState)(false), replyLoading = _e[0], setReplyLoading = _e[1];
-    var _f = (0, react_1.useState)(false), showReply = _f[0], setShowReply = _f[1];
-    var replyPage = (0, react_1.useRef)(1);
-    (0, useDidUpdate_1["default"])(function () {
+    var _b = useSyncState([]), replyList = _b[0], syncReplyList = _b[1], setReplyList = _b[2];
+    var _c = useState(false), nodata = _c[0], setNodata = _c[1];
+    var _d = useState(details.replyCounts || 0), replyCounts = _d[0], setReplyCounts = _d[1];
+    var _e = useState(false), replyLoading = _e[0], setReplyLoading = _e[1];
+    var _f = useState(false), showReply = _f[0], setShowReply = _f[1];
+    var replyPage = useRef(1);
+    useDidUpdate(function () {
         if (!updateReplyDetails)
             return;
         var replyId = updateReplyDetails.replyId, rootId = updateReplyDetails.rootId;
@@ -48,7 +43,7 @@ function useReplyListData(_a) {
             updateDataAfterReply();
         }
     }, [updateReplyDetails]);
-    var toggleReplyList = (0, react_1.useCallback)(function () {
+    var toggleReplyList = useCallback(function () {
         if (showReply) {
             setShowReply(false);
             setReplyList([]);
@@ -67,18 +62,17 @@ function useReplyListData(_a) {
             deepReply: curNest + 1 === maxNest,
             deepReplyCounts: curNest + 2 >= maxNest
         };
-        return loadList(params)
-            .then(function (_a) {
+        return loadList(params).then(function (_a) {
             var data = _a.data;
             if (data.length === 0) {
                 setNodata(true);
             }
             else {
-                setReplyList((0, clone_deep_1["default"])(data));
+                setReplyList(cloneDeep(data));
             }
         });
     }
-    var updateCommentInReplyAsync = (0, react_1.useCallback)(function (id, data) {
+    var updateCommentInReplyAsync = useCallback(function (id, data) {
         var idx = syncReplyList.current.findIndex(function (obj) { return obj.objectId === id; });
         var newReplyList = replyList.slice();
         if (idx !== -1) {
@@ -89,7 +83,7 @@ function useReplyListData(_a) {
             updateCommentAsync(id, data);
         }
     }, [replyList]);
-    var fetchMore = (0, react_1.useCallback)(function () {
+    var fetchMore = useCallback(function () {
         replyPage.current += 1;
         return loadData();
     }, []);
@@ -101,9 +95,10 @@ function useReplyListData(_a) {
         else {
             next = loadData();
         }
-        next.then(function () {
+        next
+            .then(function () {
             setReplyCounts(replyCounts + 1);
-            return (0, scrollToEle_1["default"])(document.getElementById(details.objectId), {
+            return scrollToEle(document.getElementById(details.objectId), {
                 highlight: false,
                 smooth: true
             });
@@ -111,10 +106,10 @@ function useReplyListData(_a) {
             .then(function () {
             setTimeout(function () {
                 var replyId = syncReplyList.current[0].objectId;
-                var ele = document.getElementById(replyId).getElementsByClassName(message_body_module_scss_1["default"]['bbs-msg-body'])[0];
+                var ele = document.getElementById(replyId).getElementsByClassName(messageBodyStyle['bbs-msg-body'])[0];
                 if (!ele)
                     return;
-                (0, highLightEle_1["default"])(ele);
+                highLightEle(ele);
             }, 100);
         });
     }
@@ -129,5 +124,5 @@ function useReplyListData(_a) {
         updateCommentInReplyAsync: updateCommentInReplyAsync
     };
 }
-exports["default"] = useReplyListData;
+export default useReplyListData;
 //# sourceMappingURL=useReplyListData.js.map

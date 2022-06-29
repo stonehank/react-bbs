@@ -1,14 +1,20 @@
 {
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "src/**/*.spec.ts","comments-no-used"],
+  // see https://www.typescriptlang.org/tsconfig to better understand tsconfigs
+  "include": ["src", "types"],
   "compilerOptions": {
-    "lib": [
-      "dom",
-      "es2015"
-    ],
-    "sourceMap": true,
+    "module": "esnext",
+    "lib": ["dom", "esnext"],
     "jsx": "react",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "declaration": true,
     "esModuleInterop": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noImplicitAny": false,
+    "suppressImplicitAnyIndexErrors": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true
   }

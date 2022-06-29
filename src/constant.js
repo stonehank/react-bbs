@@ -1,6 +1,3 @@
-const CACHE_KEY='react-bbs-info'
+const CACHE_KEY = 'react-bbs-info'
 
-
-export {
-    CACHE_KEY
-}
+export { CACHE_KEY }

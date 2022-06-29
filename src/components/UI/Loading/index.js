@@ -1,23 +1,17 @@
 import React from 'react';
-import loadingStyle from './loading.module.scss'
+import loadingStyle from './loading.module.scss';
 function Loading(props) {
-    return (
-        <div
-            className={'serverless-bbs '+loadingStyle['lds-ring']}
-            style={{
-                width:props.size,
-                height:props.size,
-            }}
-        >
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-        </div>
-    )
+    return (React.createElement("div", { className: 'serverless-bbs ' + loadingStyle['lds-ring'], style: {
+            width: props.size,
+            height: props.size
+        } },
+        React.createElement("div", null),
+        React.createElement("div", null),
+        React.createElement("div", null),
+        React.createElement("div", null)));
 }
-Loading.defaultProps={
+Loading.defaultProps = {
     size: 64
-}
-
+};
 export default Loading;
+//# sourceMappingURL=index.js.map

@@ -1,4 +1,3 @@
-"use strict";
 var __assign = (this && this.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
@@ -10,24 +9,20 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-exports.__esModule = true;
-var react_1 = require("react");
-var index_1 = require("../utils/index");
-var constant_1 = require("../constant");
-var useDidUpdate_1 = __importDefault(require("./useDidUpdate"));
+import { useReducer } from 'react';
+import { getFromCache, setCache } from '../utils/index';
+import { CACHE_KEY } from '../constant';
+import useDidUpdate from './useDidUpdate';
 function useUserCacheData() {
-    var cacheData = getCacheData(constant_1.CACHE_KEY);
+    var cacheData = getCacheData(CACHE_KEY);
     var initialUserInfo = {
         avatar: cacheData.avatar,
         nickname: cacheData.nickname,
         email: cacheData.email
     };
-    var _a = (0, react_1.useReducer)(userInfoReducer, initialUserInfo), userInfo = _a[0], userInfoDispatch = _a[1];
-    (0, useDidUpdate_1["default"])(function () {
-        (0, index_1.setCache)(constant_1.CACHE_KEY, userInfo);
+    var _a = useReducer(userInfoReducer, initialUserInfo), userInfo = _a[0], userInfoDispatch = _a[1];
+    useDidUpdate(function () {
+        setCache(CACHE_KEY, userInfo);
     }, [userInfo]);
     function userInfoReducer(state, action) {
         switch (action.type) {
@@ -42,7 +37,7 @@ function useUserCacheData() {
         }
     }
     function getCacheData(CACHE_KEY) {
-        var cacheData = (0, index_1.getFromCache)(CACHE_KEY);
+        var cacheData = getFromCache(CACHE_KEY);
         if (cacheData == null) {
             cacheData = {
                 nickname: '',
@@ -63,5 +58,5 @@ function useUserCacheData() {
     }
     return __assign(__assign({}, userInfo), { setAvatar: setAvatar, setEmail: setEmail, setNickname: setNickname });
 }
-exports["default"] = useUserCacheData;
+export default useUserCacheData;
 //# sourceMappingURL=useUserCacheData.js.map

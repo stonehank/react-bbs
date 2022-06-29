@@ -1,4 +1,3 @@
-"use strict";
 var __assign = (this && this.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
@@ -10,43 +9,39 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-exports.__esModule = true;
-var react_1 = require("react");
-var useSyncState_1 = __importDefault(require("./useSyncState"));
-var useDidUpdate_1 = __importDefault(require("./useDidUpdate"));
-var clone_deep_1 = __importDefault(require("clone-deep"));
-var bindATagSmoothScroll_1 = __importDefault(require("../utils/DOM/bindATagSmoothScroll"));
-var config_1 = require("../config");
-var countMap = (0, config_1.readConfig)().countMap;
+import { useCallback, useEffect, useState } from 'react';
+import useSyncState from './useSyncState';
+import useDidUpdate from './useDidUpdate';
+import cloneDeep from 'clone-deep';
+import bindATagSmoothScroll from '../utils/DOM/bindATagSmoothScroll';
+import { readConfig } from '../config';
+var countMap = readConfig().countMap;
 function useListData(_a) {
     var maxNest = _a.maxNest, uniqStr = _a.uniqStr, pageSize = _a.pageSize, fetchComments = _a.fetchComments, fetchCurrentUser = _a.fetchCurrentUser;
-    var _b = (0, react_1.useState)(true), loading = _b[0], setLoading = _b[1];
-    var _c = (0, react_1.useState)(true), userLoading = _c[0], setUserLoading = _c[1];
-    var _d = (0, useSyncState_1["default"])(1), page = _d[0], syncPage = _d[1], setPage = _d[2];
-    var _e = (0, useSyncState_1["default"])([]), list = _e[0], syncList = _e[1], setList = _e[2];
-    var _f = (0, react_1.useState)(null), total = _f[0], setTotal = _f[1];
-    var _g = (0, react_1.useState)(true), noMoreData = _g[0], setNoMoreData = _g[1];
-    (0, useDidUpdate_1["default"])(function () {
+    var _b = useState(true), loading = _b[0], setLoading = _b[1];
+    var _c = useState(true), userLoading = _c[0], setUserLoading = _c[1];
+    var _d = useSyncState(1), page = _d[0], syncPage = _d[1], setPage = _d[2];
+    var _e = useState([]), list = _e[0], setList = _e[1];
+    var _f = useState(null), total = _f[0], setTotal = _f[1];
+    var _g = useState(true), noMoreData = _g[0], setNoMoreData = _g[1];
+    useDidUpdate(function () {
         reload();
     }, [maxNest, pageSize]);
-    (0, react_1.useEffect)(function () {
+    useEffect(function () {
         /** 流程
          * 获取数据-> 回复
          * 获取数据-> count
          * 根据maxNest，editable, pageSize，分页方式进行渲染
          * */
         init();
-        document.addEventListener('click', bindATagSmoothScroll_1["default"]);
+        document.addEventListener('click', bindATagSmoothScroll);
         return function () {
-            document.removeEventListener('click', bindATagSmoothScroll_1["default"]);
+            document.removeEventListener('click', bindATagSmoothScroll);
         };
     }, []);
     // 更新list
     function updateList(data) {
-        var newList = (0, clone_deep_1["default"])(list);
+        var newList = cloneDeep(list);
         newList.unshift(data);
         setList(newList);
         setTotal(total + 1);
@@ -65,10 +60,8 @@ function useListData(_a) {
         })
             .then(function (_a) {
             var data = _a.data, total = _a.total;
-            setList((0, clone_deep_1["default"])(data));
-            var newTotal = countMap.has(uniqStr)
-                ? countMap.get(uniqStr)
-                : total;
+            setList(cloneDeep(data));
+            var newTotal = countMap.has(uniqStr) ? countMap.get(uniqStr) : total;
             setTotal(newTotal);
             setNoMoreData(data.length >= newTotal);
         })["finally"](function () { return setLoading(false); });
@@ -81,15 +74,15 @@ function useListData(_a) {
         setLoading(true);
         loadData();
     }
-    var loadList = (0, react_1.useCallback)(function (parameters) {
+    var loadList = useCallback(function (parameters) {
         var params = __assign({ uniqStr: uniqStr, pageSize: +pageSize }, parameters);
         return fetchComments(params);
     }, [uniqStr, pageSize]);
-    var loadMore = (0, react_1.useCallback)(function () {
+    var loadMore = useCallback(function () {
         setPage(page + 1);
         return loadData();
     }, [page]);
-    var updateCommentAsync = (0, react_1.useCallback)(function (id, updatedData) {
+    var updateCommentAsync = useCallback(function (id, updatedData) {
         var idx = list.findIndex(function (obj) { return obj.objectId === id; });
         var newList = list.slice();
         if (idx !== -1) {
@@ -109,5 +102,5 @@ function useListData(_a) {
         updateList: updateList
     };
 }
-exports["default"] = useListData;
+export default useListData;
 //# sourceMappingURL=useListData.js.map

@@ -1,3 +1,5 @@
-*.test.js
-*-no-used
-
+build/
+dist/
+node_modules/
+.snapshots/
+*.min.js

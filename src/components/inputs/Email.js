@@ -1,4 +1,3 @@
-"use strict";
 var __assign = (this && this.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
@@ -9,29 +8,6 @@ var __assign = (this && this.__assign) || function () {
         return t;
     };
     return __assign.apply(this, arguments);
-};
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
 };
 var __rest = (this && this.__rest) || function (s, e) {
     var t = {};
@@ -44,25 +20,21 @@ var __rest = (this && this.__rest) || function (s, e) {
         }
     return t;
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-exports.__esModule = true;
-var react_1 = __importStar(require("react"));
-var Verify_1 = require("../../utils/Verify");
-var TextField_1 = __importDefault(require("../UI/TextField"));
-var Email = react_1["default"].forwardRef(function (props, forwardRef) {
+import React, { useRef, useImperativeHandle } from 'react';
+import { emailVerify } from '../../utils/Verify';
+import TextField from '../UI/TextField';
+var Email = React.forwardRef(function (props, forwardRef) {
     var email = props.email, setEmail = props.setEmail, otherProps = __rest(props, ["email", "setEmail"]);
-    var emailRef = (0, react_1.useRef)(null);
-    (0, react_1.useImperativeHandle)(forwardRef, function () { return ({
+    var emailRef = useRef(null);
+    useImperativeHandle(forwardRef, function () { return ({
         validate: emailRef.current.validate,
         reset: emailRef.current.reset,
         getElement: emailRef.current.getElement
     }); });
-    return (react_1["default"].createElement(TextField_1["default"], __assign({ ref: emailRef, outlined: false, label: "邮箱", rules: [function (v) { return (!v || (0, Verify_1.emailVerify)(v)) || '提供一个有效的email'; }], value: email, setValue: setEmail }, otherProps)));
+    return (React.createElement(TextField, __assign({ ref: emailRef, outlined: false, label: '\u90AE\u7BB1', rules: [function (v) { return !v || emailVerify(v) || '提供一个有效的email'; }], value: email, setValue: setEmail }, otherProps)));
 });
 Email.defaultProps = {
     email: ''
 };
-exports["default"] = react_1["default"].memo(Email, function (prev, next) { return prev.email === next.email; });
+export default React.memo(Email, function (prev, next) { return prev.email === next.email; });
 //# sourceMappingURL=Email.js.map

@@ -1,4 +1,3 @@
-"use strict";
 var __assign = (this && this.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
@@ -21,26 +20,22 @@ var __rest = (this && this.__rest) || function (s, e) {
         }
     return t;
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-exports.__esModule = true;
-var react_1 = __importDefault(require("react"));
-var classnames_1 = __importDefault(require("classnames"));
-var button_module_scss_1 = __importDefault(require("./button.module.scss"));
-var Loading_1 = __importDefault(require("../Loading"));
-var Button = react_1["default"].forwardRef(function (props, ref) {
+import React from 'react';
+import cls from 'classnames';
+import buttonStyle from './button.module.scss';
+import Loading from '../Loading';
+var Button = React.forwardRef(function (props, ref) {
     var _a;
     var onClick = props.onClick, color = props.color, text = props.text, dense = props.dense, disabled = props.disabled, loading = props.loading, children = props.children, className = props.className, otherProps = __rest(props, ["onClick", "color", "text", "dense", "disabled", "loading", "children", "className"]);
-    return (react_1["default"].createElement("button", __assign({ ref: ref, onClick: onClick, className: (0, classnames_1["default"])(className, (_a = {},
-            _a[button_module_scss_1["default"]['bbs-btn']] = true,
+    return (React.createElement("button", __assign({ ref: ref, onClick: onClick, className: cls(className, (_a = {},
+            _a[buttonStyle['bbs-btn']] = true,
             // @ts-ignore
-            _a[button_module_scss_1["default"][color + '-color']] = !!color,
-            _a[button_module_scss_1["default"]['bbs-btn-text']] = text,
-            _a[button_module_scss_1["default"]['no-gap']] = dense,
-            _a[button_module_scss_1["default"]['bbs-disabled']] = disabled,
-            _a[button_module_scss_1["default"]['bbs-btn-loading']] = loading,
-            _a)) }, otherProps), loading ? react_1["default"].createElement(Loading_1["default"], { size: 22 }) : children));
+            _a[buttonStyle[color + '-color']] = !!color,
+            _a[buttonStyle['bbs-btn-text']] = text,
+            _a[buttonStyle['no-gap']] = dense,
+            _a[buttonStyle['bbs-disabled']] = disabled,
+            _a[buttonStyle['bbs-btn-loading']] = loading,
+            _a)) }, otherProps), loading ? React.createElement(Loading, { size: 22 }) : children));
 });
-exports["default"] = Button;
+export default Button;
 //# sourceMappingURL=index.js.map

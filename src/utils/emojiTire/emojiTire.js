@@ -1,26 +1,24 @@
 import emojiData from '../../assets/emoji'
 
-let emojiWords=[]
-for(let k in emojiData){
-  if(Object.prototype.hasOwnProperty.call(emojiData,k)){
+const emojiWords = []
+for (const k in emojiData) {
+  if (Object.prototype.hasOwnProperty.call(emojiData, k)) {
     emojiWords.push(k)
   }
 }
 
-export function emojiSearch(input,len){
-  let res=[]
-  for(let word of emojiWords){
-    if(word.includes(input)){
+export function emojiSearch(input, len) {
+  const res = []
+  for (const word of emojiWords) {
+    if (word.includes(input)) {
       res.push(word)
-      if(res.length===len)return res
+      if (res.length === len) return res
     }
   }
   return res
 }
 
 // let emojiTire=emojiTree(emojiWords)
-
-
 
 // export default emojiTire
 
@@ -73,4 +71,3 @@ export function emojiSearch(input,len){
 //     }
 //   }
 // }
-

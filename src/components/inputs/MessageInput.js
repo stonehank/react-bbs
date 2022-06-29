@@ -1,55 +1,19 @@
-import React, {useRef,useImperativeHandle} from 'react';
-import TextField from "../UI/TextField";
-import PropTypes from "prop-types";
-
-const MessageInput=React.forwardRef((props,forwardRef)=>{
-    const messageRef=useRef(null)
-
-    useImperativeHandle(forwardRef,()=>({
-        validate:messageRef.current.validate,
-        reset:messageRef.current.reset,
-        getElement:messageRef.current.getElement,
-        insertToValue:messageRef.current.insertToValue
-    }))
-
-    return (
-        <TextField
-            ref={messageRef}
-            rows={props.rows}
-            outlined={true}
-            label={props.label}
-            rules={[v=>!!v || '内容不能为空']}
-            value={props.message}
-            setValue={props.setMessage}
-        />
-    )
-})
-
-
-
-
-function propsAreEqual(prevProps, nextProps) {
-    return prevProps.message === nextProps.message
-        && prevProps.label === nextProps.label
-        && prevProps.rows === nextProps.rows
-}
-const MemoizedMessageInput = React.memo(MessageInput, propsAreEqual);
-
-MemoizedMessageInput.propTypes={
-    message:PropTypes.string,
-    setMessage:PropTypes.func,
-    label:PropTypes.string,
-    rows:PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.number
-    ]),
-}
-MemoizedMessageInput.defaultProps={
-    message:'',
-    label:'说点什么吧',
-    rows:3,
-}
-
-export default MemoizedMessageInput;
-
-
+import React, { useRef, useImperativeHandle } from 'react';
+import TextField from '../UI/TextField';
+var MessageInput = React.forwardRef(function (props, forwardRef) {
+    var messageRef = useRef(null);
+    useImperativeHandle(forwardRef, function () { return ({
+        validate: messageRef.current.validate,
+        reset: messageRef.current.reset,
+        getElement: messageRef.current.getElement,
+        insertToValue: messageRef.current.insertToValue
+    }); });
+    return (React.createElement(TextField, { ref: messageRef, rows: props.rows, outlined: true, label: props.label, rules: [function (v) { return !!v || '内容不能为空'; }], value: props.message, setValue: props.setMessage }));
+});
+MessageInput.defaultProps = {
+    message: '',
+    label: '说点什么吧',
+    rows: 3
+};
+export default React.memo(MessageInput);
+//# sourceMappingURL=MessageInput.js.map

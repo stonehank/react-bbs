@@ -1,4 +1,3 @@
-"use strict";
 var __assign = (this && this.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
@@ -10,13 +9,9 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-exports.__esModule = true;
-var react_1 = require("react");
-var useDidUpdate_1 = __importDefault(require("./useDidUpdate"));
-var handlerAtTag_1 = require("../utils/handlerAtTag");
+import { useReducer, useRef, useState } from 'react';
+import useDidUpdate from './useDidUpdate';
+import { convertToAtMessage } from '../utils/handlerAtTag';
 function useMessageData(_a) {
     var offset = _a.offset, userInputRef = _a.userInputRef;
     var initialReplyInfo = {
@@ -24,9 +19,9 @@ function useMessageData(_a) {
         rootId: '',
         replyId: ''
     };
-    var _b = (0, react_1.useReducer)(replyInfoReducer, initialReplyInfo), replyInfo = _b[0], replyInfoDispatch = _b[1];
-    var _c = (0, react_1.useState)(''), message = _c[0], setMessage = _c[1];
-    var messageEleRef = (0, react_1.useRef)(null);
+    var _b = useReducer(replyInfoReducer, initialReplyInfo), replyInfo = _b[0], replyInfoDispatch = _b[1];
+    var _c = useState(''), message = _c[0], setMessage = _c[1];
+    var messageEleRef = useRef(null);
     function replyInfoReducer(state, action) {
         switch (action.type) {
             case 'reply':
@@ -41,9 +36,11 @@ function useMessageData(_a) {
                     replyId: '',
                     rootId: ''
                 };
+            default:
+                return state;
         }
     }
-    (0, useDidUpdate_1["default"])(function () {
+    useDidUpdate(function () {
         if (replyInfo.at && replyInfo.replyId) {
             if (!message.startsWith("@".concat(replyInfo.at, " "))) {
                 cancelReply();
@@ -53,7 +50,7 @@ function useMessageData(_a) {
     function startReply(_a) {
         var rootId = _a.rootId, replyId = _a.replyId, replyName = _a.replyName;
         replyInfoDispatch({ type: 'reply', data: { rootId: rootId, replyId: replyId, at: replyName } });
-        var newMessage = (0, handlerAtTag_1.convertToAtMessage)(message, replyName);
+        var newMessage = convertToAtMessage(message, replyName);
         setMessage(newMessage);
         if (userInputRef.current) {
             userInputRef.current.scrollToMessageInput(offset).then(function () {
@@ -69,5 +66,5 @@ function useMessageData(_a) {
     }
     return __assign({ messageEleRef: messageEleRef, message: message, setMessage: setMessage, startReply: startReply, cancelReply: cancelReply }, replyInfo);
 }
-exports["default"] = useMessageData;
+export default useMessageData;
 //# sourceMappingURL=useMessageData.js.map

@@ -1,10 +1,8 @@
-"use strict";
-exports.__esModule = true;
-var react_1 = require("react");
+// eslint-disable-next-line no-unused-vars
+import { useEffect, useRef } from 'react';
 function useDidUpdate(callback, dependencies) {
-    if (dependencies === void 0) { dependencies = []; }
-    var mounted = (0, react_1.useRef)(false);
-    (0, react_1.useEffect)(function () {
+    var mounted = useRef(false);
+    useEffect(function () {
         if (!mounted.current) {
             mounted.current = true;
             return;
@@ -12,5 +10,5 @@ function useDidUpdate(callback, dependencies) {
         callback();
     }, dependencies);
 }
-exports["default"] = useDidUpdate;
+export default useDidUpdate;
 //# sourceMappingURL=useDidUpdate.js.map

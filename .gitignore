@@ -1,9 +1,7 @@
-.idea
-.DS_Store
-Thumbs.db
-db.json
 *.log
-node_modules/
+.DS_Store
+node_modules
+.cache
 dist
 lib
 demo

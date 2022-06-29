@@ -1,17 +1,12 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-exports.__esModule = true;
-var CustomAV_1 = __importDefault(require("./CustomAV"));
-var initAVObject_1 = __importDefault(require("./initAVObject"));
-var utils_1 = require("../../utils");
-var config_1 = require("../../config");
-function useAPICore() {
-    var _a = (0, config_1.readConfig)(), appId = _a.appId, appKey = _a.appKey, serverURLs = _a.serverURLs, CommentClass = _a.CommentClass, CounterClass = _a.CounterClass, UserClass = _a.UserClass, editMode = _a.editMode, pageviewMap = _a.pageviewMap;
+import AV from './CustomAV';
+import initAVObject from './initAVObject';
+import { getFromCache, randUniqueString, setCache } from '../../utils';
+import { readConfig, readLoggedUser } from '../../config';
+export default function useAPICore() {
+    var _a = readConfig(), appId = _a.appId, appKey = _a.appKey, serverURLs = _a.serverURLs, CommentClass = _a.CommentClass, CounterClass = _a.CounterClass, UserClass = _a.UserClass, editMode = _a.editMode, pageviewMap = _a.pageviewMap;
     var ownerCodeKey = 'serverless_react_bbs_ownerCode';
-    var oldRandOwnerCode = (0, utils_1.getFromCache)(ownerCodeKey);
-    var newRandOwnerCode = oldRandOwnerCode || (0, utils_1.randUniqueString)();
+    var oldRandOwnerCode = getFromCache(ownerCodeKey);
+    var newRandOwnerCode = oldRandOwnerCode || randUniqueString();
     var defaultUser = {
         id: null,
         attributes: {
@@ -22,11 +17,11 @@ function useAPICore() {
     };
     var commentsPage = 1;
     var errorCodeMsg = {
-        "100": "Initialization failed, Please check your appId and appKey.",
-        "401": "Unauthorized operation, Please check your appId and appKey.",
-        "403": "Access denied by api domain white list, Please check your security domain."
+        '100': 'Initialization failed, Please check your appId and appKey.',
+        '401': 'Unauthorized operation, Please check your appId and appKey.',
+        '403': 'Access denied by api domain white list, Please check your security domain.'
     };
-    var loggedUser = (0, config_1.readLoggedUser)();
+    var loggedUser = readLoggedUser();
     /**
      * Vue -> $serverLessBBS
      * appId
@@ -37,7 +32,14 @@ function useAPICore() {
      * UserClass
      */
     function serverInit() {
-        return (0, initAVObject_1["default"])({ appId: appId, appKey: appKey, serverURLs: serverURLs, CommentClass: CommentClass, CounterClass: CounterClass, UserClass: UserClass });
+        return initAVObject({
+            appId: appId,
+            appKey: appKey,
+            serverURLs: serverURLs,
+            CommentClass: CommentClass,
+            CounterClass: CounterClass,
+            UserClass: UserClass
+        });
     }
     /**
      * Required
@@ -48,16 +50,18 @@ function useAPICore() {
      * @returns {Promise}<Number>
      */
     function __generatePageViews__(uniqStr, title) {
-        var Ct = CustomAV_1["default"].Object.extend(CounterClass);
+        var Ct = AV.Object.extend(CounterClass);
         var newCounter = new Ct();
-        var acl = new CustomAV_1["default"].ACL();
+        var acl = new AV.ACL();
         acl.setPublicReadAccess(true);
         acl.setPublicWriteAccess(true);
         newCounter.setACL(acl);
         newCounter.set('uniqStr', uniqStr);
         newCounter.set('title', title);
         newCounter.set('time', 1);
-        return newCounter.save().then(function () {
+        return newCounter
+            .save()
+            .then(function () {
             return 1;
         })["catch"](function (ex) {
             console.error(errorCodeMsg[ex.code], ex);
@@ -76,8 +80,9 @@ function useAPICore() {
     function fetchPageViews_server(uniqStr, title) {
         if (pageviewMap.has(uniqStr))
             return pageviewMap.get(uniqStr);
-        var query = new CustomAV_1["default"].Query(CounterClass);
-        return query.equalTo('uniqStr', uniqStr)
+        var query = new AV.Query(CounterClass);
+        return query
+            .equalTo('uniqStr', uniqStr)
             .find()
             .then(function (items) {
             if (items.length === 0) {
@@ -86,14 +91,16 @@ function useAPICore() {
             }
             else {
                 if (items.length > 1) {
-                    console.warn("Warning! The uniqStr is not unique! Current uniqStr is: " + uniqStr);
+                    console.warn('Warning! The uniqStr is not unique! Current uniqStr is: ' + uniqStr);
                 }
                 // 存在页面， 更新
                 var item = items[0];
-                var updateTime_1 = item.get("time") + 1;
-                item.increment("time");
+                var updateTime_1 = item.get('time') + 1;
+                item.increment('time');
                 item.set('title', title);
-                return item.save().then(function () {
+                return item
+                    .save()
+                    .then(function () {
                     return updateTime_1;
                 })["catch"](function () {
                     return updateTime_1 - 1;
@@ -113,7 +120,7 @@ function useAPICore() {
      */
     function fetchCounts_server(uniqStr, includeReply) {
         if (includeReply === void 0) { includeReply = false; }
-        var query = new CustomAV_1["default"].Query(CommentClass);
+        var query = new AV.Query(CommentClass);
         var searchPromise;
         if (includeReply) {
             searchPromise = query.equalTo('uniqStr', uniqStr).count();
@@ -121,7 +128,8 @@ function useAPICore() {
         else {
             searchPromise = query.equalTo('uniqStr', uniqStr).equalTo('replyId', '').count();
         }
-        return searchPromise.then(function (counts) {
+        return searchPromise
+            .then(function (counts) {
             return counts;
         })["catch"](function (ex) {
             if (ex.code === 101) {
@@ -134,22 +142,22 @@ function useAPICore() {
         });
     }
     /**
-     *
-     * Required
-     * {
-     *      id:"6155bb945e0db15b17f31d78"
-     *      attributes:{
-     *          createdAt: "2021-09-30T13:28:52.022Z"
-                        emailVerified: false
-                        mobilePhoneVerified: false
-                        objectId: "6155bb945e0db15b17f31d78"
-                        sessionToken: "t8hllhe8e33yrae0jwlqcu8wa"
-                        updatedAt: "2021-09-30T13:28:52.022Z"
-                        username: "KsswXQGgsaGBEigmrgyrdhU5F8AAlRzv"
-     *      }
-     * }
-     * @returns {Promise}<UserObject>
-     */
+       *
+       * Required
+       * {
+       *      id:"6155bb945e0db15b17f31d78"
+       *      attributes:{
+       *          createdAt: "2021-09-30T13:28:52.022Z"
+                          emailVerified: false
+                          mobilePhoneVerified: false
+                          objectId: "6155bb945e0db15b17f31d78"
+                          sessionToken: "t8hllhe8e33yrae0jwlqcu8wa"
+                          updatedAt: "2021-09-30T13:28:52.022Z"
+                          username: "KsswXQGgsaGBEigmrgyrdhU5F8AAlRzv"
+       *      }
+       * }
+       * @returns {Promise}<UserObject>
+       */
     function signIn_server() {
         if (loggedUser)
             return Promise.resolve(loggedUser);
@@ -157,7 +165,7 @@ function useAPICore() {
             return Promise.resolve(defaultUser);
         return new Promise(function (res) {
             if (oldRandOwnerCode) {
-                return CustomAV_1["default"].User.logIn(oldRandOwnerCode, oldRandOwnerCode)
+                return AV.User.logIn(oldRandOwnerCode, oldRandOwnerCode)
                     .then(function (user) {
                     console.log('Can login', user);
                     return res(user);
@@ -178,20 +186,22 @@ function useAPICore() {
     function signUp_server() {
         if (!editMode)
             return Promise.resolve(defaultUser);
-        var user = new CustomAV_1["default"].User(UserClass);
+        var user = new AV.User(UserClass);
         user.setUsername(newRandOwnerCode);
         user.setPassword(newRandOwnerCode);
         console.log('signUp_server', user.id, JSON.stringify(user));
-        var acl = new CustomAV_1["default"].ACL();
+        var acl = new AV.ACL();
         acl.setPublicReadAccess(false);
         // acl.setReadAccess(user.id,true);
         // acl.setWriteAccess(user.id,true);
         acl.setPublicWriteAccess(false);
         user.setACL(acl);
         console.log('Can not get, try create new user');
-        return user.save().then(function (user) {
+        return user
+            .save()
+            .then(function (user) {
             console.log('Create success');
-            (0, utils_1.setCache)(ownerCodeKey, newRandOwnerCode);
+            setCache(ownerCodeKey, newRandOwnerCode);
             oldRandOwnerCode = newRandOwnerCode;
             return user;
         })["catch"](function (err) {
@@ -208,36 +218,37 @@ function useAPICore() {
      */
     function updateComment_server(objectId, message) {
         if (!editMode)
-            return Promise.reject(null);
-        var Ct = CustomAV_1["default"].Object.extend(CommentClass);
+            return Promise.reject(new Error('Not in editMode'));
+        var Ct = AV.Object.extend(CommentClass);
         var comment = new Ct({ objectId: objectId, message: message }, 'PUT');
         comment.set('message', message);
-        return comment.save()
+        return comment
+            .save()
             .then(function (data) { return data.attributes; })["catch"](function (err) {
             console.error('update error!', err);
             return null;
         });
     }
     /**
-     * Required
-     * uploadField
-     * {
-                  replyId: '',
-                  email: '',
-                  avatar: '',
-                  link: '',
-                  message: '',
-                  at: '',
-                  nickname: '',
-                  uniqStr: props.uniqStr,
-
-     * }
-     * submit新的评论
-     * @param uploadField
-     * @returns {Promise}<CommentObject>
-     */
+       * Required
+       * uploadField
+       * {
+                    replyId: '',
+                    email: '',
+                    avatar: '',
+                    link: '',
+                    message: '',
+                    at: '',
+                    nickname: '',
+                    uniqStr: props.uniqStr,
+  
+       * }
+       * submit新的评论
+       * @param uploadField
+       * @returns {Promise}<CommentObject>
+       */
     function uploadComment_server(uploadField) {
-        var Ct = CustomAV_1["default"].Object.extend(CommentClass);
+        var Ct = AV.Object.extend(CommentClass);
         var comment = new Ct();
         for (var k in uploadField) {
             if (!uploadField.hasOwnProperty(k))
@@ -245,7 +256,7 @@ function useAPICore() {
             comment.set(k, uploadField[k]);
         }
         comment.set('url', location.href);
-        var acl = new CustomAV_1["default"].ACL();
+        var acl = new AV.ACL();
         acl.setPublicReadAccess(true);
         acl.setPublicWriteAccess(false);
         return signIn_server()
@@ -278,8 +289,8 @@ function useAPICore() {
      */
     function fetchComments_server(uniqStr) {
         var pageSize = 1000;
-        return new CustomAV_1["default"].Query(CommentClass)
-            .equalTo("uniqStr", uniqStr)
+        return new AV.Query(CommentClass)
+            .equalTo('uniqStr', uniqStr)
             .select(['nickname', 'rootId', 'message', 'link', 'pid', 'avatar', 'replyId', 'at', 'user_id'])
             .addDescending('createdAt')
             .skip((commentsPage - 1) * pageSize)
@@ -294,6 +305,7 @@ function useAPICore() {
             }
             else {
                 console.error('Error happen in fetch owner task', ex);
+                return [];
             }
         });
     }
@@ -308,5 +320,4 @@ function useAPICore() {
         uploadComment_server: uploadComment_server
     };
 }
-exports["default"] = useAPICore;
 //# sourceMappingURL=APICore.js.map
