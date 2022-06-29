@@ -1,20 +1,17 @@
 // import LeanCloudLayer from "./server-layer/leancloud/ConvertLayer";
 // import FirebaseLayer from "./server-layer/firebase/ConvertLayer";
 
-enum serverName{
-    firebase ='firebase',
-    leancloud ='leancloud',
-}
+type serverName = 'firebase' | 'leancloud'
 type configType={
-    apiKey:string,
-    projectId:string,
-    appId:string,
-    appKey:string,
-    serverURLs:string,
-    editMode:boolean,
-    CommentClass:string,
-    CounterClass:string,
-    server:serverName
+    apiKey?:string,
+    projectId?:string,
+    appId?:string,
+    appKey?:string,
+    serverURLs?:string,
+    editMode?:boolean,
+    CommentClass?:string,
+    CounterClass?:string,
+    server?:serverName
 }
 type stableConfigType={
     UserClass:string,
@@ -45,7 +42,7 @@ let configs:configType={
     editMode:false,
     CommentClass:'Comments_demo',
     CounterClass:'Counters_demo',
-    server:serverName.leancloud
+    server:'leancloud'
 }
 
 const stableConfig:stableConfigType={
@@ -57,20 +54,22 @@ const stableConfig:stableConfigType={
 let loggedUser:any=null
 
 
-
-const methods={
-    setConfig(newConfigs){
-        configs = Object.assign({}, configs, newConfigs)
-    },
-    readConfig():configType & stableConfigType{
-        return Object.assign({}, configs, stableConfig)
-    },
-    setLoggedUser(user){
-        loggedUser=user
-    },
-    readLoggedUser(){
-        return loggedUser
-    }
+function setConfig(newConfigs:configType):void{
+    configs = Object.assign({}, configs, newConfigs)
+}
+function readConfig():configType & stableConfigType{
+    return Object.assign({}, configs, stableConfig)
+}
+function setLoggedUser(user){
+    loggedUser=user
+}
+function readLoggedUser(){
+    return loggedUser
 }
 
-export default methods
+export {
+    setConfig,
+    readConfig,
+    setLoggedUser,
+    readLoggedUser
+}

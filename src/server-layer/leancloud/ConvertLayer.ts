@@ -1,9 +1,7 @@
 import {useEffect, useState,useRef} from 'react'
-import configMethods from '../../config'
+import {readConfig, setLoggedUser} from '../../config'
 import useAPICore from "./APICore";
 import {CommentObject, ConvertLayerIInterface, FetchCommentParams, FetchCommentResult, SingUserInfo} from "../../types";
-const {readConfig, setLoggedUser} = configMethods
-const {pageviewMap, countMap} = readConfig()
 const cloneDeep=require('clone-deep')
 
 
@@ -20,7 +18,7 @@ export default function useConvertLayer() : ConvertLayerIInterface{
     const [checkOnNextInsert, setCheckOnNextInsert] = useState(false)
     let allCommentData=useRef<CommentObject[]>([])
     let objectIdToData=useRef<{[key:string]:CommentObject}>({})
-
+    const {pageviewMap, countMap} = readConfig()
 
     const {serverInit,signIn_server,fetchCounts_server,fetchPageViews_server,updateComment_server,uploadComment_server,fetchComments_server} = useAPICore()
     useEffect(()=>{

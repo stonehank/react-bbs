@@ -1,4 +1,4 @@
-import React, {useContext, useMemo, useRef} from 'react';
+import React, {useCallback, useContext, useMemo, useRef} from 'react';
 import messageBodyStyle from './scss/message-body.module.scss'
 import clx from 'classnames'
 import ReplyListNest from "./body-components/ReplyListNest";
@@ -7,9 +7,8 @@ import ReplyActions from "./body-components/ReplyActions";
 import ReplyEditRender from "./body-components/ReplyEditRender";
 import useReplyEdit from "../../../hooks/useReplyEdit";
 import useReplyListData from "../../../hooks/useReplyListData";
-import configMethods from '../../../config'
+import {readLoggedUser} from '../../../config'
 import ReplyUpdateContext from "../../../context/replys/ReplyUpdateContext";
-const {readLoggedUser} = configMethods
 
 
 function MessageBody(props) {
@@ -49,9 +48,10 @@ function MessageBody(props) {
     const isOwnerComment=useMemo(()=>loggedUser && loggedUser.id!=null && loggedUser.id===details.user_id,[loggedUser,details.user_id])
 
 
-    function insertEmoji(emoji) {
+    const insertEmoji=useCallback(function(emoji) {
         editMessageRef.current.insertToValue(emoji)
-    }
+    },[])
+
     return (
         <div
             className={clx(messageBodyStyle["bbs-msg-wrapper"],{

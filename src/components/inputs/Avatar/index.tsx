@@ -38,7 +38,6 @@ function Avatar(props:AvatarProps) {
     },[])
 
     useDidUpdate(()=>{
-        console.log('update')
         updateAvatarList()
     },[email,nickname,size])
 

@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useCallback, useRef, useState} from 'react';
 import useSyncState from "./useSyncState";
 import {CommentObject} from "../types";
 import cloneDeep from "clone-deep";
@@ -34,16 +34,14 @@ function useReplyListData({details,curNest,maxNest,loadList,updateReplyDetails,u
         if(maxNest===curNest)return
         // 查看replyId和objectId相等时更新
         if(replyId===details.objectId){
-            // console.log(1)
             updateDataAfterReply()
         }else if(maxNest===curNest + 1  && syncReplyList.current.find(obj=>obj.objectId===replyId)){
             // 下一层是最大嵌套数
-            // console.log(2)
             updateDataAfterReply()
         }
     },[updateReplyDetails])
 
-    function toggleReplyList():Promise<void>{
+    const toggleReplyList=useCallback(function():Promise<void>{
         if(showReply){
             setShowReply(false)
             setReplyList([])
@@ -54,7 +52,8 @@ function useReplyListData({details,curNest,maxNest,loadList,updateReplyDetails,u
             return loadData()
                 .finally(()=> setReplyLoading(false))
         }
-    }
+    },[showReply])
+
 
     function loadData():Promise<void>{
         let params={
@@ -73,7 +72,7 @@ function useReplyListData({details,curNest,maxNest,loadList,updateReplyDetails,u
             })
     }
 
-    function updateCommentInReplyAsync(id:string,data:{message:string,updatedAt:string}):void{
+    const updateCommentInReplyAsync=useCallback(function(id:string,data:{message:string,updatedAt:string}):void{
         let idx=syncReplyList.current.findIndex(obj=>obj.objectId===id)
         let newReplyList=replyList.slice()
         if(idx!==-1){
@@ -86,13 +85,12 @@ function useReplyListData({details,curNest,maxNest,loadList,updateReplyDetails,u
         }else{
             updateCommentAsync(id,data)
         }
-    }
+    },[replyList])
 
-    function fetchMore(){
+    const fetchMore=useCallback(function(){
         replyPage.current+=1
         return loadData()
-
-    }
+    },[])
 
     function updateDataAfterReply():void{
         let next

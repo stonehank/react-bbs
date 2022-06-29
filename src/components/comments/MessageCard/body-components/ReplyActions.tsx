@@ -67,12 +67,5 @@ function ReplyActions({
         </div>
     );
 }
-function propsIsEqual(prev,next){
-    for(let k in prev){
-        if(!prev.hasOwnProperty(k))continue
-        if(typeof prev[k]!=='function' && prev[k]!==next[k])return false
-    }
-    return true
-}
 
-export default React.memo(ReplyActions,propsIsEqual);
+export default React.memo(ReplyActions);

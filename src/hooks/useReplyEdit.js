@@ -13,7 +13,7 @@ function useReplyEdit(props) {
         setEdit(false);
         setEditMessage(details.message);
     }
-    function saveEdit() {
+    var saveEdit = (0, react_1.useCallback)(function () {
         if (!validate())
             return;
         var id = details.objectId;
@@ -24,7 +24,7 @@ function useReplyEdit(props) {
             closeEdit();
             updateCommentAsync(id, data);
         });
-    }
+    }, [editMessage, details.id]);
     function validate() {
         return editMessageRef.current.validate();
     }

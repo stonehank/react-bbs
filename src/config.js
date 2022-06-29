@@ -2,11 +2,7 @@
 // import LeanCloudLayer from "./server-layer/leancloud/ConvertLayer";
 // import FirebaseLayer from "./server-layer/firebase/ConvertLayer";
 exports.__esModule = true;
-var serverName;
-(function (serverName) {
-    serverName["firebase"] = "firebase";
-    serverName["leancloud"] = "leancloud";
-})(serverName || (serverName = {}));
+exports.readLoggedUser = exports.setLoggedUser = exports.readConfig = exports.setConfig = void 0;
 /**
  *
  appId:"#########-####",
@@ -29,7 +25,7 @@ var configs = {
     editMode: false,
     CommentClass: 'Comments_demo',
     CounterClass: 'Counters_demo',
-    server: serverName.leancloud
+    server: 'leancloud'
 };
 var stableConfig = {
     UserClass: "_User",
@@ -38,19 +34,20 @@ var stableConfig = {
     pageviewMap: new Map()
 };
 var loggedUser = null;
-var methods = {
-    setConfig: function (newConfigs) {
-        configs = Object.assign({}, configs, newConfigs);
-    },
-    readConfig: function () {
-        return Object.assign({}, configs, stableConfig);
-    },
-    setLoggedUser: function (user) {
-        loggedUser = user;
-    },
-    readLoggedUser: function () {
-        return loggedUser;
-    }
-};
-exports["default"] = methods;
+function setConfig(newConfigs) {
+    configs = Object.assign({}, configs, newConfigs);
+}
+exports.setConfig = setConfig;
+function readConfig() {
+    return Object.assign({}, configs, stableConfig);
+}
+exports.readConfig = readConfig;
+function setLoggedUser(user) {
+    loggedUser = user;
+}
+exports.setLoggedUser = setLoggedUser;
+function readLoggedUser() {
+    return loggedUser;
+}
+exports.readLoggedUser = readLoggedUser;
 //# sourceMappingURL=config.js.map

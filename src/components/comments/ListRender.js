@@ -5,7 +5,6 @@ import MessageCard from "./MessageCard";
 
 function ListRender(props) {
     const {curNest, list,maxNest, updateCommentAsync, loadList} = props
-    console.log('list render update')
     return (
         <section>
             {

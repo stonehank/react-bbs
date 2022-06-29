@@ -1,9 +1,8 @@
 import AV from './CustomAV'
 import initAVObject from "./initAVObject";
 import {getFromCache, randUniqueString, setCache} from "../../utils";
-import configMethods from '../../config'
+import {readConfig, readLoggedUser} from '../../config'
 import {APICoreInterface} from "../../types";
-const {readConfig, readLoggedUser} = configMethods
 
 
 export default function useAPICore():APICoreInterface{

@@ -91,7 +91,6 @@ const TextField = React.forwardRef((props,forwardRef)=>{
         }
     }
     function validate() {
-        console.log(value,label,rows)
         setDirty(true)
         if(rules.length===0){
             errorDispatch(null)

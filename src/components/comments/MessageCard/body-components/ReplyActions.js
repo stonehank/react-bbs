@@ -25,14 +25,5 @@ function ReplyActions(_a) {
                 replyName: details.nickname
             }); } }, "\u56DE\u590D")));
 }
-function propsIsEqual(prev, next) {
-    for (var k in prev) {
-        if (!prev.hasOwnProperty(k))
-            continue;
-        if (typeof prev[k] !== 'function' && prev[k] !== next[k])
-            return false;
-    }
-    return true;
-}
-exports["default"] = react_1["default"].memo(ReplyActions, propsIsEqual);
+exports["default"] = react_1["default"].memo(ReplyActions);
 //# sourceMappingURL=ReplyActions.js.map

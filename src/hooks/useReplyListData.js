@@ -41,16 +41,14 @@ function useReplyListData(_a) {
             return;
         // 查看replyId和objectId相等时更新
         if (replyId === details.objectId) {
-            // console.log(1)
             updateDataAfterReply();
         }
         else if (maxNest === curNest + 1 && syncReplyList.current.find(function (obj) { return obj.objectId === replyId; })) {
             // 下一层是最大嵌套数
-            // console.log(2)
             updateDataAfterReply();
         }
     }, [updateReplyDetails]);
-    function toggleReplyList() {
+    var toggleReplyList = (0, react_1.useCallback)(function () {
         if (showReply) {
             setShowReply(false);
             setReplyList([]);
@@ -61,7 +59,7 @@ function useReplyListData(_a) {
             setShowReply(true);
             return loadData()["finally"](function () { return setReplyLoading(false); });
         }
-    }
+    }, [showReply]);
     function loadData() {
         var params = {
             replyId: details.objectId,
@@ -80,7 +78,7 @@ function useReplyListData(_a) {
             }
         });
     }
-    function updateCommentInReplyAsync(id, data) {
+    var updateCommentInReplyAsync = (0, react_1.useCallback)(function (id, data) {
         var idx = syncReplyList.current.findIndex(function (obj) { return obj.objectId === id; });
         var newReplyList = replyList.slice();
         if (idx !== -1) {
@@ -90,11 +88,11 @@ function useReplyListData(_a) {
         else {
             updateCommentAsync(id, data);
         }
-    }
-    function fetchMore() {
+    }, [replyList]);
+    var fetchMore = (0, react_1.useCallback)(function () {
         replyPage.current += 1;
         return loadData();
-    }
+    }, []);
     function updateDataAfterReply() {
         var next;
         if (!showReply) {

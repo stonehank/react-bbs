@@ -68,8 +68,9 @@ export type ConfigInfo ={
 
 export type SingUserInfo={
     id:string,
-    sessionToken:string,
-    username:string,
+    username?:string,
+    sessionToken?:string,
+    email?:string
 }
 
 export type FetchCommentParams={
@@ -94,3 +95,4 @@ export type BBSPanelParams={
     offset:number,
     uniqStr: string
 }
+

@@ -15,14 +15,5 @@ function ReplyListCount(_a) {
             replyCounts,
             "\u6761\u8BC4\u8BBA"))));
 }
-function propsIsEqual(prev, next) {
-    for (var k in prev) {
-        if (!prev.hasOwnProperty(k))
-            continue;
-        if (typeof prev[k] !== 'function' && prev[k] !== next[k])
-            return false;
-    }
-    return true;
-}
-exports["default"] = react_1["default"].memo(ReplyListCount, propsIsEqual);
+exports["default"] = react_1["default"].memo(ReplyListCount);
 //# sourceMappingURL=ReplyListCount.js.map

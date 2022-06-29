@@ -20,7 +20,6 @@ function MessageCard(props) {
         loadList,
         updateCommentAsync,
     } = props
-    console.log('MessageCard update')
     return (
         <div
             id={details.objectId}

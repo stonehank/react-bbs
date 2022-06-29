@@ -20,7 +20,6 @@ function createNormalData(counts=100,reply=200,nest=3){
       avatar: 'https://picsum.photos/@integer(60, 120)',
     }]
   }).list
-  // console.log(list)
   list=list.map((obj)=>{
     objectIdIndex[obj.objectId]=obj
     objectIdBox.push(obj.objectId)

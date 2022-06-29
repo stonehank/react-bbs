@@ -11,8 +11,8 @@ type Props={
     edit:boolean,
     small:boolean,
     editMessage:string,
-    setEditMessage:React.Dispatch<any>,
     editMessageRef:any,
+    setEditMessage:React.Dispatch<any>,
     insertEmoji:(emoji:any)=>void
 }
 
@@ -25,6 +25,7 @@ function ReplyEditRender({
                              editMessageRef,
                              insertEmoji
                          }:Props) {
+
     return (
         <div
             className={clx(messageBodyStyle["bbs-msg-body"], {
@@ -55,12 +56,6 @@ function ReplyEditRender({
         </div>
     );
 }
-function propsIsEqual(prev,next){
-    for(let k in prev){
-        if(!prev.hasOwnProperty(k))continue
-        if(typeof prev[k]!=='function' && prev[k]!==next[k])return false
-    }
-    return true
-}
 
-export default React.memo(ReplyEditRender,propsIsEqual);
+
+export default React.memo(ReplyEditRender);

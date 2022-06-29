@@ -15,7 +15,6 @@ var BBSCommentCard = styled_components_1["default"].div(templateObject_1 || (tem
 var BBSHr = styled_components_1["default"].div(templateObject_2 || (templateObject_2 = __makeTemplateObject(["\n    border-top: 1px dashed var(--bbs-text-muted)\n"], ["\n    border-top: 1px dashed var(--bbs-text-muted)\n"])));
 function MessageCard(props) {
     var index = props.index, details = props.details, small = props.small, curNest = props.curNest, maxNest = props.maxNest, loadList = props.loadList, updateCommentAsync = props.updateCommentAsync;
-    console.log('MessageCard update');
     return (react_1["default"].createElement("div", { id: details.objectId },
         index !== 0 && curNest === 0 ? react_1["default"].createElement(BBSHr, null) : null,
         react_1["default"].createElement(BBSCommentCard, null,

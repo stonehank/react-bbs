@@ -4,8 +4,7 @@ import {CommentObject, FetchCommentParams, FetchCommentResult, SingUserInfo} fro
 import useDidUpdate from "./useDidUpdate";
 import cloneDeep from "clone-deep";
 import bindATagSmoothScroll from "../utils/DOM/bindATagSmoothScroll";
-import configMethods from '../config'
-const {readConfig} = configMethods
+import {readConfig} from '../config'
 const { countMap} = readConfig()
 
 type ListDataProps={
@@ -105,7 +104,6 @@ function useListData({maxNest, uniqStr, pageSize, fetchComments, fetchCurrentUse
     },[page])
 
     const updateCommentAsync=useCallback((id,updatedData)=>{
-        // console.log(syncList,'updateCommentAsync')
         let idx=list.findIndex(obj=>obj.objectId===id)
         let newList=list.slice()
         if(idx!==-1){

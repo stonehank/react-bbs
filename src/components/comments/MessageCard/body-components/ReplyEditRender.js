@@ -22,14 +22,5 @@ function ReplyEditRender(_a) {
                 react_1["default"].createElement(MessageInput_1["default"], { message: editMessage, setMessage: setEditMessage, ref: editMessageRef, label: "编辑内容", rows: 3 }),
                 react_1["default"].createElement(ActionsBar_1["default"], { message: editMessage, insertEmoji: insertEmoji, replyId: details.replyId, at: details.at }))));
 }
-function propsIsEqual(prev, next) {
-    for (var k in prev) {
-        if (!prev.hasOwnProperty(k))
-            continue;
-        if (typeof prev[k] !== 'function' && prev[k] !== next[k])
-            return false;
-    }
-    return true;
-}
-exports["default"] = react_1["default"].memo(ReplyEditRender, propsIsEqual);
+exports["default"] = react_1["default"].memo(ReplyEditRender);
 //# sourceMappingURL=ReplyEditRender.js.map

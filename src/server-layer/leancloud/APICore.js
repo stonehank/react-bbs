@@ -6,10 +6,9 @@ exports.__esModule = true;
 var CustomAV_1 = __importDefault(require("./CustomAV"));
 var initAVObject_1 = __importDefault(require("./initAVObject"));
 var utils_1 = require("../../utils");
-var config_1 = __importDefault(require("../../config"));
-var readConfig = config_1["default"].readConfig, readLoggedUser = config_1["default"].readLoggedUser;
+var config_1 = require("../../config");
 function useAPICore() {
-    var _a = readConfig(), appId = _a.appId, appKey = _a.appKey, serverURLs = _a.serverURLs, CommentClass = _a.CommentClass, CounterClass = _a.CounterClass, UserClass = _a.UserClass, editMode = _a.editMode, pageviewMap = _a.pageviewMap;
+    var _a = (0, config_1.readConfig)(), appId = _a.appId, appKey = _a.appKey, serverURLs = _a.serverURLs, CommentClass = _a.CommentClass, CounterClass = _a.CounterClass, UserClass = _a.UserClass, editMode = _a.editMode, pageviewMap = _a.pageviewMap;
     var ownerCodeKey = 'serverless_react_bbs_ownerCode';
     var oldRandOwnerCode = (0, utils_1.getFromCache)(ownerCodeKey);
     var newRandOwnerCode = oldRandOwnerCode || (0, utils_1.randUniqueString)();
@@ -27,7 +26,7 @@ function useAPICore() {
         "401": "Unauthorized operation, Please check your appId and appKey.",
         "403": "Access denied by api domain white list, Please check your security domain."
     };
-    var loggedUser = readLoggedUser();
+    var loggedUser = (0, config_1.readLoggedUser)();
     /**
      * Vue -> $serverLessBBS
      * appId

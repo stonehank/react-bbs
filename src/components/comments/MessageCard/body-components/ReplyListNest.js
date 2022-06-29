@@ -21,14 +21,5 @@ function ReplyListNest(_a) {
         react_1["default"].createElement(ListRender_1["default"], { className: (0, classnames_1["default"])('mt-2', 'pl-1', message_body_module_scss_1["default"]['bbs-reply-wrapper']), curNest: curNest + 1, maxNest: maxNest, list: replyList, updateCommentAsync: updateCommentInReplyAsync, loadList: loadList }),
         react_1["default"].createElement(MoreButton_1["default"], { align: "left", simple: true, noMoreData: replyCounts <= replyList.length, loadMore: fetchMore })));
 }
-function propsIsEqual(prev, next) {
-    for (var k in prev) {
-        if (!prev.hasOwnProperty(k))
-            continue;
-        if (typeof prev[k] !== 'function' && prev[k] !== next[k])
-            return false;
-    }
-    return true;
-}
-exports["default"] = react_1["default"].memo(ReplyListNest, propsIsEqual);
+exports["default"] = react_1["default"].memo(ReplyListNest);
 //# sourceMappingURL=ReplyListNest.js.map

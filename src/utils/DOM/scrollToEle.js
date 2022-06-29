@@ -5,17 +5,15 @@ export default function scrollToEle(ele, {
     smooth=false,
     offset=0
 }={}) {
-    console.log('scroll',ele)
     if (!ele) return Promise.resolve(false)
     if (!(ele instanceof Element)) {
-        ele = ele.$el
+        ele = ele.current
     }
     if (!(ele instanceof Element)) {
-        throw new Error('Pass ele is not correct')
+        throw new Error('Pass ele is not correct, should be a HTML Element or React HTML Ref')
     }
     let targetEle=ele
     let parentNode = getScrollParent(targetEle)
-    console.log('scroll step1',ele,parentNode)
     return new Promise((res)=>{
         while (parentNode) {
             scrollTo(targetEle, parentNode, {
@@ -40,7 +38,6 @@ function scrollTo(target, parent, {highlight,smooth,offset}) {
         parent = window
     }
     if (highlight) highLightEle(target)
-    console.log('top',top,target,parent,offset)
     try{
         parent.scrollTo({
             top: top - offset,

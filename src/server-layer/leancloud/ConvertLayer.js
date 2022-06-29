@@ -13,10 +13,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 exports.__esModule = true;
 var react_1 = require("react");
-var config_1 = __importDefault(require("../../config"));
+var config_1 = require("../../config");
 var APICore_1 = __importDefault(require("./APICore"));
-var readConfig = config_1["default"].readConfig, setLoggedUser = config_1["default"].setLoggedUser;
-var _a = readConfig(), pageviewMap = _a.pageviewMap, countMap = _a.countMap;
 var cloneDeep = require('clone-deep');
 /**
  * STEP1: 一次性获取1000个数据
@@ -31,7 +29,8 @@ function useConvertLayer() {
     var _d = (0, react_1.useState)(false), checkOnNextInsert = _d[0], setCheckOnNextInsert = _d[1];
     var allCommentData = (0, react_1.useRef)([]);
     var objectIdToData = (0, react_1.useRef)({});
-    var _e = (0, APICore_1["default"])(), serverInit = _e.serverInit, signIn_server = _e.signIn_server, fetchCounts_server = _e.fetchCounts_server, fetchPageViews_server = _e.fetchPageViews_server, updateComment_server = _e.updateComment_server, uploadComment_server = _e.uploadComment_server, fetchComments_server = _e.fetchComments_server;
+    var _e = (0, config_1.readConfig)(), pageviewMap = _e.pageviewMap, countMap = _e.countMap;
+    var _f = (0, APICore_1["default"])(), serverInit = _f.serverInit, signIn_server = _f.signIn_server, fetchCounts_server = _f.fetchCounts_server, fetchPageViews_server = _f.fetchPageViews_server, updateComment_server = _f.updateComment_server, uploadComment_server = _f.uploadComment_server, fetchComments_server = _f.fetchComments_server;
     (0, react_1.useEffect)(function () {
         serverInit().then(function () { return setInitialLoading(false); });
     }, []);
@@ -100,7 +99,7 @@ function useConvertLayer() {
                     username: user.attributes.username
                 };
             }
-            setLoggedUser(simpleUser);
+            (0, config_1.setLoggedUser)(simpleUser);
             return simpleUser;
         });
     }

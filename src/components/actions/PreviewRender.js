@@ -15,8 +15,10 @@ const StyledPreviewRender=styled.div`
 function PreviewRender(props) {
     const {message,at,replyId,preview} = props
 
+    if(!preview)return null
+
     const previewMessage = useMemo(()=>(
-        preview ? addAtHTMLTag(xssMarkdown(convertToPureMessage(message,at)),replyId,at) : ''
+        addAtHTMLTag(xssMarkdown(convertToPureMessage(message,at)),replyId,at)
     ),[message,at,replyId])
 
     return (

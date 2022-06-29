@@ -19,9 +19,8 @@ var useSyncState_1 = __importDefault(require("./useSyncState"));
 var useDidUpdate_1 = __importDefault(require("./useDidUpdate"));
 var clone_deep_1 = __importDefault(require("clone-deep"));
 var bindATagSmoothScroll_1 = __importDefault(require("../utils/DOM/bindATagSmoothScroll"));
-var config_1 = __importDefault(require("../config"));
-var readConfig = config_1["default"].readConfig;
-var countMap = readConfig().countMap;
+var config_1 = require("../config");
+var countMap = (0, config_1.readConfig)().countMap;
 function useListData(_a) {
     var maxNest = _a.maxNest, uniqStr = _a.uniqStr, pageSize = _a.pageSize, fetchComments = _a.fetchComments, fetchCurrentUser = _a.fetchCurrentUser;
     var _b = (0, react_1.useState)(true), loading = _b[0], setLoading = _b[1];
@@ -91,7 +90,6 @@ function useListData(_a) {
         return loadData();
     }, [page]);
     var updateCommentAsync = (0, react_1.useCallback)(function (id, updatedData) {
-        // console.log(syncList,'updateCommentAsync')
         var idx = list.findIndex(function (obj) { return obj.objectId === id; });
         var newList = list.slice();
         if (idx !== -1) {

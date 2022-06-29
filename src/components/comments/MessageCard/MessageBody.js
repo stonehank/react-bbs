@@ -35,9 +35,8 @@ var ReplyActions_1 = __importDefault(require("./body-components/ReplyActions"));
 var ReplyEditRender_1 = __importDefault(require("./body-components/ReplyEditRender"));
 var useReplyEdit_1 = __importDefault(require("../../../hooks/useReplyEdit"));
 var useReplyListData_1 = __importDefault(require("../../../hooks/useReplyListData"));
-var config_1 = __importDefault(require("../../../config"));
+var config_1 = require("../../../config");
 var ReplyUpdateContext_1 = __importDefault(require("../../../context/replys/ReplyUpdateContext"));
-var readLoggedUser = config_1["default"].readLoggedUser;
 function MessageBody(props) {
     var _a, _b;
     var small = props.small, details = props.details, curNest = props.curNest, maxNest = props.maxNest, loadList = props.loadList, updateCommentAsync = props.updateCommentAsync;
@@ -45,12 +44,12 @@ function MessageBody(props) {
     var _c = (0, react_1.useContext)(ReplyUpdateContext_1["default"]), startReply = _c.startReply, updateReplyDetails = _c.updateReplyDetails, updateComment = _c.updateComment;
     var _d = (0, useReplyEdit_1["default"])({ details: details, editMessageRef: editMessageRef, updateComment: updateComment, updateCommentAsync: updateCommentAsync }), edit = _d.edit, editMessage = _d.editMessage, setEditMessage = _d.setEditMessage, saveEdit = _d.saveEdit, showEdit = _d.showEdit, closeEdit = _d.closeEdit;
     var _e = (0, useReplyListData_1["default"])({ details: details, curNest: curNest, maxNest: maxNest, loadList: loadList, updateReplyDetails: updateReplyDetails, updateCommentAsync: updateCommentAsync }), replyList = _e.replyList, nodata = _e.nodata, replyCounts = _e.replyCounts, replyLoading = _e.replyLoading, showReply = _e.showReply, toggleReplyList = _e.toggleReplyList, fetchMore = _e.fetchMore, updateCommentInReplyAsync = _e.updateCommentInReplyAsync;
-    var loggedUser = readLoggedUser();
+    var loggedUser = (0, config_1.readLoggedUser)();
     var canRenderReplyBtn = (0, react_1.useMemo)(function () { return curNest < maxNest; }, [curNest, maxNest]);
     var isOwnerComment = (0, react_1.useMemo)(function () { return loggedUser && loggedUser.id != null && loggedUser.id === details.user_id; }, [loggedUser, details.user_id]);
-    function insertEmoji(emoji) {
+    var insertEmoji = (0, react_1.useCallback)(function (emoji) {
         editMessageRef.current.insertToValue(emoji);
-    }
+    }, []);
     return (react_1["default"].createElement("div", { className: (0, classnames_1["default"])(message_body_module_scss_1["default"]["bbs-msg-wrapper"], (_a = {},
             _a[message_body_module_scss_1["default"]["msg-small"]] = small,
             _a)) },

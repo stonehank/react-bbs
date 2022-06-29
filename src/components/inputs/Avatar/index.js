@@ -64,7 +64,6 @@ function Avatar(props) {
         setAvatar(rdAvatar);
     }, []);
     (0, useDidUpdate_1["default"])(function () {
-        console.log('update');
         updateAvatarList();
     }, [email, nickname, size]);
     function createEmailSrc() {

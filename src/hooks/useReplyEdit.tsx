@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useCallback, useState} from 'react';
 
 
 function useReplyEdit(props) {
@@ -16,7 +16,7 @@ function useReplyEdit(props) {
         setEditMessage(details.message)
     }
 
-    function saveEdit():void{
+    const saveEdit=useCallback(function():void{
         if(!validate())return
         let id=details.objectId
         updateComment(id,editMessage)
@@ -25,7 +25,8 @@ function useReplyEdit(props) {
                 closeEdit()
                 updateCommentAsync(id,data)
             })
-    }
+    },[editMessage,details.id])
+
 
     function validate():boolean {
         return editMessageRef.current.validate()
