@@ -1,3 +1,4 @@
+import { ConvertLayerIInterface } from '../../types';
 /**
  * STEP1: 一次性获取1000个数据
  * STEP2: 转换为嵌套数据, 并且计算回复数

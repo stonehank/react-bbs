@@ -2,9 +2,9 @@ import React, { useRef, useImperativeHandle } from 'react'
 import TextField from '../UI/TextField'
 
 type NicknameProps = {
-  nickname: string
-  setNickname: (email: string) => void
-  [x: string]: any
+  nickname: string;
+  setNickname: (email: string) => void;
+  [x: string]: any;
 }
 
 const Nickname = React.forwardRef((props: NicknameProps, forwardRef) => {

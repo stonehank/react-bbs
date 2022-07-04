@@ -1,7 +1,25 @@
 import { useReducer, useRef, useState } from 'react'
 import useDidUpdate from './useDidUpdate'
 import { convertToAtMessage } from '../utils/handlerAtTag'
-
+import { ReplyInfo } from '../types'
+function replyInfoReducer(state: ReplyInfo, action: { type: string; data?: ReplyInfo }): ReplyInfo {
+  switch (action.type) {
+    case 'reply':
+      return {
+        at: action.data.at,
+        replyId: action.data.replyId,
+        rootId: action.data.rootId
+      }
+    case 'cancel':
+      return {
+        at: '',
+        replyId: '',
+        rootId: ''
+      }
+    default:
+      return state
+  }
+}
 function useMessageData({ offset, userInputRef }) {
   const initialReplyInfo: ReplyInfo = {
     at: '',
@@ -11,32 +29,6 @@ function useMessageData({ offset, userInputRef }) {
   const [replyInfo, replyInfoDispatch] = useReducer(replyInfoReducer, initialReplyInfo)
   const [message, setMessage] = useState('')
   const messageEleRef = useRef(null)
-
-  function replyInfoReducer(state: ReplyInfo, action: { type: string; data?: ReplyInfo }): ReplyInfo {
-    switch (action.type) {
-      case 'reply':
-        return {
-          at: action.data.at,
-          replyId: action.data.replyId,
-          rootId: action.data.rootId
-        }
-      case 'cancel':
-        return {
-          at: '',
-          replyId: '',
-          rootId: ''
-        }
-      default:
-        return state
-    }
-  }
-  useDidUpdate(() => {
-    if (replyInfo.at && replyInfo.replyId) {
-      if (!message.startsWith(`@${replyInfo.at} `)) {
-        cancelReply()
-      }
-    }
-  }, [message])
 
   function startReply({ rootId, replyId, replyName }) {
     replyInfoDispatch({ type: 'reply', data: { rootId, replyId, at: replyName } })
@@ -54,6 +46,13 @@ function useMessageData({ offset, userInputRef }) {
     setMessage(message.slice(replyInfo.at.length + 1))
     replyInfoDispatch({ type: 'cancel' })
   }
+  useDidUpdate(() => {
+    if (replyInfo.at && replyInfo.replyId) {
+      if (!message.startsWith(`@${replyInfo.at} `)) {
+        cancelReply()
+      }
+    }
+  }, [message])
   return {
     messageEleRef,
     message,

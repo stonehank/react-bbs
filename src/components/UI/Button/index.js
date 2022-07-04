@@ -26,16 +26,17 @@ import buttonStyle from './button.module.scss';
 import Loading from '../Loading';
 var Button = React.forwardRef(function (props, ref) {
     var _a;
-    var onClick = props.onClick, color = props.color, text = props.text, dense = props.dense, disabled = props.disabled, loading = props.loading, children = props.children, className = props.className, otherProps = __rest(props, ["onClick", "color", "text", "dense", "disabled", "loading", "children", "className"]);
+    var onClick = props.onClick, color = props.color, text = props.text, dense = props.dense, disabled = props.disabled, loading = props.loading, children = props.children, className = props.className, size = props.size, otherProps = __rest(props, ["onClick", "color", "text", "dense", "disabled", "loading", "children", "className", "size"]);
     return (React.createElement("button", __assign({ ref: ref, onClick: onClick, className: cls(className, (_a = {},
             _a[buttonStyle['bbs-btn']] = true,
-            // @ts-ignore
-            _a[buttonStyle[color + '-color']] = !!color,
+            _a[buttonStyle[color + '-color']] = !!color && !color.startsWith('#'),
             _a[buttonStyle['bbs-btn-text']] = text,
             _a[buttonStyle['no-gap']] = dense,
             _a[buttonStyle['bbs-disabled']] = disabled,
             _a[buttonStyle['bbs-btn-loading']] = loading,
-            _a)) }, otherProps), loading ? React.createElement(Loading, { size: 22 }) : children));
+            _a[buttonStyle['bbs-btn-small']] = size === 'small',
+            _a[buttonStyle['bbs-btn-xsmall']] = size === 'x-small',
+            _a)), style: !!color && color.startsWith('#') ? { color: '#fff', backgroundColor: color } : {} }, otherProps), loading ? React.createElement(Loading, { size: 22 }) : children));
 });
-export default Button;
+export default React.memo(Button);
 //# sourceMappingURL=index.js.map

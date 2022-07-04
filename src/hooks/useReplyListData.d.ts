@@ -1,3 +1,4 @@
+import { CommentObject } from '../types';
 declare function useReplyListData({ details, curNest, maxNest, loadList, updateReplyDetails, updateCommentAsync }: {
     details: any;
     curNest: any;

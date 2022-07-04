@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import '../assets/css/common.scss';
 import '../assets/css/highlight.scss';
 import '../assets/css/github-markdown.scss';
+import { BBSPanelParams } from '../types';
 declare function ServerlessBBSPanel(props: BBSPanelParams): JSX.Element;
 declare namespace ServerlessBBSPanel {
     var propTypes: {

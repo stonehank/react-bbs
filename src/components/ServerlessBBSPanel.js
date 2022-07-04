@@ -19,6 +19,11 @@ import { readConfig } from '../config';
 function ServerlessBBSPanel(props) {
     var _a = useState(true), layerLoading = _a[0], setLayerLoading = _a[1];
     var useConvertLayer = useRef(null);
+    function getServerLayer(server) {
+        return server === 'leancloud'
+            ? import('../server-layer/leancloud/ConvertLayer')
+            : import('../server-layer/firebase/ConvertLayer');
+    }
     useEffect(function () {
         var server = readConfig().server;
         getServerLayer(server).then(function (module) {
@@ -26,11 +31,6 @@ function ServerlessBBSPanel(props) {
             setLayerLoading(false);
         });
     }, []);
-    function getServerLayer(server) {
-        return server === 'leancloud'
-            ? import('../server-layer/leancloud/ConvertLayer')
-            : import('../server-layer/firebase/ConvertLayer');
-    }
     if (layerLoading)
         return null;
     return (React.createElement("section", { className: 'serverless-bbs' },

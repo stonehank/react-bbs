@@ -17,9 +17,9 @@ export default function useAPICore() {
     };
     var commentsPage = 1;
     var errorCodeMsg = {
-        '100': 'Initialization failed, Please check your appId and appKey.',
-        '401': 'Unauthorized operation, Please check your appId and appKey.',
-        '403': 'Access denied by api domain white list, Please check your security domain.'
+        100: 'Initialization failed, Please check your appId and appKey.',
+        401: 'Unauthorized operation, Please check your appId and appKey.',
+        403: 'Access denied by api domain white list, Please check your security domain.'
     };
     var loggedUser = readLoggedUser();
     /**
@@ -126,7 +126,10 @@ export default function useAPICore() {
             searchPromise = query.equalTo('uniqStr', uniqStr).count();
         }
         else {
-            searchPromise = query.equalTo('uniqStr', uniqStr).equalTo('replyId', '').count();
+            searchPromise = query
+                .equalTo('uniqStr', uniqStr)
+                .equalTo('replyId', '')
+                .count();
         }
         return searchPromise
             .then(function (counts) {
@@ -255,7 +258,7 @@ export default function useAPICore() {
                 continue;
             comment.set(k, uploadField[k]);
         }
-        comment.set('url', location.href);
+        comment.set('url', window.location.href);
         var acl = new AV.ACL();
         acl.setPublicReadAccess(true);
         acl.setPublicWriteAccess(false);

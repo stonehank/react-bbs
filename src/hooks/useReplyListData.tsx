@@ -5,6 +5,7 @@ import messageBodyStyle from '../components/comments/MessageCard/scss/message-bo
 import useDidUpdate from './useDidUpdate'
 import scrollToEle from '../utils/DOM/scrollToEle'
 import highLightEle from '../utils/DOM/highLightEle'
+import { CommentObject } from '../types'
 
 function useReplyListData({
   details,
@@ -14,14 +15,14 @@ function useReplyListData({
   updateReplyDetails,
   updateCommentAsync
 }): {
-  replyList: CommentObject[]
-  nodata: boolean
-  replyCounts: number
-  replyLoading: boolean
-  showReply: boolean
-  toggleReplyList: () => Promise<void>
-  fetchMore: () => void
-  updateCommentInReplyAsync: (id: string, data: { message: string; updatedAt: string }) => void
+  replyList: CommentObject[];
+  nodata: boolean;
+  replyCounts: number;
+  replyLoading: boolean;
+  showReply: boolean;
+  toggleReplyList: () => Promise<void>;
+  fetchMore: () => void;
+  updateCommentInReplyAsync: (id: string, data: { message: string; updatedAt: string }) => void;
 } {
   const [replyList, syncReplyList, setReplyList] = useSyncState<CommentObject[]>([])
   const [nodata, setNodata] = useState<boolean>(false)
@@ -29,37 +30,6 @@ function useReplyListData({
   const [replyLoading, setReplyLoading] = useState<boolean>(false)
   const [showReply, setShowReply] = useState<boolean>(false)
   const replyPage = useRef<number>(1)
-
-  useDidUpdate(() => {
-    if (!updateReplyDetails) return
-    const { replyId, rootId } = updateReplyDetails
-    // 不同祖先，彻底没关系
-    if (rootId !== (details.rootId || details.objectId)) return
-    // 已经过了最大嵌套层，不必更新
-    if (maxNest === curNest) return
-    // 查看replyId和objectId相等时更新
-    if (replyId === details.objectId) {
-      updateDataAfterReply()
-    } else if (maxNest === curNest + 1 && syncReplyList.current.find((obj) => obj.objectId === replyId)) {
-      // 下一层是最大嵌套数
-      updateDataAfterReply()
-    }
-  }, [updateReplyDetails])
-
-  const toggleReplyList = useCallback(
-    function(): Promise<void> {
-      if (showReply) {
-        setShowReply(false)
-        setReplyList([])
-        return Promise.resolve()
-      } else {
-        setReplyLoading(true)
-        setShowReply(true)
-        return loadData().finally(() => setReplyLoading(false))
-      }
-    },
-    [showReply]
-  )
 
   function loadData(): Promise<void> {
     const params = {
@@ -76,7 +46,20 @@ function useReplyListData({
       }
     })
   }
-
+  const toggleReplyList = useCallback(
+    function(): Promise<void> {
+      if (showReply) {
+        setShowReply(false)
+        setReplyList([])
+        return Promise.resolve()
+      } else {
+        setReplyLoading(true)
+        setShowReply(true)
+        return loadData().finally(() => setReplyLoading(false))
+      }
+    },
+    [showReply]
+  )
   const updateCommentInReplyAsync = useCallback(
     function(id: string, data: { message: string; updatedAt: string }): void {
       const idx = syncReplyList.current.findIndex((obj) => obj.objectId === id)
@@ -124,7 +107,21 @@ function useReplyListData({
         }, 100)
       })
   }
-
+  useDidUpdate(() => {
+    if (!updateReplyDetails) return
+    const { replyId, rootId } = updateReplyDetails
+    // 不同祖先，彻底没关系
+    if (rootId !== (details.rootId || details.objectId)) return
+    // 已经过了最大嵌套层，不必更新
+    if (maxNest === curNest) return
+    // 查看replyId和objectId相等时更新
+    if (replyId === details.objectId) {
+      updateDataAfterReply()
+    } else if (maxNest === curNest + 1 && syncReplyList.current.find((obj) => obj.objectId === replyId)) {
+      // 下一层是最大嵌套数
+      updateDataAfterReply()
+    }
+  }, [updateReplyDetails])
   return {
     replyList,
     nodata,

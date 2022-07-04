@@ -17,10 +17,10 @@ const StyledPreviewBtn = styled(Button)`
   margin-left: 16px;
 `
 type Props = {
-  message: string
-  replyId: string
-  at: string
-  insertEmoji: (emoji: string) => void
+  message: string;
+  replyId: string;
+  at: string;
+  insertEmoji: (emoji: string) => void;
 }
 function ActionsBar(props: Props) {
   const { insertEmoji, message, at, replyId } = props

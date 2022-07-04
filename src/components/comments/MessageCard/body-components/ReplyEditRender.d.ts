@@ -1,4 +1,5 @@
 import React from 'react';
+import { CommentObject } from '../../../../types';
 declare type Props = {
     details: CommentObject;
     edit: boolean;

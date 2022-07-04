@@ -4,15 +4,16 @@ import messageBodyStyle from '../scss/message-body.module.scss'
 import MessageRender from '../MessageRender'
 import MessageInput from '../../../inputs/MessageInput'
 import ActionsBar from '../../../actions/ActionsBar'
+import { CommentObject } from '../../../../types';
 
 type Props = {
-  details: CommentObject
-  edit: boolean
-  small: boolean
-  editMessage: string
-  editMessageRef: any
-  setEditMessage: React.Dispatch<any>
-  insertEmoji: (emoji: any) => void
+  details: CommentObject;
+  edit: boolean;
+  small: boolean;
+  editMessage: string;
+  editMessageRef: any;
+  setEditMessage: React.Dispatch<any>;
+  insertEmoji: (emoji: any) => void;
 }
 
 function ReplyEditRender({ details, edit, small, editMessage, setEditMessage, editMessageRef, insertEmoji }: Props) {

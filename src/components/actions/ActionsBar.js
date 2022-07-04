@@ -37,7 +37,7 @@ function ActionsBar(props) {
     }, [preview]);
     var togglePreview = useCallback(function () {
         setPreview(!preview);
-    }, [preview]);
+    }, [preview, setPreview]);
     return (React.createElement(React.Fragment, null,
         React.createElement(StyledActionBar, null,
             React.createElement(MarkdownIcon, null),
@@ -46,9 +46,7 @@ function ActionsBar(props) {
                 React.createElement(StyledPreviewBtn, { className: 'text-sm', text: true, color: preview ? 'success' : '', onClick: togglePreview },
                     "\u9884\u89C8:",
                     preview ? 'On' : 'Off'))),
-        React.createElement(animated.div, { style: __assign(__assign({}, styles), { transformOrigin: 'top center', display: styles.dspl.interpolate(function (display) {
-                    return display === 0 ? 'none' : 'block';
-                }) }) },
+        React.createElement(animated.div, { style: __assign(__assign({}, styles), { transformOrigin: 'top center', display: styles.dspl.interpolate(function (display) { return (display === 0 ? 'none' : 'block'); }) }) },
             React.createElement(PreviewRender, { preview: preview, message: message, replyId: replyId, at: at }))));
 }
 export default React.memo(ActionsBar);

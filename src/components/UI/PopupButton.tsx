@@ -17,12 +17,12 @@ const StyledAnimatedPopup = styled(animated.div)`
 `
 
 type Props = {
-  style: any
-  popupContent: () => any
-  show: boolean
-  setShow: React.Dispatch<any>
-  beforeOpen: () => void
-  [x: string]: any
+  style: any;
+  popupContent: () => any;
+  show: boolean;
+  setShow: React.Dispatch<any>;
+  beforeOpen: () => void;
+  [x: string]: any;
 }
 
 function PopupButton(props: Props) {

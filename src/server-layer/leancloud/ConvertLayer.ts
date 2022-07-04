@@ -1,7 +1,14 @@
 import { useEffect, useState, useRef } from 'react'
 import { readConfig, setLoggedUser } from '../../config'
 import useAPICore from './APICore'
-const cloneDeep = require('clone-deep')
+import {
+  CommentObject,
+  ConvertLayerIInterface,
+  FetchCommentParams,
+  FetchCommentResult,
+  SingUserInfo
+} from '../../types'
+import cloneDeep from 'clone-deep'
 
 /**
  * STEP1: 一次性获取1000个数据
@@ -255,8 +262,8 @@ export default function useConvertLayer(): ConvertLayerIInterface {
     allList: CommentObject[],
     item: CommentObject
   ): {
-    list: CommentObject[]
-    inserted: boolean
+    list: CommentObject[];
+    inserted: boolean;
   } {
     if (!allList || allList.length === 0) return { list: allList, inserted: false }
     allList.sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1))

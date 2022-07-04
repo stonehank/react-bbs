@@ -24,37 +24,6 @@ function useReplyListData(_a) {
     var _e = useState(false), replyLoading = _e[0], setReplyLoading = _e[1];
     var _f = useState(false), showReply = _f[0], setShowReply = _f[1];
     var replyPage = useRef(1);
-    useDidUpdate(function () {
-        if (!updateReplyDetails)
-            return;
-        var replyId = updateReplyDetails.replyId, rootId = updateReplyDetails.rootId;
-        // 不同祖先，彻底没关系
-        if (rootId !== (details.rootId || details.objectId))
-            return;
-        // 已经过了最大嵌套层，不必更新
-        if (maxNest === curNest)
-            return;
-        // 查看replyId和objectId相等时更新
-        if (replyId === details.objectId) {
-            updateDataAfterReply();
-        }
-        else if (maxNest === curNest + 1 && syncReplyList.current.find(function (obj) { return obj.objectId === replyId; })) {
-            // 下一层是最大嵌套数
-            updateDataAfterReply();
-        }
-    }, [updateReplyDetails]);
-    var toggleReplyList = useCallback(function () {
-        if (showReply) {
-            setShowReply(false);
-            setReplyList([]);
-            return Promise.resolve();
-        }
-        else {
-            setReplyLoading(true);
-            setShowReply(true);
-            return loadData()["finally"](function () { return setReplyLoading(false); });
-        }
-    }, [showReply]);
     function loadData() {
         var params = {
             replyId: details.objectId,
@@ -72,6 +41,18 @@ function useReplyListData(_a) {
             }
         });
     }
+    var toggleReplyList = useCallback(function () {
+        if (showReply) {
+            setShowReply(false);
+            setReplyList([]);
+            return Promise.resolve();
+        }
+        else {
+            setReplyLoading(true);
+            setShowReply(true);
+            return loadData()["finally"](function () { return setReplyLoading(false); });
+        }
+    }, [showReply]);
     var updateCommentInReplyAsync = useCallback(function (id, data) {
         var idx = syncReplyList.current.findIndex(function (obj) { return obj.objectId === id; });
         var newReplyList = replyList.slice();
@@ -113,6 +94,25 @@ function useReplyListData(_a) {
             }, 100);
         });
     }
+    useDidUpdate(function () {
+        if (!updateReplyDetails)
+            return;
+        var replyId = updateReplyDetails.replyId, rootId = updateReplyDetails.rootId;
+        // 不同祖先，彻底没关系
+        if (rootId !== (details.rootId || details.objectId))
+            return;
+        // 已经过了最大嵌套层，不必更新
+        if (maxNest === curNest)
+            return;
+        // 查看replyId和objectId相等时更新
+        if (replyId === details.objectId) {
+            updateDataAfterReply();
+        }
+        else if (maxNest === curNest + 1 && syncReplyList.current.find(function (obj) { return obj.objectId === replyId; })) {
+            // 下一层是最大嵌套数
+            updateDataAfterReply();
+        }
+    }, [updateReplyDetails]);
     return {
         replyList: replyList,
         nodata: nodata,

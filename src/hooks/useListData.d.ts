@@ -1,3 +1,4 @@
+import { CommentObject, FetchCommentParams, FetchCommentResult, SingUserInfo } from '../types';
 declare type ListDataProps = {
     maxNest: number;
     uniqStr: string;

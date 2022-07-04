@@ -17,6 +17,7 @@ import {
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'
 import { getFromCache, randUniqueString, setCache } from '../../utils'
 import { readConfig, readLoggedUser } from '../../config'
+import { APICoreInterface } from '../../types'
 
 const ownerCodeKey = 'serverless_react_bbs_ownerCode'
 let oldRandOwnerCode = getFromCache(ownerCodeKey)
@@ -42,7 +43,9 @@ export default function useAPICore(): APICoreInterface {
         authDomain: projectId + '.firebaseio.com',
         projectId: projectId
       })
-    } catch (_) {}
+    } catch (_) {
+      console.warn('Initial BBS App failed', _.message)
+    }
     db = getFirestore()
     return Promise.resolve()
   }

@@ -1,4 +1,5 @@
 /// <reference types="react" />
+import { CommentObject } from '../../types';
 declare type Props = {
     startReply: ({ rootId, replyId, replyName }: {
         rootId: any;

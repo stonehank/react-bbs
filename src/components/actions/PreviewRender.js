@@ -11,13 +11,13 @@ function PreviewRender(props) {
     var message = props.message, at = props.at, replyId = props.replyId, preview = props.preview;
     if (!preview)
         return null;
-    var previewMessage = useMemo(function () {
-        return addAtHTMLTag(xssMarkdown(convertToPureMessage(message, at)), replyId, at);
-    }, [message, at, replyId]);
+    var previewMessage = useMemo(function () { return addAtHTMLTag(xssMarkdown(convertToPureMessage(message, at)), replyId, at); }, [
+        message,
+        at,
+        replyId
+    ]);
     return (React.createElement(StyledPreviewRender, { className: 'markdown-body', dangerouslySetInnerHTML: {
-            __html: previewMessage.trim() === ''
-                ? '<span class="text-muted">无内容</span>'
-                : previewMessage
+            __html: previewMessage.trim() === '' ? '<span class="text-muted">无内容</span>' : previewMessage
         } }));
 }
 export default PreviewRender;

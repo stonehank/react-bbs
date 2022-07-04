@@ -8,9 +8,10 @@ function MoreButton(props) {
         setMoreLoading(true);
         loadMore()["finally"](function () { return setMoreLoading(false); });
     }, [loadMore]);
-    if (moreLoading)
+    if (moreLoading) {
         return (React.createElement("div", { className: 'text-' + align },
             React.createElement(Loading, { size: 24 })));
+    }
     if (noMoreData && simple)
         return null;
     return (React.createElement("div", { className: 'text-' + align },

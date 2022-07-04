@@ -1,10 +1,11 @@
 import React, { useMemo, useRef } from 'react'
 import ReplyUpdateContext from './ReplyUpdateContext'
+import { CommentObject } from '../../types'
 
 type Props = {
-  startReply: ({ rootId, replyId, replyName }: { rootId: any; replyId: any; replyName: any }) => void
-  updateComment: (id: string, message: string) => Promise<CommentObject>
-  [x: string]: any
+  startReply: ({ rootId, replyId, replyName }: { rootId: any; replyId: any; replyName: any }) => void;
+  updateComment: (id: string, message: string) => Promise<CommentObject>;
+  [x: string]: any;
 }
 
 function ReplyUpdateProvider({ children, startReply, updateComment }: Props) {

@@ -2,10 +2,10 @@ import React, { useRef, useImperativeHandle } from 'react'
 import TextField from '../UI/TextField'
 
 type Props = {
-  message: string
-  setMessage: React.Dispatch<string>
-  label?: string
-  rows?: string | number
+  message: string;
+  setMessage: React.Dispatch<string>;
+  label?: string;
+  rows?: string | number;
 }
 
 const MessageInput = React.forwardRef((props: Props, forwardRef) => {

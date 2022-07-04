@@ -3,10 +3,11 @@
   "extends": [
     "standard",
     "standard-react",
-    "plugin:prettier/recommended",
     "prettier/standard",
     "prettier/react",
-    "plugin:@typescript-eslint/eslint-recommended"
+    "plugin:@typescript-eslint/eslint-recommended",
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended"
   ],
   "env": {
     "node": true
@@ -32,6 +33,10 @@
     "import/export": 0,
     "camelcase": 0,
     "promise/param-names": 0,
-    "no-prototype-builtins": 0
+    "no-prototype-builtins": 0,
+    "explicit-function-return-type": 0,
+    "@typescript-eslint/explicit-function-return-type": 0,
+    "@typescript-eslint/camelcase": 0,
+    "@typescript-eslint/no-use-before-define": 0
   }
 }

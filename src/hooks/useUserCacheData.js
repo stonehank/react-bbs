@@ -13,6 +13,29 @@ import { useReducer } from 'react';
 import { getFromCache, setCache } from '../utils/index';
 import { CACHE_KEY } from '../constant';
 import useDidUpdate from './useDidUpdate';
+function userInfoReducer(state, action) {
+    switch (action.type) {
+        case 'nickname':
+            return __assign(__assign({}, state), { nickname: action.value });
+        case 'avatar':
+            return __assign(__assign({}, state), { avatar: action.value });
+        case 'email':
+            return __assign(__assign({}, state), { email: action.value });
+        default:
+            return state;
+    }
+}
+function getCacheData(CACHE_KEY) {
+    var cacheData = getFromCache(CACHE_KEY);
+    if (cacheData == null) {
+        cacheData = {
+            nickname: '',
+            email: '',
+            avatar: ''
+        };
+    }
+    return cacheData;
+}
 function useUserCacheData() {
     var cacheData = getCacheData(CACHE_KEY);
     var initialUserInfo = {
@@ -24,29 +47,6 @@ function useUserCacheData() {
     useDidUpdate(function () {
         setCache(CACHE_KEY, userInfo);
     }, [userInfo]);
-    function userInfoReducer(state, action) {
-        switch (action.type) {
-            case 'nickname':
-                return __assign(__assign({}, state), { nickname: action.value });
-            case 'avatar':
-                return __assign(__assign({}, state), { avatar: action.value });
-            case 'email':
-                return __assign(__assign({}, state), { email: action.value });
-            default:
-                return state;
-        }
-    }
-    function getCacheData(CACHE_KEY) {
-        var cacheData = getFromCache(CACHE_KEY);
-        if (cacheData == null) {
-            cacheData = {
-                nickname: '',
-                email: '',
-                avatar: ''
-            };
-        }
-        return cacheData;
-    }
     function setAvatar(avatar) {
         return userInfoDispatch({ type: 'avatar', value: avatar });
     }

@@ -5,10 +5,17 @@ import '../assets/css/common.scss'
 import '../assets/css/highlight.scss'
 import '../assets/css/github-markdown.scss'
 import { readConfig } from '../config'
+import { BBSPanelParams } from '../types'
 
 function ServerlessBBSPanel(props: BBSPanelParams) {
   const [layerLoading, setLayerLoading] = useState(true)
   const useConvertLayer = useRef(null)
+
+  function getServerLayer(server) {
+    return server === 'leancloud'
+      ? import('../server-layer/leancloud/ConvertLayer')
+      : import('../server-layer/firebase/ConvertLayer')
+  }
   useEffect(() => {
     const { server } = readConfig()
     getServerLayer(server).then((module) => {
@@ -16,11 +23,6 @@ function ServerlessBBSPanel(props: BBSPanelParams) {
       setLayerLoading(false)
     })
   }, [])
-  function getServerLayer(server) {
-    return server === 'leancloud'
-      ? import('../server-layer/leancloud/ConvertLayer')
-      : import('../server-layer/firebase/ConvertLayer')
-  }
   if (layerLoading) return null
   return (
     <section className='serverless-bbs'>

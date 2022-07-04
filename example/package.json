@@ -10,9 +10,6 @@
   "dependencies": {
     "react-app-polyfill": "^1.0.0"
   },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
   "alias": {
     "react": "../node_modules/react",
     "react-dom": "../node_modules/react-dom/profiling",

@@ -2,14 +2,15 @@ import React, { useContext } from 'react'
 import CommentsList from './CommentsList'
 import ReplyUpdateContext from '../../context/replys/ReplyUpdateContext'
 import useListData from '../../hooks/useListData'
+import { FetchCommentParams, FetchCommentResult, SingUserInfo } from '../../types'
 
 type Props = {
-  uniqStr: string
-  maxNest: number
-  editable: boolean
-  pageSize: number
-  fetchComments: (params: FetchCommentParams) => Promise<FetchCommentResult>
-  fetchCurrentUser: () => Promise<SingUserInfo>
+  uniqStr: string;
+  maxNest: number;
+  editable: boolean;
+  pageSize: number;
+  fetchComments: (params: FetchCommentParams) => Promise<FetchCommentResult>;
+  fetchCurrentUser: () => Promise<SingUserInfo>;
 }
 const Comments = React.forwardRef(
   ({ uniqStr, maxNest, pageSize, fetchComments, fetchCurrentUser }: Props, commentsRef) => {

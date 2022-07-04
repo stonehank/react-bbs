@@ -1,10 +1,10 @@
-const postcss = require('rollup-plugin-postcss');
-const autoprefixer = require('autoprefixer');
-const cssnano = require('cssnano');
+const postcss = require('rollup-plugin-postcss')
+const autoprefixer = require('autoprefixer')
+const cssnano = require('cssnano')
 
 module.exports = {
-  rollup(config, options) {
-    config.output={
+  rollup(config) {
+    config.output = {
       dir: 'dist',
       sourcemap: true,
       format: 'es'
@@ -14,14 +14,14 @@ module.exports = {
         plugins: [
           autoprefixer(),
           cssnano({
-            preset: 'default',
-          }),
+            preset: 'default'
+          })
         ],
-        inject: true,
+        inject: true
         // only write out CSS for the first bundle (avoids pointless extra files):
         // extract: !!options.writeMeta,
       })
-    );
-    return config;
-  },
-};
+    )
+    return config
+  }
+}

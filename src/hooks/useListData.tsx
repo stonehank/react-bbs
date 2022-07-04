@@ -4,26 +4,27 @@ import useDidUpdate from './useDidUpdate'
 import cloneDeep from 'clone-deep'
 import bindATagSmoothScroll from '../utils/DOM/bindATagSmoothScroll'
 import { readConfig } from '../config'
+import { CommentObject, FetchCommentParams, FetchCommentResult, SingUserInfo } from '../types'
 const { countMap } = readConfig()
 
 type ListDataProps = {
-  maxNest: number
-  uniqStr: string
-  pageSize: number
-  fetchComments: (params: FetchCommentParams) => Promise<FetchCommentResult>
-  fetchCurrentUser: () => Promise<SingUserInfo>
+  maxNest: number;
+  uniqStr: string;
+  pageSize: number;
+  fetchComments: (params: FetchCommentParams) => Promise<FetchCommentResult>;
+  fetchCurrentUser: () => Promise<SingUserInfo>;
 }
 
 interface ListDataOutput {
-  loading: boolean
-  userLoading: boolean
-  total: number
-  list: CommentObject[]
-  noMoreData: boolean
-  loadMore: () => void
-  loadList: (parameters: any) => Promise<{ data: CommentObject[]; total: number }>
-  updateCommentAsync: (id: string, updatedData: CommentObject) => void
-  updateList: (data: CommentObject) => void
+  loading: boolean;
+  userLoading: boolean;
+  total: number;
+  list: CommentObject[];
+  noMoreData: boolean;
+  loadMore: () => void;
+  loadList: (parameters: any) => Promise<{ data: CommentObject[]; total: number }>;
+  updateCommentAsync: (id: string, updatedData: CommentObject) => void;
+  updateList: (data: CommentObject) => void;
 }
 function useListData({ maxNest, uniqStr, pageSize, fetchComments, fetchCurrentUser }: ListDataProps): ListDataOutput {
   const [loading, setLoading] = useState(true)

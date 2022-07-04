@@ -2,13 +2,45 @@ import { useReducer } from 'react'
 import { getFromCache, setCache } from '../utils/index'
 import { CACHE_KEY } from '../constant'
 import useDidUpdate from './useDidUpdate'
+import { UserInfo } from '../types'
 
 type UserCacheDataResult = UserInfo & {
-  setAvatar: (avatar: string) => void
-  setEmail: (email: string) => void
-  setNickname: (nickname: string) => void
+  setAvatar: (avatar: string) => void;
+  setEmail: (email: string) => void;
+  setNickname: (nickname: string) => void;
 }
-
+function userInfoReducer(state: UserInfo, action: { type: string; value: string }): UserInfo {
+  switch (action.type) {
+    case 'nickname':
+      return {
+        ...state,
+        nickname: action.value
+      }
+    case 'avatar':
+      return {
+        ...state,
+        avatar: action.value
+      }
+    case 'email':
+      return {
+        ...state,
+        email: action.value
+      }
+    default:
+      return state
+  }
+}
+function getCacheData(CACHE_KEY) {
+  let cacheData = getFromCache(CACHE_KEY)
+  if (cacheData == null) {
+    cacheData = {
+      nickname: '',
+      email: '',
+      avatar: ''
+    }
+  }
+  return cacheData
+}
 function useUserCacheData(): UserCacheDataResult {
   const cacheData = getCacheData(CACHE_KEY)
   const initialUserInfo: UserInfo = {
@@ -21,40 +53,6 @@ function useUserCacheData(): UserCacheDataResult {
   useDidUpdate(() => {
     setCache(CACHE_KEY, userInfo)
   }, [userInfo])
-
-  function userInfoReducer(state: UserInfo, action: { type: string; value: string }): UserInfo {
-    switch (action.type) {
-      case 'nickname':
-        return {
-          ...state,
-          nickname: action.value
-        }
-      case 'avatar':
-        return {
-          ...state,
-          avatar: action.value
-        }
-      case 'email':
-        return {
-          ...state,
-          email: action.value
-        }
-      default:
-        return state
-    }
-  }
-
-  function getCacheData(CACHE_KEY) {
-    let cacheData = getFromCache(CACHE_KEY)
-    if (cacheData == null) {
-      cacheData = {
-        nickname: '',
-        email: '',
-        avatar: ''
-      }
-    }
-    return cacheData
-  }
 
   function setAvatar(avatar) {
     return userInfoDispatch({ type: 'avatar', value: avatar })

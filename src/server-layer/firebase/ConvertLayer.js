@@ -10,7 +10,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
 import { useEffect, useState, useRef } from 'react';
 import { readConfig, setLoggedUser } from '../../config';
 import useAPICore from './APICore';
-var cloneDeep = require('clone-deep');
+import cloneDeep from 'clone-deep';
 /**
  * STEP1: 一次性获取1000个数据
  * STEP2: 转换为嵌套数据, 并且计算回复数

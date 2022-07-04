@@ -47,7 +47,9 @@ export default function useAPICore() {
                 projectId: projectId
             });
         }
-        catch (_) { }
+        catch (_) {
+            console.warn('Initial BBS App failed', _.message);
+        }
         db = getFirestore();
         return Promise.resolve();
     }

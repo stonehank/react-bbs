@@ -2,6 +2,7 @@ import AV from './CustomAV'
 import initAVObject from './initAVObject'
 import { getFromCache, randUniqueString, setCache } from '../../utils'
 import { readConfig, readLoggedUser } from '../../config'
+import { APICoreInterface } from '../../types'
 
 export default function useAPICore(): APICoreInterface {
   const { appId, appKey, serverURLs, CommentClass, CounterClass, UserClass, editMode, pageviewMap } = readConfig()
@@ -18,9 +19,9 @@ export default function useAPICore(): APICoreInterface {
   }
   let commentsPage = 1
   const errorCodeMsg = {
-    '100': 'Initialization failed, Please check your appId and appKey.',
-    '401': 'Unauthorized operation, Please check your appId and appKey.',
-    '403': 'Access denied by api domain white list, Please check your security domain.'
+    100: 'Initialization failed, Please check your appId and appKey.',
+    401: 'Unauthorized operation, Please check your appId and appKey.',
+    403: 'Access denied by api domain white list, Please check your security domain.'
   }
   const loggedUser = readLoggedUser()
 
@@ -261,7 +262,7 @@ export default function useAPICore(): APICoreInterface {
       if (!uploadField.hasOwnProperty(k)) continue
       comment.set(k, uploadField[k])
     }
-    comment.set('url', location.href)
+    comment.set('url', window.location.href)
     const acl = new AV.ACL()
     acl.setPublicReadAccess(true)
     acl.setPublicWriteAccess(false)

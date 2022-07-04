@@ -14,7 +14,12 @@ function MessageBody(props) {
     var small = props.small, details = props.details, curNest = props.curNest, maxNest = props.maxNest, loadList = props.loadList, updateCommentAsync = props.updateCommentAsync;
     var editMessageRef = useRef(null);
     var _c = useContext(ReplyUpdateContext), startReply = _c.startReply, updateReplyDetails = _c.updateReplyDetails, updateComment = _c.updateComment;
-    var _d = useReplyEdit({ details: details, editMessageRef: editMessageRef, updateComment: updateComment, updateCommentAsync: updateCommentAsync }), edit = _d.edit, editMessage = _d.editMessage, setEditMessage = _d.setEditMessage, saveEdit = _d.saveEdit, showEdit = _d.showEdit, closeEdit = _d.closeEdit;
+    var _d = useReplyEdit({
+        details: details,
+        editMessageRef: editMessageRef,
+        updateComment: updateComment,
+        updateCommentAsync: updateCommentAsync
+    }), edit = _d.edit, editMessage = _d.editMessage, setEditMessage = _d.setEditMessage, saveEdit = _d.saveEdit, showEdit = _d.showEdit, closeEdit = _d.closeEdit;
     var _e = useReplyListData({
         details: details,
         curNest: curNest,
@@ -25,7 +30,10 @@ function MessageBody(props) {
     }), replyList = _e.replyList, replyCounts = _e.replyCounts, replyLoading = _e.replyLoading, showReply = _e.showReply, toggleReplyList = _e.toggleReplyList, fetchMore = _e.fetchMore, updateCommentInReplyAsync = _e.updateCommentInReplyAsync;
     var loggedUser = readLoggedUser();
     var canRenderReplyBtn = useMemo(function () { return curNest < maxNest; }, [curNest, maxNest]);
-    var isOwnerComment = useMemo(function () { return loggedUser && loggedUser.id != null && loggedUser.id === details.user_id; }, [loggedUser, details.user_id]);
+    var isOwnerComment = useMemo(function () { return loggedUser && loggedUser.id != null && loggedUser.id === details.user_id; }, [
+        loggedUser,
+        details.user_id
+    ]);
     var insertEmoji = useCallback(function (emoji) {
         editMessageRef.current.insertToValue(emoji);
     }, []);

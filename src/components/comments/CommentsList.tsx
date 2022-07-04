@@ -4,15 +4,15 @@ import MoreButton from './MoreButton'
 import Loading from '../UI/Loading'
 
 type Params = {
-  maxNest
-  loading
-  userLoading
-  list
-  total
-  noMoreData
-  loadMore
-  loadList
-  updateCommentAsync
+  maxNest;
+  loading;
+  userLoading;
+  list;
+  total;
+  noMoreData;
+  loadMore;
+  loadList;
+  updateCommentAsync;
 }
 function CommentsList(props: Params) {
   const { maxNest, loading, userLoading, list, total, noMoreData, loadMore, loadList, updateCommentAsync } = props

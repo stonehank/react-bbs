@@ -1,4 +1,3 @@
-/// <reference types="react" />
 declare function useReplyEdit(props: any): {
     edit: boolean;
     editMessage: string;

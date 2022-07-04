@@ -1,16 +1,3 @@
-/**
- *
- appId:"#########-####",
- appKey:"#######",
- serverURLs:"#####.##.##.com",
- editMode:false,
- CommentClass:"Comments",
- CounterClass:"Counters",
-
-
- apiKey: '############',
- projectId: '########'
- */
 var configs = {
     apiKey: null,
     projectId: null,
@@ -30,6 +17,7 @@ var stableConfig = {
 };
 var loggedUser;
 function setConfig(newConfigs) {
+    console.log(newConfigs.server);
     configs = Object.assign({}, configs, newConfigs);
 }
 function readConfig() {

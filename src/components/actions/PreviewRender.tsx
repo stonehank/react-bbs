@@ -12,10 +12,10 @@ const StyledPreviewRender = styled.div`
 `
 
 type Props = {
-  preview: boolean
-  message: string
-  replyId: string
-  at: string
+  preview: boolean;
+  message: string;
+  replyId: string;
+  at: string;
 }
 
 function PreviewRender(props: Props) {

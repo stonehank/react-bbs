@@ -1,4 +1,3 @@
-/// <reference types="react" />
 declare function useMessageData({ offset, userInputRef }: {
     offset: any;
     userInputRef: any;

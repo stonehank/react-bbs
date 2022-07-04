@@ -3,10 +3,10 @@ import Loading from '../UI/Loading'
 import Button from '../UI/Button'
 
 type Props = {
-  noMoreData: boolean
-  simple?: boolean
-  loadMore: any
-  align: string
+  noMoreData: boolean;
+  simple?: boolean;
+  loadMore: any;
+  align: string;
 }
 
 function MoreButton(props: Props) {
@@ -21,12 +21,13 @@ function MoreButton(props: Props) {
     [loadMore]
   )
 
-  if (moreLoading)
+  if (moreLoading) {
     return (
       <div className={'text-' + align}>
         <Loading size={24} />
       </div>
     )
+  }
   if (noMoreData && simple) return null
   return (
     <div className={'text-' + align}>

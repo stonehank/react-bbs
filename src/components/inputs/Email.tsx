@@ -3,9 +3,9 @@ import { emailVerify } from '../../utils/Verify'
 import TextField from '../UI/TextField'
 
 type EmailProps = {
-  email: string
-  setEmail: (email: string) => void
-  [x: string]: any
+  email: string;
+  setEmail: (email: string) => void;
+  [x: string]: any;
 }
 
 const Email = React.forwardRef((props: EmailProps, forwardRef) => {

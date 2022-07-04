@@ -20,10 +20,24 @@ var __rest = (this && this.__rest) || function (s, e) {
         }
     return t;
 };
-import React, { useRef, useState, useReducer, useEffect, useImperativeHandle, useCallback } from 'react';
+import React, { useRef, useReducer, useEffect, useImperativeHandle, useCallback } from 'react';
 import textFieldStyle from './textfield.module.scss';
 import clx from 'classnames';
 import { calcValueAndPos } from '../../../utils/DOM';
+function errorReducer(_, errorMsg) {
+    if (errorMsg != null) {
+        return {
+            error: true,
+            errorMsg: errorMsg
+        };
+    }
+    else {
+        return {
+            error: false,
+            errorMsg: null
+        };
+    }
+}
 var TextField = React.forwardRef(function (props, forwardRef) {
     var _a, _b, _c, _d;
     var value = props.value, setValue = props.setValue, label = props.label, rows = props.rows, placeholder = props.placeholder, rules = props.rules, outlined = props.outlined, autoHeight = props.autoHeight, otherProps = __rest(props, ["value", "setValue", "label", "rows", "placeholder", "rules", "outlined", "autoHeight"]);
@@ -33,15 +47,88 @@ var TextField = React.forwardRef(function (props, forwardRef) {
     var fieldRef = useRef(null);
     var dirty = useRef(false);
     // const [dirty, setDirty] = useState(false)
-    var _e = useState(0), labelTextW = _e[0], setLabelTextW = _e[1];
-    var _f = useReducer(errorReducer, { error: false, errorMsg: null }), errorState = _f[0], errorDispatch = _f[1];
+    var labelTextW = useRef(0);
+    // const [labelTextW, syncLabelTextW, setLabelTextW] = useSyncState(0)
+    var _e = useReducer(errorReducer, { error: false, errorMsg: null }), errorState = _e[0], errorDispatch = _e[1];
+    var handleFocus = useCallback(function () {
+        var legendEle = legendRef.current;
+        var labelEle = labelRef.current;
+        var fieldEle = fieldRef.current;
+        legendEle.style.width = labelTextW.current + 'px';
+        labelEle.style.top = 0;
+        labelEle.style.fontSize = '12px';
+        fieldEle.classList.add(textFieldStyle['bbs-cus-fieldset-focus']);
+        dirty.current = true;
+    }, []);
+    var calcHeight = useCallback(function () {
+        var inputEle = inputRef.current;
+        inputEle.style.height = 'auto';
+        inputEle.style.height = "".concat(inputEle.scrollHeight + 2, "px");
+    }, []);
+    var validate = useCallback(function () {
+        dirty.current = true;
+        if (rules.length === 0) {
+            errorDispatch(null);
+            return true;
+        }
+        for (var _i = 0, rules_1 = rules; _i < rules_1.length; _i++) {
+            var ruleFunc = rules_1[_i];
+            var res = ruleFunc(value);
+            if (res !== true) {
+                errorDispatch(res);
+                return false;
+            }
+        }
+        errorDispatch(null);
+        return true;
+    }, [rules, value]);
+    var handleBlur = useCallback(function () {
+        var legendEle = legendRef.current;
+        var labelEle = labelRef.current;
+        var fieldEle = fieldRef.current;
+        if (!value && !placeholder) {
+            legendEle.style.width = 0;
+            labelEle.style.top = '16px';
+            labelEle.style.fontSize = '16px';
+        }
+        fieldEle.classList.remove(textFieldStyle['bbs-cus-fieldset-focus']);
+        if (dirty.current)
+            validate();
+    }, [value, placeholder]);
+    function reset() {
+        setValue('');
+        errorDispatch(null);
+        dirty.current = false;
+        calcHeight();
+    }
+    function insertToValue(str) {
+        var ele = inputRef.current;
+        var _a = calcValueAndPos(ele, str), newV = _a[0], scrollTop = _a[1], startPos = _a[2];
+        setValue(newV);
+        // todo maybe sync below
+        setTimeout(function () {
+            ele.selectionStart = startPos + str.length;
+            ele.selectionEnd = startPos + str.length;
+            ele.scrollTop = scrollTop;
+            ele.focus();
+        });
+    }
+    var handleValueChange = useCallback(function (ev) {
+        setValue(ev.target.value);
+        calcHeight();
+    }, []);
+    function getElement() {
+        return inputRef.current;
+    }
     useEffect(function () {
         var labelEle = labelRef.current;
         if (label === '') {
-            setLabelTextW(0);
+            // setLabelTextW(0)
+            labelTextW.current = 0;
         }
         else {
-            setLabelTextW(labelEle.offsetWidth);
+            labelTextW.current = labelEle.offsetWidth;
+            // setLabelTextW(labelEle.offsetWidth)
         }
         if (value) {
             dirty.current = true;
@@ -63,90 +150,6 @@ var TextField = React.forwardRef(function (props, forwardRef) {
             insertToValue: insertToValue
         };
     });
-    var handleValueChange = useCallback(function (ev) {
-        setValue(ev.target.value);
-        calcHeight();
-    }, []);
-    var handleBlur = useCallback(function () {
-        var legendEle = legendRef.current;
-        var labelEle = labelRef.current;
-        var fieldEle = fieldRef.current;
-        if (!value && !placeholder) {
-            legendEle.style.width = 0;
-            labelEle.style.top = '16px';
-            labelEle.style.fontSize = '16px';
-        }
-        fieldEle.classList.remove(textFieldStyle['bbs-cus-fieldset-focus']);
-        if (dirty.current)
-            validate();
-    }, [value, placeholder]);
-    var handleFocus = useCallback(function () {
-        var legendEle = legendRef.current;
-        var labelEle = labelRef.current;
-        var fieldEle = fieldRef.current;
-        legendEle.style.width = labelTextW + 'px';
-        labelEle.style.top = 0;
-        labelEle.style.fontSize = '12px';
-        fieldEle.classList.add(textFieldStyle['bbs-cus-fieldset-focus']);
-        dirty.current = true;
-    }, []);
-    var calcHeight = useCallback(function () {
-        var inputEle = inputRef.current;
-        inputEle.style.height = 'auto';
-        inputEle.style.height = "".concat(inputEle.scrollHeight + 2, "px");
-    }, []);
-    function errorReducer(_, errorMsg) {
-        if (errorMsg != null) {
-            return {
-                error: true,
-                errorMsg: errorMsg
-            };
-        }
-        else {
-            return {
-                error: false,
-                errorMsg: null
-            };
-        }
-    }
-    var validate = useCallback(function () {
-        dirty.current = true;
-        if (rules.length === 0) {
-            errorDispatch(null);
-            return true;
-        }
-        for (var _i = 0, rules_1 = rules; _i < rules_1.length; _i++) {
-            var ruleFunc = rules_1[_i];
-            var res = ruleFunc(value);
-            if (res !== true) {
-                errorDispatch(res);
-                return false;
-            }
-        }
-        errorDispatch(null);
-        return true;
-    }, [rules, value]);
-    function reset() {
-        setValue('');
-        errorDispatch(null);
-        dirty.current = false;
-        calcHeight();
-    }
-    function insertToValue(str) {
-        var ele = inputRef.current;
-        var _a = calcValueAndPos(ele, str), newV = _a[0], scrollTop = _a[1], startPos = _a[2];
-        setValue(newV);
-        // todo maybe sync below
-        setTimeout(function () {
-            ele.selectionStart = startPos + str.length;
-            ele.selectionEnd = startPos + str.length;
-            ele.scrollTop = scrollTop;
-            ele.focus();
-        });
-    }
-    function getElement() {
-        return inputRef.current;
-    }
     return (React.createElement("div", __assign({ className: textFieldStyle['bbs-cus-filedset-wrapper'] }, otherProps),
         React.createElement("div", { className: textFieldStyle['bbs-cus-fieldset-container'] },
             React.createElement("fieldset", { ref: fieldRef, className: clx((_a = {},

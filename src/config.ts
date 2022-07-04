@@ -7,10 +7,11 @@
  CommentClass:"Comments",
  CounterClass:"Counters",
 
-
  apiKey: '############',
  projectId: '########'
  */
+import { configType, SingUserInfo, stableConfigType } from './types';
+
 let configs: configType = {
   apiKey: null,
   projectId: null,
@@ -32,6 +33,7 @@ const stableConfig: stableConfigType = {
 let loggedUser: SingUserInfo
 
 function setConfig(newConfigs: configType): void {
+  console.log(newConfigs.server)
   configs = Object.assign({}, configs, newConfigs)
 }
 function readConfig(): configType & stableConfigType {

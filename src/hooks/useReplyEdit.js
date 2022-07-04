@@ -11,6 +11,9 @@ function useReplyEdit(props) {
         setEdit(false);
         setEditMessage(details.message);
     }
+    function validate() {
+        return editMessageRef.current.validate();
+    }
     var saveEdit = useCallback(function () {
         if (!validate())
             return;
@@ -22,9 +25,6 @@ function useReplyEdit(props) {
             updateCommentAsync(id, data);
         });
     }, [editMessage, details.id]);
-    function validate() {
-        return editMessageRef.current.validate();
-    }
     return {
         edit: edit,
         editMessage: editMessage,

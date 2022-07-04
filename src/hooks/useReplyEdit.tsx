@@ -15,6 +15,9 @@ function useReplyEdit(props) {
     setEditMessage(details.message)
   }
 
+  function validate(): boolean {
+    return editMessageRef.current.validate()
+  }
   const saveEdit = useCallback(
     function(): void {
       if (!validate()) return
@@ -27,11 +30,6 @@ function useReplyEdit(props) {
     },
     [editMessage, details.id]
   )
-
-  function validate(): boolean {
-    return editMessageRef.current.validate()
-  }
-
   return {
     edit,
     editMessage,

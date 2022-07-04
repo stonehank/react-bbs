@@ -3,10 +3,10 @@ import messageBodyStyle from '../scss/message-body.module.scss'
 import Button from '../../../UI/Button'
 
 type Props = {
-  canRenderReplyBtn: boolean
-  replyCounts: number
-  showReply: boolean
-  toggleReplyList: () => void
+  canRenderReplyBtn: boolean;
+  replyCounts: number;
+  showReply: boolean;
+  toggleReplyList: () => void;
 }
 
 function ReplyListCount({ canRenderReplyBtn, replyCounts, showReply, toggleReplyList }: Props) {

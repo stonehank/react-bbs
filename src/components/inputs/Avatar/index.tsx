@@ -11,11 +11,11 @@ const StyledPopupButton = styled(PopupButton)`
 `
 
 type AvatarProps = {
-  avatar: string
-  email: string
-  nickname: string
-  size: number
-  setAvatar: any
+  avatar: string;
+  email: string;
+  nickname: string;
+  size: number;
+  setAvatar: any;
 }
 
 function Avatar(props: AvatarProps) {

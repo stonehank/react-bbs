@@ -1,4 +1,5 @@
 import React from 'react';
+import { FetchCommentParams, FetchCommentResult, SingUserInfo } from '../../types';
 declare type Props = {
     uniqStr: string;
     maxNest: number;
