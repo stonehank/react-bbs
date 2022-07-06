@@ -11,7 +11,7 @@ const StyledPreviewRender = styled.div`
   border-radius: 4px;
 `
 
-type Props = {
+interface Props {
   preview: boolean;
   message: string;
   replyId: string;

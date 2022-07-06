@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import CommentsList from './CommentsList';
 import ReplyUpdateContext from '../../context/replys/ReplyUpdateContext';
 import useListData from '../../hooks/useListData';
-var Comments = React.forwardRef(function (_a, commentsRef) {
+var Comments = function (_a, commentsRef) {
     var uniqStr = _a.uniqStr, maxNest = _a.maxNest, pageSize = _a.pageSize, fetchComments = _a.fetchComments, fetchCurrentUser = _a.fetchCurrentUser;
     var _b = useListData({
         uniqStr: uniqStr,
@@ -17,6 +17,6 @@ var Comments = React.forwardRef(function (_a, commentsRef) {
         updateReply: updateReply
     }); });
     return (React.createElement(CommentsList, { maxNest: maxNest, loading: loading, userLoading: userLoading, list: list, total: total, noMoreData: noMoreData, loadMore: loadMore, loadList: loadList, updateCommentAsync: updateCommentAsync }));
-});
-export default Comments;
+};
+export default React.forwardRef(Comments);
 //# sourceMappingURL=Comments.js.map

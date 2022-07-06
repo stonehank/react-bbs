@@ -74,3 +74,18 @@
   pointer-events: none;
 
 }
+.bbs-btn-small{
+  padding: 4px 8px;
+  letter-spacing: 1.15px;
+  min-width:48px;
+  height:28px;
+  font-size:0.8rem;
+}
+.bbs-btn-xsmall{
+  padding: 0 4px;
+  letter-spacing: 0.625px;
+  min-width: 36px;
+  height: 20px;
+  font-size: 0.65rem;
+  font-weight: lighter;
+}

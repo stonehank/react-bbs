@@ -10,13 +10,14 @@ import Comments from '../comments/Comments'
 import Button from '../UI/Button'
 import { BBSPanelParams, CommentObject, ConvertLayerIInterface } from '../../types';
 
-type BBSPanelCoreProps = BBSPanelParams & {
+interface BBSPanelCoreProps extends BBSPanelParams {
   useConvertLayer: () => ConvertLayerIInterface;
 }
+type CommentListHandle = React.ElementRef<typeof Comments>;
 
 function BBSPanelCore({ editable, pageSize, nest, offset, uniqStr, useConvertLayer }: BBSPanelCoreProps) {
   const [submitLoading, setSubmitLoading] = useState(false)
-  const commentListRef = useRef(null)
+  const commentListRef = useRef<CommentListHandle>(null)
   const userInputRef = useRef(null)
 
   const { initialLoading, uploadComment, updateComment, fetchComments, fetchCurrentUser } = useConvertLayer()

@@ -1,10 +1,11 @@
-import React, { useContext } from 'react'
-import CommentsList from './CommentsList'
-import ReplyUpdateContext from '../../context/replys/ReplyUpdateContext'
-import useListData from '../../hooks/useListData'
-import { FetchCommentParams, FetchCommentResult, SingUserInfo } from '../../types'
+import React, {  useContext } from 'react';
+import CommentsList from './CommentsList';
+import ReplyUpdateContext from '../../context/replys/ReplyUpdateContext';
+import useListData, { ListDataOutput } from '../../hooks/useListData';
+import { FetchCommentParams, FetchCommentResult, SingUserInfo } from '../../types';
+import { UpdateReply } from '../../context/replys/ReplyUpdateProvider';
 
-type Props = {
+interface Props {
   uniqStr: string;
   maxNest: number;
   editable: boolean;
@@ -12,8 +13,16 @@ type Props = {
   fetchComments: (params: FetchCommentParams) => Promise<FetchCommentResult>;
   fetchCurrentUser: () => Promise<SingUserInfo>;
 }
-const Comments = React.forwardRef(
-  ({ uniqStr, maxNest, pageSize, fetchComments, fetchCurrentUser }: Props, commentsRef) => {
+
+interface Handler {
+  updateList: ListDataOutput['updateList'],
+  updateReply: UpdateReply
+}
+
+const Comments: React.ForwardRefRenderFunction<Handler, Props> =
+  (
+    { uniqStr, maxNest, pageSize, fetchComments, fetchCurrentUser },
+    commentsRef) => {
     const {
       loading,
       userLoading,
@@ -30,14 +39,14 @@ const Comments = React.forwardRef(
       pageSize,
       fetchComments,
       fetchCurrentUser
-    })
+    });
 
-    const { updateReply } = useContext(ReplyUpdateContext)
+    const { updateReply }: { updateReply: UpdateReply } = useContext(ReplyUpdateContext);
 
     React.useImperativeHandle(commentsRef, () => ({
       updateList,
       updateReply
-    }))
+    }));
     return (
       <CommentsList
         maxNest={maxNest}
@@ -50,8 +59,8 @@ const Comments = React.forwardRef(
         loadList={loadList}
         updateCommentAsync={updateCommentAsync}
       />
-    )
-  }
-)
+    );
+  };
 
-export default Comments
+
+export default React.forwardRef(Comments);

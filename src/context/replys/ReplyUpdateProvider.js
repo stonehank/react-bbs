@@ -1,13 +1,13 @@
-import React, { useMemo, useRef } from 'react';
+import React, { useCallback, useMemo, useRef } from 'react';
 import ReplyUpdateContext from './ReplyUpdateContext';
 function ReplyUpdateProvider(_a) {
     var children = _a.children, startReply = _a.startReply, updateComment = _a.updateComment;
     var updateReplyDetails = useRef(null);
     // 更新reply
-    function updateReply(_a) {
+    var updateReply = useCallback(function (_a) {
         var replyId = _a.replyId, rootId = _a.rootId;
         updateReplyDetails.current = { replyId: replyId, rootId: rootId };
-    }
+    }, []);
     var value = useMemo(function () { return ({
         startReply: startReply,
         updateComment: updateComment,

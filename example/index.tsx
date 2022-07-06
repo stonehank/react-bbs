@@ -1,7 +1,7 @@
 import 'react-app-polyfill/ie11';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { ServerlessBBSPanel, setConfig } from '../.';
+import { BBSPanel,BBSCounter, BBSPageView, setConfig } from '../.';
 // setConfig({
 //   appId:"rYWlO5pCuJAiMPhGtmhvAaGv-MdYXbMMI",
 //   appKey:"SDfR94mcAqIigfFpzMYfKTxT",
@@ -23,7 +23,12 @@ setConfig({
 const App = () => {
   return (
     <div>
-      <ServerlessBBSPanel />
+      <BBSCounter />
+      <br />
+      <BBSPageView />
+      <BBSPanel
+        nest={2}
+      />
     </div>
   );
 };

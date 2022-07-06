@@ -23,8 +23,8 @@ var __rest = (this && this.__rest) || function (s, e) {
 import React, { useRef, useImperativeHandle } from 'react';
 import { emailVerify } from '../../utils/Verify';
 import TextField from '../UI/TextField';
-var Email = React.forwardRef(function (props, forwardRef) {
-    var email = props.email, setEmail = props.setEmail, otherProps = __rest(props, ["email", "setEmail"]);
+var Email = React.forwardRef(function (_a, forwardRef) {
+    var _b = _a.email, email = _b === void 0 ? '' : _b, setEmail = _a.setEmail, otherProps = __rest(_a, ["email", "setEmail"]);
     var emailRef = useRef(null);
     useImperativeHandle(forwardRef, function () { return ({
         validate: emailRef.current.validate,
@@ -33,8 +33,5 @@ var Email = React.forwardRef(function (props, forwardRef) {
     }); });
     return (React.createElement(TextField, __assign({ ref: emailRef, outlined: false, label: '\u90AE\u7BB1', rules: [function (v) { return !v || emailVerify(v) || '提供一个有效的email'; }], value: email, setValue: setEmail }, otherProps)));
 });
-Email.defaultProps = {
-    email: ''
-};
 export default React.memo(Email, function (prev, next) { return prev.email === next.email; });
 //# sourceMappingURL=Email.js.map

@@ -8,8 +8,7 @@ type EmailProps = {
   [x: string]: any;
 }
 
-const Email = React.forwardRef((props: EmailProps, forwardRef) => {
-  const { email, setEmail, ...otherProps } = props
+const Email = React.forwardRef(({ email='', setEmail, ...otherProps }: EmailProps, forwardRef) => {
   const emailRef = useRef(null)
 
   useImperativeHandle(forwardRef, () => ({
@@ -31,8 +30,5 @@ const Email = React.forwardRef((props: EmailProps, forwardRef) => {
   )
 })
 
-Email.defaultProps = {
-  email: ''
-}
 
 export default React.memo(Email, (prev, next) => prev.email === next.email)

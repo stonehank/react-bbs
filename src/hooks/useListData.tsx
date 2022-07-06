@@ -7,7 +7,7 @@ import { readConfig } from '../config'
 import { CommentObject, FetchCommentParams, FetchCommentResult, SingUserInfo } from '../types'
 const { countMap } = readConfig()
 
-type ListDataProps = {
+export interface ListDataProps  {
   maxNest: number;
   uniqStr: string;
   pageSize: number;
@@ -15,7 +15,7 @@ type ListDataProps = {
   fetchCurrentUser: () => Promise<SingUserInfo>;
 }
 
-interface ListDataOutput {
+export interface ListDataOutput {
   loading: boolean;
   userLoading: boolean;
   total: number;

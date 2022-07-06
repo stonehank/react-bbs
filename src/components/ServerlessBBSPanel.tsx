@@ -1,42 +1,19 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React from 'react'
 import BBSPanelCore from './core/BBSPanelCore'
-import PropTypes from 'prop-types'
 import '../assets/css/common.scss'
 import '../assets/css/highlight.scss'
 import '../assets/css/github-markdown.scss'
-import { readConfig } from '../config'
 import { BBSPanelParams } from '../types'
+import useServerLayer from '../hooks/useServerLayer';
 
 function ServerlessBBSPanel(props: BBSPanelParams) {
-  const [layerLoading, setLayerLoading] = useState(true)
-  const useConvertLayer = useRef(null)
-
-  function getServerLayer(server) {
-    return server === 'leancloud'
-      ? import('../server-layer/leancloud/ConvertLayer')
-      : import('../server-layer/firebase/ConvertLayer')
-  }
-  useEffect(() => {
-    const { server } = readConfig()
-    getServerLayer(server).then((module) => {
-      useConvertLayer.current = module.default
-      setLayerLoading(false)
-    })
-  }, [])
-  if (layerLoading) return null
+  const {loading, useConvertLayer}=useServerLayer()
+  if (loading) return null
   return (
     <section className='serverless-bbs'>
-      <BBSPanelCore {...props} useConvertLayer={useConvertLayer.current} />
+      <BBSPanelCore {...props} useConvertLayer={useConvertLayer} />
     </section>
   )
-}
-
-ServerlessBBSPanel.propTypes = {
-  pageSize: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  nest: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  offset: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  uniqStr: PropTypes.string,
-  editable: PropTypes.bool
 }
 
 ServerlessBBSPanel.defaultProps = {
@@ -46,4 +23,5 @@ ServerlessBBSPanel.defaultProps = {
   offset: 0,
   uniqStr: window.location.origin + window.location.pathname
 }
-export default React.memo(ServerlessBBSPanel)
+
+export default React.memo<BBSPanelParams>(ServerlessBBSPanel)

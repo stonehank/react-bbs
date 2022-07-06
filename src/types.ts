@@ -86,8 +86,13 @@ export type FetchCommentResult = {
   data: CommentObject[];
   total: number;
 }
-
-export type BBSPanelParams = {
+export interface BBSCounterProps{
+  uniqStr?:string
+}
+export interface BBSPageViewProps{
+  uniqStr?:string
+}
+export interface BBSPanelParams  {
   editable?: boolean;
   pageSize?: number;
   nest?: number;

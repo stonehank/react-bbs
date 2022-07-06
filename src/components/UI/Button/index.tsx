@@ -1,9 +1,9 @@
-import React from 'react'
-import cls from 'classnames'
-import buttonStyle from './button.module.scss'
-import Loading from '../Loading'
+import React from 'react';
+import cls from 'classnames';
+import buttonStyle from './button.module.scss';
+import Loading from '../Loading';
 
-type ButtonProps = {
+interface ButtonProps extends React.PropsWithChildren{
   [x: string]: any;
   color?: string;
   onClick: (event: React.MouseEvent) => void;
@@ -17,7 +17,7 @@ type ButtonProps = {
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
-  const { onClick, color, text, dense, disabled, loading, children, className, size, ...otherProps } = props
+  const { onClick, color, text, dense, disabled, loading, children, className, size, ...otherProps } = props;
   return (
     <button
       ref={ref}
@@ -30,14 +30,14 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => 
         [buttonStyle['bbs-disabled']]: disabled,
         [buttonStyle['bbs-btn-loading']]: loading,
         [buttonStyle['bbs-btn-small']]: size === 'small',
-        [buttonStyle['bbs-btn-xsmall']]: size === 'x-small'
+        [buttonStyle['bbs-btn-xsmall']]: size === 'x-small',
       })}
       style={!!color && color.startsWith('#') ? { color: '#fff', backgroundColor: color } : {}}
       {...otherProps}
     >
       {loading ? <Loading size={22} /> : children}
     </button>
-  )
-})
+  );
+});
 
-export default React.memo(Button)
+export default React.memo(Button);

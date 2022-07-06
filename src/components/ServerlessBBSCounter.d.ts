@@ -1,4 +1,12 @@
-/// <reference types="react" />
-declare type Props = {};
-export declare function ServerlessBbsCounter(props: Props): JSX.Element;
-export {};
+import React from 'react';
+declare type Props = {
+    uniqStr: string;
+};
+declare function ServerlessBBSCounter({ uniqStr }: Props): JSX.Element;
+declare namespace ServerlessBBSCounter {
+    var defaultProps: {
+        uniqStr: string;
+    };
+}
+declare const _default: React.MemoExoticComponent<typeof ServerlessBBSCounter>;
+export default _default;

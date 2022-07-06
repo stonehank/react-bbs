@@ -7,8 +7,7 @@ type NicknameProps = {
   [x: string]: any;
 }
 
-const Nickname = React.forwardRef((props: NicknameProps, forwardRef) => {
-  const { nickname, setNickname, ...otherProps } = props
+const Nickname = React.forwardRef(({ nickname='', setNickname, ...otherProps }: NicknameProps, forwardRef) => {
   const nicknameRef = useRef(null)
 
   useImperativeHandle(forwardRef, () => ({
@@ -30,8 +29,6 @@ const Nickname = React.forwardRef((props: NicknameProps, forwardRef) => {
   )
 })
 
-Nickname.defaultProps = {
-  nickname: ''
-}
+
 
 export default React.memo(Nickname, (prev, next) => prev.nickname === next.nickname)

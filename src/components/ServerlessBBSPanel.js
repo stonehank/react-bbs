@@ -9,40 +9,19 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import BBSPanelCore from './core/BBSPanelCore';
-import PropTypes from 'prop-types';
 import '../assets/css/common.scss';
 import '../assets/css/highlight.scss';
 import '../assets/css/github-markdown.scss';
-import { readConfig } from '../config';
+import useServerLayer from '../hooks/useServerLayer';
 function ServerlessBBSPanel(props) {
-    var _a = useState(true), layerLoading = _a[0], setLayerLoading = _a[1];
-    var useConvertLayer = useRef(null);
-    function getServerLayer(server) {
-        return server === 'leancloud'
-            ? import('../server-layer/leancloud/ConvertLayer')
-            : import('../server-layer/firebase/ConvertLayer');
-    }
-    useEffect(function () {
-        var server = readConfig().server;
-        getServerLayer(server).then(function (module) {
-            useConvertLayer.current = module["default"];
-            setLayerLoading(false);
-        });
-    }, []);
-    if (layerLoading)
+    var _a = useServerLayer(), loading = _a.loading, useConvertLayer = _a.useConvertLayer;
+    if (loading)
         return null;
     return (React.createElement("section", { className: 'serverless-bbs' },
-        React.createElement(BBSPanelCore, __assign({}, props, { useConvertLayer: useConvertLayer.current }))));
+        React.createElement(BBSPanelCore, __assign({}, props, { useConvertLayer: useConvertLayer }))));
 }
-ServerlessBBSPanel.propTypes = {
-    pageSize: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    nest: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    offset: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    uniqStr: PropTypes.string,
-    editable: PropTypes.bool
-};
 ServerlessBBSPanel.defaultProps = {
     editable: true,
     pageSize: 5,

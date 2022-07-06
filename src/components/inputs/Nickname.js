@@ -22,8 +22,8 @@ var __rest = (this && this.__rest) || function (s, e) {
 };
 import React, { useRef, useImperativeHandle } from 'react';
 import TextField from '../UI/TextField';
-var Nickname = React.forwardRef(function (props, forwardRef) {
-    var nickname = props.nickname, setNickname = props.setNickname, otherProps = __rest(props, ["nickname", "setNickname"]);
+var Nickname = React.forwardRef(function (_a, forwardRef) {
+    var _b = _a.nickname, nickname = _b === void 0 ? '' : _b, setNickname = _a.setNickname, otherProps = __rest(_a, ["nickname", "setNickname"]);
     var nicknameRef = useRef(null);
     useImperativeHandle(forwardRef, function () { return ({
         validate: nicknameRef.current.validate,
@@ -32,8 +32,5 @@ var Nickname = React.forwardRef(function (props, forwardRef) {
     }); });
     return (React.createElement(TextField, __assign({ ref: nicknameRef, outlined: false, label: '\u6635\u79F0', rules: [function (v) { return !!v || '昵称必须填写'; }], value: nickname, setValue: setNickname }, otherProps)));
 });
-Nickname.defaultProps = {
-    nickname: ''
-};
 export default React.memo(Nickname, function (prev, next) { return prev.nickname === next.nickname; });
 //# sourceMappingURL=Nickname.js.map

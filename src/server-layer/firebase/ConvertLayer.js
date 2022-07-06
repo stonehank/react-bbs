@@ -7,7 +7,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     }
     return to.concat(ar || Array.prototype.slice.call(from));
 };
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { readConfig, setLoggedUser } from '../../config';
 import useAPICore from './APICore';
 import cloneDeep from 'clone-deep';
@@ -19,38 +19,38 @@ import cloneDeep from 'clone-deep';
  */
 export default function useConvertLayer() {
     var _a = useState(true), initialLoading = _a[0], setInitialLoading = _a[1];
-    var _b = useState(false), noMoreRemoteData = _b[0], setNoMoreRemoteData = _b[1];
-    var _c = useState([]), waitNextInserted = _c[0], setWaitNextInserted = _c[1];
-    var _d = useState(false), checkOnNextInsert = _d[0], setCheckOnNextInsert = _d[1];
+    var noMoreRemoteData = useRef(false);
+    var waitNextInserted = useRef([]);
+    var checkOnNextInsert = useRef(false);
     var allCommentData = useRef([]);
     var objectIdToData = useRef({});
-    var _e = readConfig(), pageviewMap = _e.pageviewMap, countMap = _e.countMap;
-    var _f = useAPICore(), serverInit = _f.serverInit, signIn_server = _f.signIn_server, fetchCounts_server = _f.fetchCounts_server, fetchPageViews_server = _f.fetchPageViews_server, updateComment_server = _f.updateComment_server, uploadComment_server = _f.uploadComment_server, fetchComments_server = _f.fetchComments_server;
+    var _b = readConfig(), pageviewMap = _b.pageviewMap, countMap = _b.countMap;
+    var _c = useAPICore(), serverInit = _c.serverInit, signIn_server = _c.signIn_server, fetchCounts_server = _c.fetchCounts_server, fetchPageViews_server = _c.fetchPageViews_server, updateComment_server = _c.updateComment_server, uploadComment_server = _c.uploadComment_server, fetchComments_server = _c.fetchComments_server;
     useEffect(function () {
         serverInit().then(function () { return setInitialLoading(false); });
     }, []);
     /**
      * Required
      */
-    function fetchPageViews(uniqStr) {
+    var fetchPageViews = useCallback(function (uniqStr) {
         return fetchPageViews_server(uniqStr).then(function (counts) {
             pageviewMap.set(uniqStr, counts);
             return counts;
         });
-    }
+    }, []);
     /**
      * Required
      */
-    function fetchCounts(uniqStr) {
+    var fetchCounts = useCallback(function (uniqStr) {
         return fetchCounts_server(uniqStr).then(function (counts) {
             countMap.set(uniqStr, counts);
             return counts;
         });
-    }
+    }, []);
     /**
      * Required
      */
-    function updateComment(id, message) {
+    var updateComment = useCallback(function (id, message) {
         console.log(id, message, '------------2');
         return updateComment_server(id, message).then(function (data) {
             if (!data)
@@ -58,11 +58,11 @@ export default function useConvertLayer() {
             __updateCommentAfterEdit__(id, data);
             return data;
         });
-    }
+    }, []);
     /**
      * Required
      */
-    function uploadComment(uploadField) {
+    var uploadComment = useCallback(function (uploadField) {
         return uploadComment_server(uploadField)
             .then(function (data) {
             if (!data)
@@ -77,11 +77,11 @@ export default function useConvertLayer() {
             console.error(err);
             return null;
         });
-    }
+    }, []);
     /**
      * Required
      */
-    function fetchCurrentUser() {
+    var fetchCurrentUser = useCallback(function () {
         return signIn_server().then(function (user) {
             var simpleUser = {
                 id: user.uid,
@@ -90,13 +90,13 @@ export default function useConvertLayer() {
             setLoggedUser(simpleUser);
             return simpleUser;
         });
-    }
+    }, []);
     /**
      * Required
      * @param params
      * @returns {Promise<Object>} {data, total}
      */
-    function fetchComments(params) {
+    var fetchComments = useCallback(function (params) {
         /*
                 uniqStr         // 页面唯一值
                 rootId          // rootId， 用于插入数据
@@ -108,8 +108,9 @@ export default function useConvertLayer() {
              */
         var uniqStr = params.uniqStr, replyId = params.replyId, pageSize = params.pageSize, page = params.page, deepReply = params.deepReply, deepReplyCounts = params.deepReplyCounts;
         var data;
-        setCheckOnNextInsert(true);
-        if (!replyId && !noMoreRemoteData) {
+        // setCheckOnNextInsert(true)
+        checkOnNextInsert.current = true;
+        if (!replyId && !noMoreRemoteData.current) {
             data = __getMoreData__(uniqStr);
         }
         else {
@@ -148,7 +149,7 @@ export default function useConvertLayer() {
                 }, 200);
             });
         });
-    }
+    }, []);
     function __updateCommentAfterEdit__(objectId, editData) {
         // let comment=objectIdToData.current[objectId]
         objectIdToData.current[objectId].message = editData.message;
@@ -174,7 +175,7 @@ export default function useConvertLayer() {
         console.log('mock network');
         return fetchComments_server(uniqStr)
             .then(function (flatList) {
-            setNoMoreRemoteData(flatList.length < 1000);
+            noMoreRemoteData.current = flatList.length < 1000;
             return flatList;
         })
             .then(__generateIndexSearch__)
@@ -205,10 +206,12 @@ export default function useConvertLayer() {
         return allCounts;
     }
     function __mergeToNest__(newFetchList) {
-        if (checkOnNextInsert) {
-            newFetchList = newFetchList.concat(waitNextInserted);
-            setWaitNextInserted([]);
-            setCheckOnNextInsert(false);
+        if (checkOnNextInsert.current) {
+            newFetchList = newFetchList.concat(waitNextInserted.current);
+            // setWaitNextInserted([])
+            waitNextInserted.current = [];
+            // setCheckOnNextInsert(false)
+            checkOnNextInsert.current = false;
         }
         var replyCandid = [];
         var newAllCommentData = allCommentData.current.slice();
@@ -229,7 +232,8 @@ export default function useConvertLayer() {
                 newAllCommentData = res.list;
             }
             else {
-                setWaitNextInserted(__spreadArray(__spreadArray([], waitNextInserted, true), [replyItem], false));
+                waitNextInserted.current = __spreadArray(__spreadArray([], waitNextInserted.current, true), [replyItem], false);
+                // setWaitNextInserted([...waitNextInserted, replyItem])
             }
         }
         allCommentData.current = newAllCommentData;

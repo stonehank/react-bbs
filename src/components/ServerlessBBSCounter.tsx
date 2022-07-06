@@ -1,14 +1,19 @@
-// @flow
-import * as React from 'react';
+import React from 'react';
+import useServerLayer from '../hooks/useServerLayer';
+import BBSCounterCore from './core/BBSCounterCore';
+import { BBSCounterProps } from '../types';
 
-type Props = {
-  
-};
 
-export function ServerlessBbsCounter(props: Props) {
+
+function ServerlessBBSCounter({uniqStr}:BBSCounterProps) {
+  const {loading, useConvertLayer}=useServerLayer()
+  if(loading)return null
   return (
-    <div>
-
-    </div>
+    <BBSCounterCore uniqStr={uniqStr} useConvertLayer={useConvertLayer} />
   );
-};
+}
+
+ServerlessBBSCounter.defaultProps = {
+  uniqStr: window.location.origin + window.location.pathname
+}
+export default React.memo<BBSCounterProps>(ServerlessBBSCounter)

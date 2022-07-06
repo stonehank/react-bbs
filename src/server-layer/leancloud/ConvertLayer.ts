@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { readConfig, setLoggedUser } from '../../config'
 import useAPICore from './APICore'
 import {
@@ -18,9 +18,9 @@ import cloneDeep from 'clone-deep'
  */
 export default function useConvertLayer(): ConvertLayerIInterface {
   const [initialLoading, setInitialLoading] = useState(true)
-  const [noMoreRemoteData, setNoMoreRemoteData] = useState(false)
-  const [waitNextInserted, setWaitNextInserted] = useState([])
-  const [checkOnNextInsert, setCheckOnNextInsert] = useState(false)
+  const noMoreRemoteData=useRef(false)
+  const waitNextInserted=useRef([])
+  const checkOnNextInsert=useRef<boolean>(false)
   const allCommentData = useRef<CommentObject[]>([])
   const objectIdToData = useRef<{ [key: string]: CommentObject }>({})
   const { pageviewMap, countMap } = readConfig()
@@ -42,35 +42,36 @@ export default function useConvertLayer(): ConvertLayerIInterface {
   /**
    * Required
    */
-  function fetchPageViews(uniqStr) {
+  const fetchPageViews=useCallback(function(uniqStr) {
     return fetchPageViews_server(uniqStr).then((counts) => {
       pageviewMap.set(uniqStr, counts)
       return counts
     })
-  }
+  },[])
   /**
    * Required
    */
-  function fetchCounts(uniqStr) {
+  const fetchCounts=useCallback(function (uniqStr) {
     return fetchCounts_server(uniqStr).then((counts) => {
       countMap.set(uniqStr, counts)
       return counts
     })
-  }
+  },[])
   /**
    * Required
    */
-  function updateComment(id, message) {
+  const updateComment=useCallback(function(id, message) {
     return updateComment_server(id, message).then((data) => {
       if (!data) return null
       __updateCommentAfterEdit__(id, data)
       return data
     })
-  }
+  },[])
+
   /**
    * Required
    */
-  function uploadComment(uploadField) {
+  const uploadComment=useCallback(function(uploadField) {
     return uploadComment_server(uploadField)
       .then((data) => {
         if (!data) return null
@@ -85,11 +86,11 @@ export default function useConvertLayer(): ConvertLayerIInterface {
         console.error(err)
         return null
       })
-  }
+  },[])
   /**
    * Required
    */
-  function fetchCurrentUser(): Promise<SingUserInfo> {
+  const fetchCurrentUser=useCallback(function(): Promise<SingUserInfo> {
     return signIn_server().then((user) => {
       let simpleUser: SingUserInfo = user
       if (user.attributes) {
@@ -102,13 +103,13 @@ export default function useConvertLayer(): ConvertLayerIInterface {
       setLoggedUser(simpleUser)
       return simpleUser
     })
-  }
+  },[])
   /**
    * Required
    * @param params
    * @returns {Promise<Object>} {data, total}
    */
-  function fetchComments(params: FetchCommentParams): Promise<FetchCommentResult> {
+  const fetchComments=useCallback(function(params: FetchCommentParams): Promise<FetchCommentResult> {
     /*
             uniqStr         // 页面唯一值
             rootId          // rootId， 用于插入数据
@@ -120,8 +121,8 @@ export default function useConvertLayer(): ConvertLayerIInterface {
          */
     const { uniqStr, replyId, pageSize, page, deepReply, deepReplyCounts } = params
     let data: Promise<CommentObject[]>
-    setCheckOnNextInsert(true)
-    if (!replyId && !noMoreRemoteData) {
+    checkOnNextInsert.current=true
+    if (!replyId && !noMoreRemoteData.current) {
       data = __getMoreData__(uniqStr)
     } else {
       data = Promise.resolve(allCommentData.current)
@@ -158,7 +159,7 @@ export default function useConvertLayer(): ConvertLayerIInterface {
         }, 200)
       })
     })
-  }
+  },[])
 
   function __updateCommentAfterEdit__(objectId, editData) {
     // let comment=objectIdToData.current[objectId]
@@ -184,7 +185,7 @@ export default function useConvertLayer(): ConvertLayerIInterface {
     console.log('mock network')
     return fetchComments_server(uniqStr)
       .then((flatList) => {
-        setNoMoreRemoteData(flatList.length < 1000)
+        noMoreRemoteData.current=flatList.length < 1000
         return flatList
       })
       .then(__generateIndexSearch__)
@@ -214,10 +215,10 @@ export default function useConvertLayer(): ConvertLayerIInterface {
     return allCounts
   }
   function __mergeToNest__(newFetchList): CommentObject[] {
-    if (checkOnNextInsert) {
-      newFetchList = newFetchList.concat(waitNextInserted)
-      setWaitNextInserted([])
-      setCheckOnNextInsert(false)
+    if (checkOnNextInsert.current) {
+      newFetchList = newFetchList.concat(waitNextInserted.current)
+      waitNextInserted.current=[]
+      checkOnNextInsert.current=false
     }
     const replyCandid: CommentObject[] = []
     let newAllCommentData = allCommentData.current.slice()
@@ -235,7 +236,7 @@ export default function useConvertLayer(): ConvertLayerIInterface {
       if (res.inserted) {
         newAllCommentData = res.list
       } else {
-        setWaitNextInserted([...waitNextInserted, replyItem])
+        waitNextInserted.current=[...waitNextInserted.current, replyItem]
       }
     }
     allCommentData.current = newAllCommentData
