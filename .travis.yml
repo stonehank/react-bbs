@@ -10,6 +10,7 @@ install:
 script:
   - yarn build
   - cd ./example
+  - yarn
   - yarn build
 
 after_script:
