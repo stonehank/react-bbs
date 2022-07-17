@@ -1,6 +1,12 @@
 import React from 'react'
 import loadingStyle from './loading.module.scss'
-function Loading(props) {
+
+interface Props {
+  size?: number
+}
+
+
+function Loading(props:Props) {
   return (
     <div
       className={'serverless-bbs ' + loadingStyle['lds-ring']}

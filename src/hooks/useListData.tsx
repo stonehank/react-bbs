@@ -4,7 +4,7 @@ import useDidUpdate from './useDidUpdate'
 import cloneDeep from 'clone-deep'
 import bindATagSmoothScroll from '../utils/DOM/bindATagSmoothScroll'
 import { readConfig } from '../config'
-import { CommentObject, FetchCommentParams, FetchCommentResult, SingUserInfo } from '../types'
+import { CommentObject, FetchCommentParams, FetchCommentResult, SignUserInfo } from '../types'
 const { countMap } = readConfig()
 
 export interface ListDataProps  {
@@ -12,7 +12,7 @@ export interface ListDataProps  {
   uniqStr: string;
   pageSize: number;
   fetchComments: (params: FetchCommentParams) => Promise<FetchCommentResult>;
-  fetchCurrentUser: () => Promise<SingUserInfo>;
+  fetchCurrentUser: () => Promise<SignUserInfo>;
 }
 
 export interface ListDataOutput {

@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import {  ConvertLayerIInterface } from '../../types';
 import Loading from '../UI/Loading';
 import { readConfig } from '../../config';
-type Props =  {
+interface CounterProps extends React.HTMLAttributes<HTMLSpanElement>{
   uniqStr:string,
   useConvertLayer: () => ConvertLayerIInterface;
 }
 let loopTimer=null
-function BBSCounterCore({ uniqStr, useConvertLayer }:Props) {
+function BBSCounterCore({ uniqStr, useConvertLayer, ...otherProps }:CounterProps) {
   const {countMap} = readConfig()
   const [loading, setLoading]=useState<boolean>(true)
   const [count, setCount]=useState<number>(0)
@@ -27,9 +27,9 @@ function BBSCounterCore({ uniqStr, useConvertLayer }:Props) {
   },[initialLoading])
 
   if(initialLoading)return null
-  if(loading)return <Loading />
+  if(loading)return <Loading size={18} />
   return (
-    <span>{count}</span>
+    <span {...otherProps} >{count}</span>
   );
 }
 

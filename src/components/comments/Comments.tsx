@@ -2,7 +2,7 @@ import React, {  useContext } from 'react';
 import CommentsList from './CommentsList';
 import ReplyUpdateContext from '../../context/replys/ReplyUpdateContext';
 import useListData, { ListDataOutput } from '../../hooks/useListData';
-import { FetchCommentParams, FetchCommentResult, SingUserInfo } from '../../types';
+import { FetchCommentParams, FetchCommentResult, SignUserInfo } from '../../types';
 import { UpdateReply } from '../../context/replys/ReplyUpdateProvider';
 
 interface Props {
@@ -11,7 +11,7 @@ interface Props {
   editable: boolean;
   pageSize: number;
   fetchComments: (params: FetchCommentParams) => Promise<FetchCommentResult>;
-  fetchCurrentUser: () => Promise<SingUserInfo>;
+  fetchCurrentUser: () => Promise<SignUserInfo>;
 }
 
 interface Handler {

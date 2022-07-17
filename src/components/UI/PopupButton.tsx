@@ -16,8 +16,7 @@ const StyledAnimatedPopup = styled(animated.div)`
   z-index: 99;
 `
 
-type Props = {
-  style: any;
+interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   popupContent: () => any;
   show: boolean;
   setShow: React.Dispatch<any>;

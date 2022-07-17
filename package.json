@@ -29,7 +29,6 @@
   },
   "name": "react-bbs",
   "author": "stonehank",
-  "module": "dist/react-bbs.esm.js",
   "size-limit": [
     {
       "path": "dist/react-bbs.cjs.production.min.js",

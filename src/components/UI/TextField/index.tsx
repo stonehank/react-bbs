@@ -3,7 +3,7 @@ import textFieldStyle from './textfield.module.scss'
 import clx from 'classnames'
 import { calcValueAndPos } from '../../../utils/DOM'
 
-type Props = {
+interface TextFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
   value?: string;
   setValue?: React.Dispatch<string>;
   label?: string;
@@ -14,6 +14,7 @@ type Props = {
   autoHeight?: boolean;
   [x: string]: any;
 }
+
 function errorReducer(_, errorMsg) {
   if (errorMsg != null) {
     return {
@@ -27,16 +28,22 @@ function errorReducer(_, errorMsg) {
     }
   }
 }
-const TextField = React.forwardRef((props: Props, forwardRef) => {
+
+interface TextFieldRef {
+  getElement:()=>HTMLInputElement;
+  reset:()=>void;
+  validate:()=>boolean;
+  insertToValue:(str:string)=>void
+}
+
+const TextField = React.forwardRef<TextFieldRef, TextFieldProps>((props, forwardRef) => {
   const { value, setValue, label, rows, placeholder, rules, outlined, autoHeight, ...otherProps } = props
   const labelRef = useRef(null)
   const inputRef = useRef(null)
   const legendRef = useRef(null)
   const fieldRef = useRef(null)
   const dirty = useRef(false)
-  // const [dirty, setDirty] = useState(false)
   const labelTextW = useRef(0)
-  // const [labelTextW, syncLabelTextW, setLabelTextW] = useSyncState(0)
   const [errorState, errorDispatch] = useReducer(errorReducer, { error: false, errorMsg: null })
 
   const handleFocus = useCallback(function() {
@@ -96,7 +103,7 @@ const TextField = React.forwardRef((props: Props, forwardRef) => {
     dirty.current = false
     calcHeight()
   }
-  function insertToValue(str) {
+  function insertToValue(str:string) {
     const ele = inputRef.current
     const [newV, scrollTop, startPos] = calcValueAndPos(ele, str)
     setValue(newV)
@@ -116,6 +123,7 @@ const TextField = React.forwardRef((props: Props, forwardRef) => {
   function getElement() {
     return inputRef.current
   }
+
   useEffect(() => {
     const labelEle = labelRef.current
     if (label === '') {

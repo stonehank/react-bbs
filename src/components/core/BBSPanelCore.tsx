@@ -8,7 +8,7 @@ import UserInputInfo from '../inputs/UserInputInfo'
 import ReplyUpdateProvider from '../../context/replys/ReplyUpdateProvider'
 import Comments from '../comments/Comments'
 import Button from '../UI/Button'
-import { BBSPanelParams, CommentObject, ConvertLayerIInterface } from '../../types';
+import { BBSPanelParams, ConvertLayerIInterface } from '../../types';
 
 interface BBSPanelCoreProps extends BBSPanelParams {
   useConvertLayer: () => ConvertLayerIInterface;
@@ -54,7 +54,7 @@ function BBSPanelCore({ editable, pageSize, nest, offset, uniqStr, useConvertLay
       if (!validate()) return
       setSubmitLoading(true)
       uploadComment(params)
-        .then((data: CommentObject) => {
+        .then((data) => {
           if (!data) {
             return
           }

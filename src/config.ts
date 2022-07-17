@@ -10,7 +10,7 @@
  apiKey: '############',
  projectId: '########'
  */
-import { configType, SingUserInfo, stableConfigType } from './types';
+import { configType, SignUserInfo, stableConfigType } from './types';
 
 let configs: configType = {
   apiKey: null,
@@ -30,7 +30,7 @@ const stableConfig: stableConfigType = {
   countMap: new Map(),
   pageviewMap: new Map()
 }
-let loggedUser: SingUserInfo
+let loggedUser: SignUserInfo
 
 function setConfig(newConfigs: configType): void {
   console.log(newConfigs.server)
@@ -39,7 +39,7 @@ function setConfig(newConfigs: configType): void {
 function readConfig(): configType & stableConfigType {
   return Object.assign({}, configs, stableConfig)
 }
-function setLoggedUser(user: SingUserInfo) {
+function setLoggedUser(user: SignUserInfo) {
   loggedUser = user
 }
 function readLoggedUser() {

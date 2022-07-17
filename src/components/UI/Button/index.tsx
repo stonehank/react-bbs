@@ -3,7 +3,7 @@ import cls from 'classnames';
 import buttonStyle from './button.module.scss';
 import Loading from '../Loading';
 
-interface ButtonProps extends React.PropsWithChildren{
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   [x: string]: any;
   color?: string;
   onClick: (event: React.MouseEvent) => void;
@@ -11,7 +11,6 @@ interface ButtonProps extends React.PropsWithChildren{
   dense?: boolean;
   disabled?: boolean;
   loading?: boolean;
-  children?: any;
   className?: string;
   size?: 'x-small' | 'small' | 'normal';
 }

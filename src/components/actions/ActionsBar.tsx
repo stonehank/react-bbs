@@ -16,14 +16,13 @@ const StyledPreviewBtn = styled(Button)`
   padding: 0;
   margin-left: 16px;
 `
-type Props = {
+interface Props {
   message: string;
   replyId: string;
   at: string;
   insertEmoji: (emoji: string) => void;
 }
-function ActionsBar(props: Props) {
-  const { insertEmoji, message, at, replyId } = props
+const ActionsBar = ({ message, replyId, at, insertEmoji }: Props) => {
   const [preview, setPreview] = useState(true)
   const [styles, api] = useSpring(() => ({
     from: { scaleY: 0, opacity: 0, dspl: 0 }

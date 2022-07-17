@@ -20,59 +20,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9bdac5e8-fb88-4598-99af-b9c4d2a12cdf" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/react-bbs.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/react-bbs.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/index.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/example/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/ServerlessBBSCounter.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ServerlessBBSCounter.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/ServerlessBBSCounter.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ServerlessBBSCounter.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/ServerlessBBSCounter.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ServerlessBBSCounter.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/ServerlessBBSCounter.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ServerlessBBSCounter.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/ServerlessBBSPanel.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ServerlessBBSPanel.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/ServerlessBBSPanel.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ServerlessBBSPanel.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/ServerlessBBSPanel.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ServerlessBBSPanel.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/UI/Button/button.module.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/UI/Button/button.module.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/UI/Button/index.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/UI/Button/index.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/UI/Button/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/UI/Button/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/actions/PreviewRender.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/actions/PreviewRender.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/comments/Comments.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/comments/Comments.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/comments/Comments.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/comments/Comments.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/comments/Comments.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/comments/Comments.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/core/BBSPanelCore.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/BBSPanelCore.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/core/BBSPanelCore.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/BBSPanelCore.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/inputs/Email.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/inputs/Email.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/inputs/Email.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/inputs/Email.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/inputs/Email.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/inputs/Email.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/inputs/Nickname.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/inputs/Nickname.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/inputs/Nickname.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/inputs/Nickname.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/inputs/Nickname.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/inputs/Nickname.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/context/replys/ReplyUpdateProvider.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/replys/ReplyUpdateProvider.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/context/replys/ReplyUpdateProvider.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/replys/ReplyUpdateProvider.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/context/replys/ReplyUpdateProvider.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/replys/ReplyUpdateProvider.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/hooks/useListData.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/useListData.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/hooks/useMessageData.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/useMessageData.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/hooks/useReplyEdit.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/useReplyEdit.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server-layer/firebase/ConvertLayer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/server-layer/firebase/ConvertLayer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server-layer/firebase/ConvertLayer.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/src/server-layer/firebase/ConvertLayer.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server-layer/firebase/ConvertLayer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/server-layer/firebase/ConvertLayer.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server-layer/leancloud/ConvertLayer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/server-layer/leancloud/ConvertLayer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server-layer/leancloud/ConvertLayer.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/src/server-layer/leancloud/ConvertLayer.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server-layer/leancloud/ConvertLayer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/server-layer/leancloud/ConvertLayer.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles.module.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -139,8 +87,24 @@
       <workItem from="1657005421112" duration="6859000" />
       <workItem from="1657034604849" duration="309000" />
       <workItem from="1657079812779" duration="1879000" />
-      <workItem from="1657116851700" duration="1237000" />
+      <workItem from="1657116851700" duration="1386000" />
+      <workItem from="1657251755668" duration="106000" />
     </task>
+    <task id="LOCAL-00001" summary="ADD: Counter and Page view component">
+      <created>1657118140157</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1657118140157</updated>
+    </task>
+    <task id="LOCAL-00002" summary="UPDATE: type define">
+      <created>1657118158799</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1657118158799</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -307,6 +271,11 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="ADD: Counter and Page view component" />
+    <MESSAGE value="UPDATE: type define" />
+    <option name="LAST_COMMIT_MESSAGE" value="UPDATE: type define" />
   </component>
   <component name="WindowStateProjectService">
     <state x="630" y="322" key="#ESLint" timestamp="1656914220785">

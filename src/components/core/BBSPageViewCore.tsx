@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import {  ConvertLayerIInterface } from '../../types';
 import Loading from '../UI/Loading';
-type Props =  {
+interface PageViewProps extends React.HTMLAttributes<HTMLSpanElement>{
   uniqStr:string,
   useConvertLayer: () => ConvertLayerIInterface;
 }
-function BBSPageViewCore({ uniqStr, useConvertLayer }:Props) {
+function BBSPageViewCore({ uniqStr, useConvertLayer, ...otherProps }:PageViewProps) {
   const [loading, setLoading]=useState<boolean>(true)
   const [count, setCount]=useState<number>(0)
   const { initialLoading, fetchPageViews } = useConvertLayer()
@@ -18,9 +18,9 @@ function BBSPageViewCore({ uniqStr, useConvertLayer }:Props) {
   },[initialLoading])
 
   if(initialLoading)return null
-  if(loading)return <Loading />
+  if(loading)return <Loading size={18} />
   return (
-    <span>{count}</span>
+    <span {...otherProps}>{count}</span>
   );
 }
 

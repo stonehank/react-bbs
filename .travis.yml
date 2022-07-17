@@ -1,4 +1,32 @@
 language: node_js
 node_js:
-  - 12
-  - 10
+  - "14.17.4"
+
+# S: Build Lifecycle
+install:
+  - yarn
+
+
+script:
+  - yarn build
+  - cd ./example
+  - yarn build
+
+after_script:
+  - cd ./dist
+  - git init
+  - git config user.name "stonehank"
+  - git config user.email "stonehank310@gmail.com"
+  - git add .
+  - git commit -m "Update"
+  - git push --force --quiet "https://${GH_TOKEN}@${GH_REF}" master:${P_BRANCH} >/dev/null 2>&1
+
+# E: Build LifeCycle
+
+branches:
+  only:
+    - main
+env:
+ global:
+   - GH_REF: github.com/stonehank/react-bbs
+   - P_BRANCH: gh-pages

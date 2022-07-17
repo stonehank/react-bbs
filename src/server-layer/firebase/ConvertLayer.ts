@@ -6,7 +6,7 @@ import {
   ConvertLayerIInterface,
   FetchCommentParams,
   FetchCommentResult,
-  SingUserInfo
+  SignUserInfo
 } from '../../types'
 import cloneDeep from 'clone-deep'
 
@@ -93,9 +93,9 @@ export default function useConvertLayer(): ConvertLayerIInterface {
   /**
    * Required
    */
-  const fetchCurrentUser=useCallback(function(): Promise<SingUserInfo> {
+  const fetchCurrentUser=useCallback(function(): Promise<SignUserInfo> {
     return signIn_server().then((user) => {
-      const simpleUser: SingUserInfo = {
+      const simpleUser: SignUserInfo = {
         id: user.uid,
         email: user.email
       }

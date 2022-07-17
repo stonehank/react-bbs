@@ -17,12 +17,8 @@ interface Props {
   replyId: string;
   at: string;
 }
-
-function PreviewRender(props: Props) {
-  const { message, at, replyId, preview } = props
-
+const PreviewRender= ({ preview, message, replyId, at }: Props) => {
   if (!preview) return null
-
   const previewMessage = useMemo(() => addAtHTMLTag(xssMarkdown(convertToPureMessage(message, at)), replyId, at), [
     message,
     at,
@@ -39,4 +35,4 @@ function PreviewRender(props: Props) {
   )
 }
 
-export default PreviewRender
+export default React.memo(PreviewRender)

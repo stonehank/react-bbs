@@ -11,11 +11,11 @@ export interface APICoreInterface {
 
 export interface ConvertLayerIInterface {
   initialLoading: boolean;
-  fetchPageViews;
-  fetchCounts;
+  fetchPageViews:(uniqStr:string)=>Promise<number>;
+  fetchCounts:(uniqStr:string)=>Promise<number>;
   updateComment: (id: string, message: string) => Promise<CommentObject>;
-  uploadComment;
-  fetchCurrentUser;
+  uploadComment:(uploadField:UploadFiled)=>Promise<CommentObject>;
+  fetchCurrentUser:()=>Promise<SignUserInfo>;
   fetchComments: (params: {
     uniqStr: string;
     rootId: string;
@@ -29,6 +29,24 @@ export interface ConvertLayerIInterface {
     total: number;
   }>;
 }
+
+
+export type ReplyInfo = {
+  at: string;
+  rootId: string;
+  replyId: string;
+}
+
+export type UserInfo = {
+  avatar: string;
+  nickname: string;
+  email: string;
+}
+
+export type UploadFiled={
+  uniqStr:string;
+  message:string;
+} & ReplyInfo & UserInfo;
 
 export type CommentObject = {
   updatedAt: string;
@@ -45,18 +63,6 @@ export type CommentObject = {
   replyCounts: number;
 }
 
-export type ReplyInfo = {
-  at: string;
-  rootId: string;
-  replyId: string;
-}
-
-export type UserInfo = {
-  avatar: string;
-  nickname: string;
-  email: string;
-}
-
 export type ConfigInfo = {
   uniqStr: string;
   nest?: number;
@@ -65,7 +71,7 @@ export type ConfigInfo = {
   editable?: boolean;
 }
 
-export type SingUserInfo = {
+export type SignUserInfo = {
   id: string;
   username?: string;
   sessionToken?: string;
@@ -99,7 +105,6 @@ export interface BBSPanelParams  {
   offset?: number;
   uniqStr?: string;
 }
-export type serverName = 'firebase' | 'leancloud'
 
 export type configType = {
   apiKey?: string | null;
@@ -110,7 +115,7 @@ export type configType = {
   editMode?: boolean;
   CommentClass?: string;
   CounterClass?: string;
-  server?: serverName;
+  server?:  'firebase' | 'leancloud';
 }
 
 export type stableConfigType = {
