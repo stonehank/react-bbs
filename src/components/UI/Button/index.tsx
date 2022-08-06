@@ -2,7 +2,7 @@ import React from 'react';
 import cls from 'classnames';
 import buttonStyle from './button.module.scss';
 import Loading from '../Loading';
-
+console.log(buttonStyle)
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   [x: string]: any;
   color?: string;
