@@ -55,7 +55,7 @@ function Emoji(props) {
         </EmojiBox>
       )}
     >
-      😄 表情
+      😄 Emoji
     </StyledPopupButton>
   )
 }

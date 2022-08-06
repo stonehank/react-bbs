@@ -41,6 +41,7 @@
   ],
   "devDependencies": {
     "@size-limit/preset-small-lib": "^7.0.8",
+    "@types/classnames": "^2.3.1",
     "@types/clone-deep": "^4.0.1",
     "@types/jest": "^25.1.4",
     "@types/node": "^12.12.38",

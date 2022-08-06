@@ -7,10 +7,10 @@ function ReplyActions({ details, edit, isOwnerComment, startReply, saveEdit, sho
     return (
       <div className={messageBodyStyle['bbs-msg-action-edit']}>
         <Button dense text className='mr-4' onClick={closeEdit}>
-          取消
+          Cancel
         </Button>
         <Button dense text color='success' className='mr-4' onClick={saveEdit}>
-          保存
+          Save
         </Button>
       </div>
     )
@@ -19,7 +19,7 @@ function ReplyActions({ details, edit, isOwnerComment, startReply, saveEdit, sho
     <div className={messageBodyStyle['bbs-msg-action-no-edit']}>
       {isOwnerComment ? (
         <Button dense text className='mr-4' onClick={showEdit}>
-          编辑
+          Edit
         </Button>
       ) : null}
       <Button
@@ -35,7 +35,7 @@ function ReplyActions({ details, edit, isOwnerComment, startReply, saveEdit, sho
           })
         }
       >
-        回复
+        Reply
       </Button>
     </div>
   )

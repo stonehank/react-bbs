@@ -20,8 +20,8 @@ const Nickname = React.forwardRef(({ nickname='', setNickname, ...otherProps }: 
     <TextField
       ref={nicknameRef}
       outlined={false}
-      label='昵称'
-      rules={[(v) => !!v || '昵称必须填写']}
+      label='Nickname'
+      rules={[(v) => !!v || 'Nickname is required']}
       value={nickname}
       setValue={setNickname}
       {...otherProps}

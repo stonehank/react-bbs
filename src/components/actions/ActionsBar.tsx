@@ -47,7 +47,7 @@ const ActionsBar = ({ message, replyId, at, insertEmoji }: Props) => {
         <div className='text-right'>
           <Emoji onSelect={insertEmoji} />
           <StyledPreviewBtn className='text-sm' text color={preview ? 'success' : ''} onClick={togglePreview}>
-            预览:{preview ? 'On' : 'Off'}
+            Preview :{preview ? 'On' : 'Off'}
           </StyledPreviewBtn>
         </div>
       </StyledActionBar>

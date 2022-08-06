@@ -21,8 +21,8 @@ const Email = React.forwardRef(({ email='', setEmail, ...otherProps }: EmailProp
     <TextField
       ref={emailRef}
       outlined={false}
-      label='邮箱'
-      rules={[(v) => !v || emailVerify(v) || '提供一个有效的email']}
+      label='Email'
+      rules={[(v) => !v || emailVerify(v) || 'A valid email is required']}
       value={email}
       setValue={setEmail}
       {...otherProps}

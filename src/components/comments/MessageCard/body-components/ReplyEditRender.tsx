@@ -31,7 +31,7 @@ function ReplyEditRender({ details, edit, small, editMessage, setEditMessage, ed
             message={editMessage}
             setMessage={setEditMessage}
             ref={editMessageRef}
-            label='编辑内容'
+            label='Edit comment'
             rows={3}
           />
           <ActionsBar message={editMessage} insertEmoji={insertEmoji} replyId={details.replyId} at={details.at} />

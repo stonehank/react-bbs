@@ -27,7 +27,7 @@ function CommentsList(props: Params) {
   return (
     <section>
       <p className='text-md'>
-        评论数：<span>{total > 999 ? '999+' : total}</span>
+        Comments：<span>{total > 999 ? '999+' : total}</span>
       </p>
       <ListRender
         // define current layer
@@ -38,7 +38,7 @@ function CommentsList(props: Params) {
         loadList={loadList}
       />
       {noMoreData && list.length === 0 ? (
-        <p className='text-center text-secondary'>还没有任何评论~</p>
+        <p className='text-center text-secondary'>No comment yet~</p>
       ) : (
         <MoreButton noMoreData={noMoreData} loadMore={loadMore} />
       )}

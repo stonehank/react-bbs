@@ -1,12 +1,12 @@
 export default function timeAgo(oldDate, langTxt) {
   if (!langTxt) {
     langTxt = {
-      seconds: '秒前',
-      minutes: '分钟前',
-      hours: '小时前',
-      days: '天前',
-      months: '个月前',
-      now: '刚刚'
+      seconds: 'secs ago',
+      minutes: 'mins ago',
+      hours: 'hours ago',
+      days: 'days ago',
+      months: 'months ago',
+      now: 'now'
     }
   }
   if (typeof oldDate !== 'object') {

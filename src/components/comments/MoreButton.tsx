@@ -38,7 +38,7 @@ function MoreButton(props: Props) {
         dense={simple}
         onClick={load}
       >
-        {noMoreData ? '没有更多了' : '查看更多'}
+        {noMoreData ? 'No more' : 'Check more'}
       </Button>
     </div>
   )

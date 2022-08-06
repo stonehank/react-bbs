@@ -29,7 +29,7 @@ const PreviewRender= ({ preview, message, replyId, at }: Props) => {
     <StyledPreviewRender
       className='markdown-body'
       dangerouslySetInnerHTML={{
-        __html: previewMessage.trim() === '' ? '<span class="text-muted">无内容</span>' : previewMessage
+        __html: previewMessage.trim() === '' ? '<span class="text-muted">No Content</span>' : previewMessage
       }}
     />
   )

@@ -15,7 +15,7 @@ function ReplyListCount({ canRenderReplyBtn, replyCounts, showReply, toggleReply
     <span className={messageBodyStyle['bbs-reply-btn']}>
       {replyCounts > 0 && (
         <Button dense onClick={toggleReplyList} text>
-          {showReply ? <span>收起评论</span> : <span>{replyCounts}条评论</span>}
+          {showReply ? <span>Collapse</span> : <span className='letter-space-0'><b>{replyCounts}</b> Comments</span>}
         </Button>
       )}
     </span>

@@ -24,7 +24,7 @@ const MessageInput = React.forwardRef((props: Props, forwardRef) => {
       rows={props.rows}
       outlined
       label={props.label}
-      rules={[(v) => !!v || '内容不能为空']}
+      rules={[(v) => !!v || 'Message is required']}
       value={props.message}
       setValue={props.setMessage}
     />
@@ -33,7 +33,7 @@ const MessageInput = React.forwardRef((props: Props, forwardRef) => {
 
 MessageInput.defaultProps = {
   message: '',
-  label: '说点什么吧',
+  label: 'Leave your message here',
   rows: 3
 }
 

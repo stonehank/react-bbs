@@ -99,7 +99,7 @@ function BBSPanelCore({ editable, pageSize, nest, offset, uniqStr, useConvertLay
       <ActionsBar message={message} replyId={replyId} at={at} insertEmoji={insertEmoji} />
       <div className='text-right mt-2'>
         <Button onClick={submit} loading={submitLoading}>
-          提交
+          Submit
         </Button>
       </div>
       {/* ReplyUpdateContext can use throughout the list and nested list */}
