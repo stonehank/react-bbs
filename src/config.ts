@@ -21,7 +21,7 @@ let configs: configType = {
   editMode: false,
   CommentClass: 'Comments_demo',
   CounterClass: 'Counters_demo',
-  server: 'leancloud'
+  server: 'firebase'
 }
 
 const stableConfig: stableConfigType = {

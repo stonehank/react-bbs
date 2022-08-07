@@ -17,7 +17,6 @@ function ServerlessBBSPanel(props: BBSPanelParams) {
 }
 
 ServerlessBBSPanel.defaultProps = {
-  editable: true,
   pageSize: 5,
   nest: 1,
   offset: 0,

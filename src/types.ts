@@ -1,12 +1,12 @@
 export interface APICoreInterface {
-  serverInit;
-  fetchComments_server;
-  fetchCounts_server;
-  fetchPageViews_server;
-  uploadComment_server;
-  updateComment_server;
-  signIn_server;
-  signUp_server;
+  serverInit(): Promise<any>;
+  fetchComments_server(uniqStr: string): Promise<any>;
+  fetchCounts_server(uniqStr: string, includeReply?: boolean): Promise<any>;
+  fetchPageViews_server(uniqStr: string, title?:string): Promise<any>;
+  uploadComment_server(uploadField: UploadFiled): Promise<any>;
+  updateComment_server(id:string, message:string): Promise<any>;
+  signIn_server(): Promise<any>;
+  signUp_server(): Promise<any>;
 }
 
 export interface ConvertLayerIInterface {
@@ -63,13 +63,6 @@ export type CommentObject = {
   replyCounts: number;
 }
 
-export type ConfigInfo = {
-  uniqStr: string;
-  nest?: number;
-  pageSize?: number;
-  offset?: number;
-  editable?: boolean;
-}
 
 export type SignUserInfo = {
   id: string;
@@ -99,7 +92,6 @@ export interface BBSPageViewProps{
   uniqStr?:string
 }
 export interface BBSPanelParams  {
-  editable?: boolean;
   pageSize?: number;
   nest?: number;
   offset?: number;

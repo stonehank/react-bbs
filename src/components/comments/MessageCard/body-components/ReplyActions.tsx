@@ -1,9 +1,11 @@
 import React from 'react'
 import messageBodyStyle from '../scss/message-body.module.scss'
 import Button from '../../../UI/Button'
+import { readConfig } from '../../../../config'
 
 function ReplyActions({ details, edit, isOwnerComment, startReply, saveEdit, showEdit, closeEdit }) {
-  if (edit && isOwnerComment) {
+  const { editMode } = readConfig()
+  if (editMode && edit && isOwnerComment) {
     return (
       <div className={messageBodyStyle['bbs-msg-action-edit']}>
         <Button dense text className='mr-4' onClick={closeEdit}>
@@ -17,7 +19,7 @@ function ReplyActions({ details, edit, isOwnerComment, startReply, saveEdit, sho
   }
   return (
     <div className={messageBodyStyle['bbs-msg-action-no-edit']}>
-      {isOwnerComment ? (
+      {editMode && isOwnerComment ? (
         <Button dense text className='mr-4' onClick={showEdit}>
           Edit
         </Button>

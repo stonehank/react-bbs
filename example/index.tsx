@@ -2,8 +2,6 @@ import 'react-app-polyfill/ie11';
 import React, { useState} from 'react';
 import {createRoot} from 'react-dom/client'
 import { BBSPanel,BBSCounter, BBSPageView, setConfig } from '../.';
-// import Button from '../src/components/UI/Button';
-import TextField from '../src/components/UI/TextField';
 import {getFromCache, setCache} from '../src/utils/cacheControl'
 import useDidUpdate from '../src/hooks/useDidUpdate'
 import '../dist/react-bbs.css'

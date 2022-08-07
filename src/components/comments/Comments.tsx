@@ -8,7 +8,6 @@ import { UpdateReply } from '../../context/replys/ReplyUpdateProvider';
 interface Props {
   uniqStr: string;
   maxNest: number;
-  editable: boolean;
   pageSize: number;
   fetchComments: (params: FetchCommentParams) => Promise<FetchCommentResult>;
   fetchCurrentUser: () => Promise<SignUserInfo>;

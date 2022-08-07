@@ -41,7 +41,7 @@ function useListData({ maxNest, uniqStr, pageSize, fetchComments, fetchCurrentUs
     /** 流程
      * 获取数据-> 回复
      * 获取数据-> count
-     * 根据maxNest，editable, pageSize，分页方式进行渲染
+     * 根据maxNest， pageSize，分页方式进行渲染
      * */
     init()
     document.addEventListener('click', bindATagSmoothScroll)

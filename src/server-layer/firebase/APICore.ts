@@ -17,7 +17,7 @@ import {
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'
 import { getFromCache, randUniqueString, setCache } from '../../utils'
 import { readConfig, readLoggedUser } from '../../config'
-import { APICoreInterface } from '../../types'
+import { APICoreInterface, UploadFiled } from '../../types'
 
 const ownerCodeKey = 'serverless_react_bbs_ownerCode'
 let oldRandOwnerCode = getFromCache(ownerCodeKey)
@@ -33,7 +33,7 @@ export default function useAPICore(): APICoreInterface {
 
   const loggedUser = readLoggedUser()
 
-  function serverInit() {
+  function serverInit():Promise<any> {
     if (!apiKey || !projectId) {
       console.error('Server initial error: missing apiKey or projectId')
     }
@@ -118,19 +118,20 @@ export default function useAPICore(): APICoreInterface {
      * @param uploadField
      * @returns {Promise<*>}
      */
-  function uploadComment_server(uploadField) {
+  function uploadComment_server(uploadField:UploadFiled) {
     const { email, ...publicField } = uploadField
     const timeStamp = new Date().toISOString()
-    publicField.createdAt = timeStamp
-    publicField.updatedAt = timeStamp
+    let newPublicField:any=publicField
+    newPublicField.createdAt = timeStamp
+    newPublicField.updatedAt = timeStamp
     const privateField = {
       email
     }
     return signIn_server()
       .then((user) => {
         console.log('login done,', user)
-        publicField.user_id = user.id || user.uid || ''
-        return __uploadBatch__(user, publicField, privateField)
+        newPublicField.user_id = user.id || user.uid || ''
+        return __uploadBatch__(user, newPublicField, privateField)
       })
       .catch((err) => {
         console.error(err)

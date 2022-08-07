@@ -15,7 +15,9 @@ interface BBSPanelCoreProps extends BBSPanelParams {
 }
 type CommentListHandle = React.ElementRef<typeof Comments>;
 
-function BBSPanelCore({ editable, pageSize, nest, offset, uniqStr, useConvertLayer }: BBSPanelCoreProps) {
+
+
+function BBSPanelCore({ pageSize, nest, offset, uniqStr, useConvertLayer }: BBSPanelCoreProps) {
   const [submitLoading, setSubmitLoading] = useState(false)
   const commentListRef = useRef<CommentListHandle>(null)
   const userInputRef = useRef(null)
@@ -107,7 +109,6 @@ function BBSPanelCore({ editable, pageSize, nest, offset, uniqStr, useConvertLay
         <Comments
           uniqStr={uniqStr}
           maxNest={nest}
-          editable={editable}
           pageSize={pageSize}
           fetchComments={fetchComments}
           fetchCurrentUser={fetchCurrentUser}
